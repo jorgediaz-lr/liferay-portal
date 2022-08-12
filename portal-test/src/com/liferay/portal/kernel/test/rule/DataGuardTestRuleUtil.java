@@ -31,8 +31,6 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -556,57 +554,7 @@ public class DataGuardTestRuleUtil {
 			}
 		}
 		catch (Throwable throwable1) {
-			BasePersistence<?> basePersistence = _getBasePersistence(
-				persistedModelLocalService);
-
-			Class<?> persistenceClass = basePersistence.getClass();
-
-			try (Closeable closeable1 = _installTransactionExecutor(
-					_getSymbolicName(persistenceClass.getClassLoader()))) {
-
-				TransactionInvokerUtil.invoke(
-					_transactionConfig,
-					() -> {
-						try (Closeable closeable2 =
-								_removeSessionFactoryVerifier(
-									basePersistence)) {
-
-							Session session =
-								basePersistence.getCurrentSession();
-
-							if (session.contains(persistedModel)) {
-								session.delete(persistedModel);
-							}
-							else {
-								BaseModel<?> baseModel =
-									(BaseModel<?>)persistedModel;
-
-								Object refetchedBaseModel = session.get(
-									persistedModel.getClass(),
-									baseModel.getPrimaryKeyObj());
-
-								if (refetchedBaseModel != null) {
-									session.delete(refetchedBaseModel);
-								}
-							}
-
-							return null;
-						}
-					});
-
-				Indexer<PersistedModel> indexer =
-					(Indexer<PersistedModel>)IndexerRegistryUtil.getIndexer(
-						modelClass);
-
-				if (indexer != null) {
-					indexer.delete(persistedModel);
-				}
-			}
-			catch (Throwable throwable2) {
-				throwable2.addSuppressed(throwable1);
-
-				ReflectionUtil.throwException(throwable2);
-			}
+			ReflectionUtil.throwException(throwable1);
 		}
 	}
 
