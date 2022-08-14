@@ -28,8 +28,16 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.model.LayoutSetPrototype;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -57,9 +65,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
@@ -288,7 +298,7 @@ public class DataGuardTestRuleUtil {
 
 			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
-			for (String className : dataMap.keySet()) {
+			for (String className : _getSortedClassNames(dataMap.keySet())) {
 				deleted = _autoDeleteLeftovers(
 					previousDataMap.get(className), dataMap.get(className),
 					persistedModelLocalServices.get(className), className,
@@ -460,6 +470,26 @@ public class DataGuardTestRuleUtil {
 			PersistedModelLocalServiceRegistryUtil.
 				getPersistedModelLocalServiceRegistry(),
 			"_persistedModelLocalServices");
+	}
+
+	private static List<String> _getSortedClassNames(Set<String> classNames) {
+		List<String> sortedClassNames = new ArrayList<>();
+		List<String> folderClassNames = new ArrayList<>();
+
+		sortedClassNames.addAll(_orderedClassNames);
+
+		for (String className : classNames) {
+			if (className.contains("Folder")) {
+				folderClassNames.add(className);
+			}
+			else if (!_orderedClassNames.contains(className)) {
+				sortedClassNames.add(className);
+			}
+		}
+
+		sortedClassNames.addAll(folderClassNames);
+
+		return sortedClassNames;
 	}
 
 	private static String _getSymbolicName(ClassLoader classLoader) {
@@ -634,6 +664,13 @@ public class DataGuardTestRuleUtil {
 		}
 	}
 
+	private static final Set<String> _orderedClassNames = new LinkedHashSet<>(
+		Arrays.<String>asList(
+			Company.class.getName(), User.class.getName(),
+			Organization.class.getName(), Role.class.getName(),
+			UserGroup.class.getName(), LayoutPrototype.class.getName(),
+			LayoutSetPrototype.class.getName(),
+			"com.liferay.account.model.AccountEntry", Group.class.getName()));
 	private static final ThreadLocal<Map<String, Map<Serializable, String>>>
 		_recordsThreadLocal = new ThreadLocal<>();
 	private static final TransactionConfig _transactionConfig =
