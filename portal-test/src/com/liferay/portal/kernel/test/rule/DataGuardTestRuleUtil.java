@@ -240,6 +240,42 @@ public class DataGuardTestRuleUtil {
 		Assert.assertTrue(sb.toString(), sb.index() == 0);
 	}
 
+	private static boolean _autoDeleteLeftovers(
+			List<BaseModel<?>> previousBaseModels,
+			List<BaseModel<?>> currentBaseModels,
+			PersistedModelLocalService persistedModelLocalService,
+			String className, boolean deleted)
+		throws ClassNotFoundException, Throwable {
+
+		Class<?> persistedModelLocalServiceClass =
+			persistedModelLocalService.getClass();
+
+		ClassLoader classLoader =
+			persistedModelLocalServiceClass.getClassLoader();
+
+		Class<?> modelClass = classLoader.loadClass(className);
+
+		List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
+			currentBaseModels);
+
+		if (previousBaseModels != null) {
+			leftoverBaseModels.removeAll(previousBaseModels);
+		}
+
+		Method deleteMethod = _getPersistedModelDeleteMethod(
+			persistedModelLocalService, modelClass);
+
+		for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
+			_smartDelete(
+				persistedModelLocalService, modelClass,
+				(PersistedModel)leftoverBaseModel, deleteMethod);
+
+			deleted = true;
+		}
+
+		return deleted;
+	}
+
 	private static void _autoDeleteLeftovers(
 			Map<String, List<BaseModel<?>>> previousDataMap)
 		throws Throwable {
@@ -252,44 +288,11 @@ public class DataGuardTestRuleUtil {
 
 			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
-			for (Map.Entry<String, List<BaseModel<?>>> entry :
-					dataMap.entrySet()) {
-
-				String className = entry.getKey();
-
-				PersistedModelLocalService persistedModelLocalService =
-					persistedModelLocalServices.get(className);
-
-				Class<?> persistedModelLocalServiceClass =
-					persistedModelLocalService.getClass();
-
-				ClassLoader classLoader =
-					persistedModelLocalServiceClass.getClassLoader();
-
-				Class<?> modelClass = classLoader.loadClass(className);
-
-				List<BaseModel<?>> currentBaseModels = entry.getValue();
-
-				List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(
-					className);
-
-				List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
-					currentBaseModels);
-
-				if (previsoutBaseModels != null) {
-					leftoverBaseModels.removeAll(previsoutBaseModels);
-				}
-
-				Method deleteMethod = _getPersistedModelDeleteMethod(
-					persistedModelLocalService, modelClass);
-
-				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
-					_smartDelete(
-						persistedModelLocalService, modelClass,
-						(PersistedModel)leftoverBaseModel, deleteMethod);
-
-					deleted = true;
-				}
+			for (String className : dataMap.keySet()) {
+				deleted = _autoDeleteLeftovers(
+					previousDataMap.get(className), dataMap.get(className),
+					persistedModelLocalServices.get(className), className,
+					deleted);
 			}
 
 			if (!deleted) {
