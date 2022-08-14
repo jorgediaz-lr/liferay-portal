@@ -280,10 +280,13 @@ public class DataGuardTestRuleUtil {
 					leftoverBaseModels.removeAll(previsoutBaseModels);
 				}
 
+				Method deleteMethod = _getPersistedModelDeleteMethod(
+					persistedModelLocalService, modelClass);
+
 				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
 					_smartDelete(
 						persistedModelLocalService, modelClass,
-						(PersistedModel)leftoverBaseModel);
+						(PersistedModel)leftoverBaseModel, deleteMethod);
 
 					deleted = true;
 				}
@@ -415,6 +418,38 @@ public class DataGuardTestRuleUtil {
 		return persistedModelLocalService.getBasePersistence();
 	}
 
+	private static Method _getPersistedModelDeleteMethod(
+		PersistedModelLocalService persistedModelLocalService,
+		Class<?> modelClass) {
+
+		Method deleteMethod = null;
+
+		Class<?> clazz = persistedModelLocalService.getClass();
+
+		Class<?>[] parameterTypes = new Class<?>[] {modelClass};
+
+		for (Method method : clazz.getMethods()) {
+			String methodName = method.getName();
+
+			if (methodName.startsWith("delete") &&
+				Arrays.equals(method.getParameterTypes(), parameterTypes)) {
+
+				if (deleteMethod == null) {
+					deleteMethod = method;
+				}
+				else {
+					String deleteMethodName = deleteMethod.getName();
+
+					if (deleteMethodName.length() > methodName.length()) {
+						deleteMethod = method;
+					}
+				}
+			}
+		}
+
+		return deleteMethod;
+	}
+
 	private static Map<String, PersistedModelLocalService>
 		_getPersistedModelLocalServices() {
 
@@ -529,33 +564,9 @@ public class DataGuardTestRuleUtil {
 
 	private static void _smartDelete(
 			PersistedModelLocalService persistedModelLocalService,
-			Class<?> modelClass, PersistedModel persistedModel)
+			Class<?> modelClass, PersistedModel persistedModel,
+			Method deleteMethod)
 		throws Throwable {
-
-		Method deleteMethod = null;
-
-		Class<?> clazz = persistedModelLocalService.getClass();
-
-		Class<?>[] parameterTypes = new Class<?>[] {modelClass};
-
-		for (Method method : clazz.getMethods()) {
-			String methodName = method.getName();
-
-			if (methodName.startsWith("delete") &&
-				Arrays.equals(method.getParameterTypes(), parameterTypes)) {
-
-				if (deleteMethod == null) {
-					deleteMethod = method;
-				}
-				else {
-					String deleteMethodName = deleteMethod.getName();
-
-					if (deleteMethodName.length() > methodName.length()) {
-						deleteMethod = method;
-					}
-				}
-			}
-		}
 
 		try {
 			if (deleteMethod == null) {
