@@ -257,6 +257,10 @@ public class DataGuardTestRuleUtil {
 			String className, boolean deleted)
 		throws ClassNotFoundException, Throwable {
 
+		if (currentBaseModels == null) {
+			return deleted;
+		}
+
 		Class<?> persistedModelLocalServiceClass =
 			persistedModelLocalService.getClass();
 
