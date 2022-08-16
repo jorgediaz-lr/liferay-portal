@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -180,14 +181,18 @@ public class DataGuardTestRuleUtil {
 		}
 
 		if (autoDelete) {
+			boolean companyDeleteInProcess =
+				CompanyThreadLocal.isDeleteInProcess();
 			boolean groupDeleteInProcess = GroupThreadLocal.isDeleteInProcess();
 
 			try {
+				CompanyThreadLocal.setDeleteInProcess(true);
 				GroupThreadLocal.setDeleteInProcess(true);
 
 				_autoDeleteLeftovers(previousDataMap);
 			}
 			finally {
+				CompanyThreadLocal.setDeleteInProcess(companyDeleteInProcess);
 				GroupThreadLocal.setDeleteInProcess(groupDeleteInProcess);
 			}
 		}
