@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dao.orm.SessionWrapper;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -604,6 +605,18 @@ public class DataGuardTestRuleUtil {
 			Class<?> modelClass, PersistedModel persistedModel,
 			Method deleteMethod)
 		throws Throwable {
+
+		if (persistedModel instanceof BaseModel) {
+			BaseModel<?> baseModel = (BaseModel<?>)persistedModel;
+
+			try {
+				persistedModel = persistedModelLocalService.getPersistedModel(
+					baseModel.getPrimaryKeyObj());
+			}
+			catch (NoSuchModelException noSuchModelException) {
+				return;
+			}
+		}
 
 		try {
 			if (deleteMethod == null) {
