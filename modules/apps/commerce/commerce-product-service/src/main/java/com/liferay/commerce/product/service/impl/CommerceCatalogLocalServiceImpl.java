@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -421,6 +422,10 @@ public class CommerceCatalogLocalServiceImpl
 
 	protected void validate(CommerceCatalog commerceCatalog)
 		throws PortalException {
+
+		if (CompanyThreadLocal.isDeleteInProcess()) {
+			return;
+		}
 
 		if (commerceCatalog.isSystem()) {
 			throw new CommerceCatalogSystemException();
