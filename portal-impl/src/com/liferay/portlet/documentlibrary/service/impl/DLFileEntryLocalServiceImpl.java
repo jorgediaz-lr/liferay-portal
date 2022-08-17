@@ -662,8 +662,21 @@ public class DLFileEntryLocalServiceImpl
 			long groupId, long folderId, boolean includeTrashedEntries)
 		throws PortalException {
 
-		RepositoryEventTrigger repositoryEventTrigger =
-			getFolderRepositoryEventTrigger(groupId, folderId);
+		RepositoryEventTrigger repositoryEventTrigger;
+
+		try {
+			repositoryEventTrigger = getFolderRepositoryEventTrigger(
+				groupId, folderId);
+		}
+		catch (NoSuchFolderException noSuchFolderException) {
+			repositoryEventTrigger = null;
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFolderException);
+			}
+		}
+
+		RepositoryEventTrigger repositoryEventTrigger2 = repositoryEventTrigger;
 
 		ActionableDynamicQuery actionableDynamicQuery =
 			dlFileEntryLocalService.getActionableDynamicQuery();
@@ -681,9 +694,11 @@ public class DLFileEntryLocalServiceImpl
 				if (includeTrashedEntries ||
 					!dlFileEntry.isInTrashExplicitly()) {
 
-					repositoryEventTrigger.trigger(
-						RepositoryEventType.Delete.class, FileEntry.class,
-						new LiferayFileEntry(dlFileEntry));
+					if (repositoryEventTrigger2 != null) {
+						repositoryEventTrigger2.trigger(
+							RepositoryEventType.Delete.class, FileEntry.class,
+							new LiferayFileEntry(dlFileEntry));
+					}
 
 					dlFileEntryLocalService.deleteFileEntry(dlFileEntry);
 				}
@@ -929,8 +944,19 @@ public class DLFileEntryLocalServiceImpl
 	public void deleteRepositoryFileEntries(long repositoryId)
 		throws PortalException {
 
-		RepositoryEventTrigger repositoryEventTrigger =
-			RepositoryUtil.getRepositoryEventTrigger(repositoryId);
+		RepositoryEventTrigger repositoryEventTrigger = null;
+
+		try {
+			repositoryEventTrigger = RepositoryUtil.getRepositoryEventTrigger(
+				repositoryId);
+		}
+		catch (NoSuchFolderException noSuchFolderException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFolderException);
+			}
+		}
+
+		RepositoryEventTrigger repositoryEventTrigger2 = repositoryEventTrigger;
 
 		int total = dlFileEntryPersistence.countByRepositoryId(repositoryId);
 
@@ -944,9 +970,11 @@ public class DLFileEntryLocalServiceImpl
 						repositoryId, start, end);
 
 				for (DLFileEntry dlFileEntry : dlFileEntries) {
-					repositoryEventTrigger.trigger(
-						RepositoryEventType.Delete.class, FileEntry.class,
-						new LiferayFileEntry(dlFileEntry));
+					if (repositoryEventTrigger2 != null) {
+						repositoryEventTrigger2.trigger(
+							RepositoryEventType.Delete.class, FileEntry.class,
+							new LiferayFileEntry(dlFileEntry));
+					}
 
 					dlFileEntryLocalService.deleteFileEntry(dlFileEntry);
 				}
