@@ -301,16 +301,22 @@ public class DataGuardTestRuleUtil {
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
 			_getPersistedModelLocalServices();
 
+		List<String> classNames = _getSortedClassNames(
+			persistedModelLocalServices.keySet());
+
 		while (true) {
 			boolean deleted = false;
 
-			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+			for (String className : classNames) {
+				PersistedModelLocalService persistedModelLocalService =
+					persistedModelLocalServices.get(className);
 
-			for (String className : _getSortedClassNames(dataMap.keySet())) {
+				List<BaseModel<?>> currentBaseModels = _captureModels(
+					persistedModelLocalService);
+
 				deleted = _autoDeleteLeftovers(
-					previousDataMap.get(className), dataMap.get(className),
-					persistedModelLocalServices.get(className), className,
-					deleted);
+					previousDataMap.get(className), currentBaseModels,
+					persistedModelLocalService, className, deleted);
 			}
 
 			if (!deleted) {
