@@ -332,46 +332,55 @@ public class DataGuardTestRuleUtil {
 			PersistedModelLocalService persistedModelLocalService =
 				entry.getValue();
 
-			BasePersistence<?> basePersistence = _getBasePersistence(
+			List<BaseModel<?>> list = _captureModels(
 				persistedModelLocalService);
 
-			if (basePersistence == null) {
-				continue;
-			}
-
-			Class<?> clazz = basePersistence.getClass();
-
-			try (Closeable closeable1 = _installTransactionExecutor(
-					_getSymbolicName(clazz.getClassLoader()))) {
-
-				TransactionInvokerUtil.invoke(
-					_transactionConfig,
-					() -> {
-						basePersistence.clearCache();
-
-						try (Closeable closeable2 =
-								_removeSessionFactoryVerifier(
-									basePersistence)) {
-
-							List<BaseModel<?>> baseModels =
-								ReflectionTestUtil.invoke(
-									basePersistence, "findAll",
-									new Class<?>[0]);
-
-							if (!baseModels.isEmpty()) {
-								dataMap.put(entry.getKey(), baseModels);
-							}
-						}
-
-						return null;
-					});
-			}
-			catch (Throwable throwable) {
-				return ReflectionUtil.throwException(throwable);
+			if (list != null) {
+				dataMap.put(entry.getKey(), list);
 			}
 		}
 
 		return dataMap;
+	}
+
+	private static List<BaseModel<?>> _captureModels(
+		PersistedModelLocalService persistedModelLocalService) {
+
+		BasePersistence<?> basePersistence = _getBasePersistence(
+			persistedModelLocalService);
+
+		if (basePersistence == null) {
+			return null;
+		}
+
+		Class<?> clazz = basePersistence.getClass();
+
+		try (Closeable closeable1 = _installTransactionExecutor(
+				_getSymbolicName(clazz.getClassLoader()))) {
+
+			return TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					basePersistence.clearCache();
+
+					try (Closeable closeable2 = _removeSessionFactoryVerifier(
+							basePersistence)) {
+
+						List<BaseModel<?>> baseModels =
+							ReflectionTestUtil.invoke(
+								basePersistence, "findAll", new Class<?>[0]);
+
+						if (!baseModels.isEmpty()) {
+							return baseModels;
+						}
+					}
+
+					return null;
+				});
+		}
+		catch (Throwable throwable) {
+			return ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	private static BasePersistence<?> _getBasePersistence(
