@@ -63,19 +63,17 @@ public class BufferedIndexerInvocationHandler implements InvocationHandler {
 
 		if (_indexStatusManager.isIndexReadOnly()) {
 			if (_log.isDebugEnabled()) {
+				if (CompanyThreadLocal.isDeleteInProcess()) {
+					_log.debug(
+						"Skipping indexer request buffer because a company " +
+							"delete is in process");
+
+					return null;
+				}
+
 				_log.debug(
 					"Skipping indexer request buffer because index is read " +
 						"only");
-			}
-
-			return null;
-		}
-
-		if (CompanyThreadLocal.isDeleteInProcess()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping indexer request buffer because a company " +
-						"delete is in process");
 			}
 
 			return null;

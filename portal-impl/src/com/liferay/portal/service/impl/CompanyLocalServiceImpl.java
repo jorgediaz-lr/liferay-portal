@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.IndexStatusManagerThreadLocal;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchException;
@@ -399,10 +400,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Long companyThreadLocalCompanyId = CompanyThreadLocal.getCompanyId();
 		boolean deleteInProcess = CompanyThreadLocal.isDeleteInProcess();
+		boolean indexReadOnly = IndexStatusManagerThreadLocal.isIndexReadOnly();
 
 		try {
 			CompanyThreadLocal.setCompanyId(companyId);
 			CompanyThreadLocal.setDeleteInProcess(true);
+			IndexStatusManagerThreadLocal.setIndexReadOnly(true);
 
 			return doDeleteCompany(companyId);
 		}
@@ -416,6 +419,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		finally {
 			CompanyThreadLocal.setCompanyId(companyThreadLocalCompanyId);
 			CompanyThreadLocal.setDeleteInProcess(deleteInProcess);
+			IndexStatusManagerThreadLocal.setIndexReadOnly(indexReadOnly);
 		}
 	}
 

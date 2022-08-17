@@ -75,9 +75,7 @@ public class IndexableAdvice extends ChainableMethodAdvice {
 			return;
 		}
 
-		if (CompanyThreadLocal.isDeleteInProcess() ||
-			IndexWriterHelperUtil.isIndexReadOnly()) {
-
+		if (IndexWriterHelperUtil.isIndexReadOnly()) {
 			if (_log.isDebugEnabled()) {
 				if (CompanyThreadLocal.isDeleteInProcess()) {
 					_log.debug(
