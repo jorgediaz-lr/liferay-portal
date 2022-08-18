@@ -260,22 +260,17 @@ public class DataGuardTestRuleUtil {
 			for (Map.Entry<String, PersistedModelLocalService> entry :
 					persistedModelLocalServices.entrySet()) {
 
-				String className = entry.getKey();
-
 				PersistedModelLocalService persistedModelLocalService =
 					entry.getValue();
 
-				Class<?> persistedModelLocalServiceClass =
-					persistedModelLocalService.getClass();
-
-				ClassLoader classLoader =
-					persistedModelLocalServiceClass.getClassLoader();
-
-				Class<?> modelClass = classLoader.loadClass(
-					_sanitizeClassName(className));
-
 				List<BaseModel<?>> currentBaseModels = _captureModels(
 					persistedModelLocalService);
+
+				if (currentBaseModels == null) {
+					continue;
+				}
+
+				String className = entry.getKey();
 
 				List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(
 					className);
@@ -286,6 +281,15 @@ public class DataGuardTestRuleUtil {
 				if (previsoutBaseModels != null) {
 					leftoverBaseModels.removeAll(previsoutBaseModels);
 				}
+
+				Class<?> persistedModelLocalServiceClass =
+					persistedModelLocalService.getClass();
+
+				ClassLoader classLoader =
+					persistedModelLocalServiceClass.getClassLoader();
+
+				Class<?> modelClass = classLoader.loadClass(
+					_sanitizeClassName(className));
 
 				Method deleteMethod = _getPersistedModelDeleteMethod(
 					persistedModelLocalService, modelClass);
