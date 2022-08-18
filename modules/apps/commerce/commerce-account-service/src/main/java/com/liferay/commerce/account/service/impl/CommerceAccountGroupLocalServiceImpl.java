@@ -36,8 +36,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.GroupConstants;
-import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -45,7 +43,6 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -98,19 +95,8 @@ public class CommerceAccountGroupLocalServiceImpl
 		accountGroup.setExternalReferenceCode(externalReferenceCode);
 		accountGroup.setExpandoBridgeAttributes(serviceContext);
 
-		CommerceAccountGroup commerceAccountGroup =
-			CommerceAccountGroupImpl.fromAccountGroup(
-				_accountGroupLocalService.updateAccountGroup(accountGroup));
-
-		// Resources
-
-		_resourceLocalService.addResources(
-			accountGroup.getCompanyId(), GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			accountGroup.getUserId(), CommerceAccountGroup.class.getName(),
-			commerceAccountGroup.getCommerceAccountGroupId(), false, false,
-			false);
-
-		return commerceAccountGroup;
+		return CommerceAccountGroupImpl.fromAccountGroup(
+			_accountGroupLocalService.updateAccountGroup(accountGroup));
 	}
 
 	@Override
@@ -158,11 +144,6 @@ public class CommerceAccountGroupLocalServiceImpl
 
 		_accountGroupLocalService.deleteAccountGroup(
 			commerceAccountGroup.getCommerceAccountGroupId());
-
-		// Resources
-
-		_resourceLocalService.deleteResource(
-			commerceAccountGroup, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		// Expando
 
@@ -409,9 +390,6 @@ public class CommerceAccountGroupLocalServiceImpl
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;
-
-	@Reference
-	private ResourceLocalService _resourceLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

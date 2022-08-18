@@ -34,8 +34,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.GroupConstants;
-import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -43,7 +41,6 @@ import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
@@ -151,13 +148,6 @@ public class CommerceAccountLocalServiceImpl
 				accountEntry);
 		}
 
-		// Resources
-
-		_resourceLocalService.addResources(
-			user.getCompanyId(), GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			user.getUserId(), CommerceAccount.class.getName(),
-			accountEntry.getAccountEntryId(), false, false, false);
-
 		return CommerceAccountImpl.fromAccountEntry(accountEntry);
 	}
 
@@ -263,15 +253,6 @@ public class CommerceAccountLocalServiceImpl
 		catch (ModelListenerException modelListenerException) {
 			throw new CommerceAccountOrdersException(modelListenerException);
 		}
-
-		// Resources
-
-		// TODO Check permissions
-
-		_resourceLocalService.deleteResource(
-			commerceAccount.getCompanyId(), CommerceAccount.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
-			String.valueOf(commerceAccount.getCommerceAccountId()));
 
 		// Expando
 
@@ -726,9 +707,6 @@ public class CommerceAccountLocalServiceImpl
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private ResourceLocalService _resourceLocalService;
 
 	@Reference
 	private RoleLocalService _roleLocalService;
