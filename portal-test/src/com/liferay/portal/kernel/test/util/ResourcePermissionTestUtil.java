@@ -136,19 +136,6 @@ public class ResourcePermissionTestUtil {
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(baseModel.getPrimaryKeyObj()));
 
-		if (resourceName.equals(_ACCOUNT_ENTRY)) {
-			ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-				shardedModel.getCompanyId(), _COMMERCE_ACCOUNT,
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(baseModel.getPrimaryKeyObj()));
-		}
-		else if (resourceName.equals(_ACCOUNT_GROUP)) {
-			ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-				shardedModel.getCompanyId(), _COMMERCE_ACCOUNT_GROUP,
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(baseModel.getPrimaryKeyObj()));
-		}
-
 		if (!(persistedModel instanceof ResourcedModel)) {
 			return;
 		}
@@ -187,18 +174,6 @@ public class ResourcePermissionTestUtil {
 				resourcePermissionId);
 		}
 	}
-
-	private static final String _ACCOUNT_ENTRY =
-		"com.liferay.account.model.AccountEntry";
-
-	private static final String _ACCOUNT_GROUP =
-		"com.liferay.account.model.AccountGroup";
-
-	private static final String _COMMERCE_ACCOUNT =
-		"com.liferay.commerce.account.model.CommerceAccount";
-
-	private static final String _COMMERCE_ACCOUNT_GROUP =
-		"com.liferay.commerce.account.model.CommerceAccountGroup";
 
 	private static final String _DDL_RECORD_SET =
 		"com.liferay.dynamic.data.lists.model.DDLRecordSet";
