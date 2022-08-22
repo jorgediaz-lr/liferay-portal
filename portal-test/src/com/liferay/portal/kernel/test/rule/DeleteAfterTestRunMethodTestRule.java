@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
-import com.liferay.portal.kernel.test.util.ResourcePermissionTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.lang.reflect.Field;
@@ -247,9 +246,6 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 
 					persistedModelLocalService.deletePersistedModel(
 						persistedModel);
-
-					ResourcePermissionTestUtil.deleteResourcePermissions(
-						persistedModel);
 				}
 			}
 			else if (Collection.class.isAssignableFrom(objectClass)) {
@@ -259,16 +255,10 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 				for (PersistedModel persistedModel : collection) {
 					persistedModelLocalService.deletePersistedModel(
 						persistedModel);
-
-					ResourcePermissionTestUtil.deleteResourcePermissions(
-						persistedModel);
 				}
 			}
 			else {
 				persistedModelLocalService.deletePersistedModel(
-					(PersistedModel)object);
-
-				ResourcePermissionTestUtil.deleteResourcePermissions(
 					(PersistedModel)object);
 			}
 
