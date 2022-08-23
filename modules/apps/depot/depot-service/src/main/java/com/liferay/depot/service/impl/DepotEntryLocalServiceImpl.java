@@ -155,21 +155,29 @@ public class DepotEntryLocalServiceImpl extends DepotEntryLocalServiceBaseImpl {
 	}
 
 	@Override
+	public DepotEntry deleteDepotEntry(DepotEntry depotEntry)
+		throws PortalException {
+
+		if (_isStaged(depotEntry)) {
+			throw new DepotEntryStagedException(
+				"Unstage depot entry " + depotEntry.getDepotEntryId() +
+					" before deleting it");
+		}
+
+		_resourceLocalService.deleteResource(
+			depotEntry, ResourceConstants.SCOPE_INDIVIDUAL);
+
+		return super.deleteDepotEntry(depotEntry);
+	}
+
+	@Override
 	public DepotEntry deleteDepotEntry(long depotEntryId)
 		throws PortalException {
 
 		DepotEntry depotEntry = depotEntryPersistence.fetchByPrimaryKey(
 			depotEntryId);
 
-		if (_isStaged(depotEntry)) {
-			throw new DepotEntryStagedException(
-				"Unstage depot entry " + depotEntryId + " before deleting it");
-		}
-
-		_resourceLocalService.deleteResource(
-			depotEntry, ResourceConstants.SCOPE_INDIVIDUAL);
-
-		return super.deleteDepotEntry(depotEntryId);
+		return deleteDepotEntry(depotEntry);
 	}
 
 	@Override
