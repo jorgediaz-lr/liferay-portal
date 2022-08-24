@@ -483,7 +483,7 @@ public class ResourcePermissionLocalServiceImpl
 
 	/**
 	 * Grants the role permissions at the scope to perform the actions on all
-	 * resources of the type. Existing actions are retained.
+	 * resources of the type in the given company. Existing actions are retained.
 	 *
 	 * <p>
 	 * This method should only be used to add default permissions to existing
@@ -492,6 +492,8 @@ public class ResourcePermissionLocalServiceImpl
 	 * permissions to view all blog posts.
 	 * </p>
 	 *
+	 * @param companyId the ID of the company where the role permission will be
+	 *        granted
 	 * @param resourceName the resource's name, which can be either a class name
 	 *        or a portlet ID
 	 * @param roleName the role's name
@@ -500,13 +502,26 @@ public class ResourcePermissionLocalServiceImpl
 	 */
 	@Override
 	public void addResourcePermissions(
-		String resourceName, String roleName, int scope,
+		long companyId, String resourceName, String roleName, int scope,
 		long resourceActionBitwiseValue) {
 
-		List<Role> roles = _rolePersistence.findByName(roleName);
+		List<Role> roles;
 
-		if (roles.isEmpty()) {
-			return;
+		if (companyId == 0) {
+			roles = _rolePersistence.findByName(roleName);
+
+			if (roles.isEmpty()) {
+				return;
+			}
+		}
+		else {
+			Role role = _rolePersistence.fetchByC_N(companyId, roleName);
+
+			if (role == null) {
+				return;
+			}
+
+			roles = Collections.singletonList(role);
 		}
 
 		Session session = resourcePermissionPersistence.openSession();
@@ -557,14 +572,22 @@ public class ResourcePermissionLocalServiceImpl
 			}
 
 			for (Object[] resourcePermissionArray : resourcePermissionArrays) {
+				long resourcePermissionCompanyId =
+					(Long)resourcePermissionArray[0];
+
+				if ((companyId != 0) &&
+					(companyId != resourcePermissionCompanyId)) {
+
+					continue;
+				}
+
 				long resourcePermissionId = counterLocalService.increment(
 					ResourcePermission.class.getName());
 
 				ResourcePermission resourcePermission =
 					resourcePermissionPersistence.create(resourcePermissionId);
 
-				resourcePermission.setCompanyId(
-					(Long)resourcePermissionArray[0]);
+				resourcePermission.setCompanyId(resourcePermissionCompanyId);
 				resourcePermission.setName((String)resourcePermissionArray[1]);
 				resourcePermission.setScope(
 					(Integer)resourcePermissionArray[2]);
@@ -594,6 +617,32 @@ public class ResourcePermissionLocalServiceImpl
 
 			resourcePermissionPersistence.clearCache();
 		}
+	}
+
+	/**
+	 * Grants the role permissions at the scope to perform the actions on all
+	 * resources of the type. Existing actions are retained.
+	 *
+	 * <p>
+	 * This method should only be used to add default permissions to existing
+	 * resources en masse during upgrades or while verifying permissions. For
+	 * example, this method could be used to grant site members individual scope
+	 * permissions to view all blog posts.
+	 * </p>
+	 *
+	 * @param resourceName the resource's name, which can be either a class name
+	 *        or a portlet ID
+	 * @param roleName the role's name
+	 * @param scope the scope
+	 * @param resourceActionBitwiseValue the bitwise IDs of the actions
+	 */
+	@Override
+	public void addResourcePermissions(
+		String resourceName, String roleName, int scope,
+		long resourceActionBitwiseValue) {
+
+		addResourcePermissions(
+			0, resourceName, roleName, scope, resourceActionBitwiseValue);
 	}
 
 	@Override
