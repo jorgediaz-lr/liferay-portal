@@ -180,6 +180,34 @@ public class ResourcePermissionLocalServiceUtil {
 
 	/**
 	 * Grants the role permissions at the scope to perform the actions on all
+	 * resources of the type in the given company. Existing actions are retained.
+	 *
+	 * <p>
+	 * This method should only be used to add default permissions to existing
+	 * resources en masse during upgrades or while verifying permissions. For
+	 * example, this method could be used to grant site members individual scope
+	 * permissions to view all blog posts.
+	 * </p>
+	 *
+	 * @param companyId the ID of the company where the role permission will be
+	 granted
+	 * @param resourceName the resource's name, which can be either a class name
+	 or a portlet ID
+	 * @param roleName the role's name
+	 * @param scope the scope
+	 * @param resourceActionBitwiseValue the bitwise IDs of the actions
+	 */
+	public static void addResourcePermissions(
+		long companyId, String resourceName, String roleName, int scope,
+		long resourceActionBitwiseValue) {
+
+		getService().addResourcePermissions(
+			companyId, resourceName, roleName, scope,
+			resourceActionBitwiseValue);
+	}
+
+	/**
+	 * Grants the role permissions at the scope to perform the actions on all
 	 * resources of the type. Existing actions are retained.
 	 *
 	 * <p>
