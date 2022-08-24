@@ -309,8 +309,8 @@ public class ServicePreActionTest {
 						Layout.class.getName(), ActionKeys.VIEW);
 
 				_resourcePermissionLocalService.addResourcePermissions(
-					Layout.class.getName(), RoleConstants.GUEST,
-					ResourceConstants.SCOPE_INDIVIDUAL,
+					_group.getCompanyId(), Layout.class.getName(),
+					RoleConstants.GUEST, ResourceConstants.SCOPE_INDIVIDUAL,
 					resourceAction.getBitwiseValue());
 			}
 		}
