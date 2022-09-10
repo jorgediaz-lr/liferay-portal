@@ -1424,10 +1424,10 @@ public class JournalArticleLocalServiceImpl
 
 			// Resources
 
-			_resourceLocalService.deleteResource(
+			/*_resourceLocalService.deleteResource(
 				article.getCompanyId(), JournalArticle.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL,
-				article.getResourcePrimKey());
+				article.getResourcePrimKey());*/
 
 			// Resource
 
