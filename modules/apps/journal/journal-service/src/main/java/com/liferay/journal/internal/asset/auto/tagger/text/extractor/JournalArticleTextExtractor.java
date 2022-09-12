@@ -16,11 +16,10 @@ package com.liferay.journal.internal.asset.auto.tagger.text.extractor;
 
 import com.liferay.asset.auto.tagger.text.extractor.TextExtractor;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
-import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.petra.string.StringPool;
@@ -56,11 +55,8 @@ public class JournalArticleTextExtractor
 		DDMFormValues ddmFormValues = null;
 
 		try {
-			Fields fields = _journalConverter.getDDMFields(
-				ddmStructure, journalArticle.getDocument());
-
-			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-				ddmStructure, fields);
+			ddmFormValues = _ddmFieldLocalService.getDDMFormValues(
+				ddmStructure.getDDMForm(), journalArticle.getId());
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -87,13 +83,13 @@ public class JournalArticleTextExtractor
 		JournalArticleTextExtractor.class);
 
 	@Reference
+	private DDMFieldLocalService _ddmFieldLocalService;
+
+	@Reference
 	private DDMIndexer _ddmIndexer;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	@Reference
-	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 
 	@Reference
 	private JournalConverter _journalConverter;
