@@ -20,22 +20,19 @@ import com.liferay.dynamic.data.mapping.item.selector.DDMTemplateItemSelectorRet
 import com.liferay.dynamic.data.mapping.item.selector.criterion.DDMTemplateItemSelectorCriterion;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.service.DDMFieldLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateServiceUtil;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesToMapConverter;
-import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.journal.constants.JournalArticleConstants;
 import com.liferay.journal.constants.JournalFolderConstants;
-import com.liferay.journal.constants.JournalWebKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
-import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.web.internal.configuration.FFJournalAutoSaveDraftConfiguration;
 import com.liferay.journal.web.internal.security.permission.resource.JournalArticlePermission;
 import com.liferay.journal.web.internal.security.permission.resource.JournalFolderPermission;
@@ -244,9 +241,16 @@ public class JournalEditArticleDisplayContext {
 				_httpServletRequest, ddmStructure.getDDMForm());
 		}
 
-		String content = _article.getContent();
+		DDMStructure articleDDMStructure = _article.getDDMStructure();
 
-		if (Validator.isNull(content) && _article.isNew() &&
+		DDMFormValues ddmFormValues = null;
+
+		if (articleDDMStructure != null) {
+			ddmFormValues = DDMFieldLocalServiceUtil.getDDMFormValues(
+				articleDDMStructure.getDDMForm(), _article.getId());
+		}
+
+		if ((ddmFormValues == null) && _article.isNew() &&
 			(getClassNameId() ==
 				JournalArticleConstants.CLASS_NAME_ID_DEFAULT)) {
 
@@ -255,27 +259,13 @@ public class JournalEditArticleDisplayContext {
 					ddmStructure.getGroupId(), DDMStructure.class.getName(),
 					ddmStructure.getStructureId());
 
-			content = ddmStructureArticle.getContent();
+			ddmFormValues = DDMFieldLocalServiceUtil.getDDMFormValues(
+				ddmStructure.getDDMForm(), ddmStructureArticle.getId());
 		}
 
-		if (Validator.isNull(content)) {
-			return _ddmFormValues;
+		if (ddmFormValues != null) {
+			_ddmFormValues = ddmFormValues;
 		}
-
-		JournalConverter journalConverter = _getJournalConverter();
-
-		Fields fields = journalConverter.getDDMFields(ddmStructure, content);
-
-		if (fields == null) {
-			return _ddmFormValues;
-		}
-
-		FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter =
-			(FieldsToDDMFormValuesConverter)_httpServletRequest.getAttribute(
-				FieldsToDDMFormValuesConverter.class.getName());
-
-		_ddmFormValues = fieldsToDDMFormValuesConverter.convert(
-			ddmStructure, fields);
 
 		return _ddmFormValues;
 	}
@@ -850,11 +840,6 @@ public class JournalEditArticleDisplayContext {
 				getFolderId());
 
 		return _inheritedWorkflowDDMStructuresFolderId;
-	}
-
-	private JournalConverter _getJournalConverter() {
-		return (JournalConverter)_httpServletRequest.getAttribute(
-			JournalWebKeys.JOURNAL_CONVERTER);
 	}
 
 	private String _getTitle() {
