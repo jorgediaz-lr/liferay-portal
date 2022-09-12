@@ -17,14 +17,10 @@ package com.liferay.journal.web.internal.asset;
 import com.liferay.asset.kernel.model.BaseDDMFormValuesReader;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
-import com.liferay.dynamic.data.mapping.storage.Fields;
+import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslatorUtil;
-import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.util.JournalConverter;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.PortalUtil;
 
 /**
  * @author Adolfo Pérez
@@ -39,17 +35,11 @@ public final class JournalArticleDDMFormValuesReader
 	@Override
 	public DDMFormValues getDDMFormValues() throws PortalException {
 		try {
-			DDMStructure ddmStructure =
-				DDMStructureLocalServiceUtil.getStructure(
-					PortalUtil.getSiteGroupId(_article.getGroupId()),
-					PortalUtil.getClassNameId(JournalArticle.class),
-					_article.getDDMStructureKey(), true);
-
-			Fields fields = _journalConverter.getDDMFields(
-				ddmStructure, _article.getContent());
+			DDMStructure ddmStructure = _article.getDDMStructure();
 
 			return DDMBeanTranslatorUtil.translate(
-				_fieldsToDDMFormValuesConverter.convert(ddmStructure, fields));
+				_ddmFieldLocalService.getDDMFormValues(
+					ddmStructure.getDDMForm(), _article.getId()));
 		}
 		catch (Exception exception) {
 			throw new PortalException(
@@ -58,18 +48,13 @@ public final class JournalArticleDDMFormValuesReader
 		}
 	}
 
-	public void setFieldsToDDMFormValuesConverter(
-		FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter) {
+	public void setDDMFieldLocalService(
+		DDMFieldLocalService ddmFieldLocalService) {
 
-		_fieldsToDDMFormValuesConverter = fieldsToDDMFormValuesConverter;
-	}
-
-	public void setJournalConverter(JournalConverter journalConverter) {
-		_journalConverter = journalConverter;
+		_ddmFieldLocalService = ddmFieldLocalService;
 	}
 
 	private final JournalArticle _article;
-	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
-	private JournalConverter _journalConverter;
+	private DDMFieldLocalService _ddmFieldLocalService;
 
 }
