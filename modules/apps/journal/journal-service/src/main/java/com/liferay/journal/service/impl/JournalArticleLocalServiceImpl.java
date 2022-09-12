@@ -1147,7 +1147,12 @@ public class JournalArticleLocalServiceImpl
 				locale, getUniqueUrlTitle(id, groupId, newArticleId, urlTitle));
 		}
 
-		Locale locale = getArticleDefaultLocale(oldArticle.getContent());
+		DDMStructure ddmStructure = oldArticle.getDDMStructure();
+
+		DDMFormValues ddmFormValues = _ddmFieldLocalService.getDDMFormValues(
+			ddmStructure.getDDMForm(), oldArticle.getId());
+
+		Locale locale = ddmFormValues.getDefaultLocale();
 
 		String newURLTitle = newUniqueURLTitleMap.get(locale);
 
