@@ -20,6 +20,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
@@ -27,6 +28,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.dynamic.data.mapping.util.DDMFormValuesToFieldsConverter;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidator;
@@ -947,8 +949,10 @@ public class StructuredContentResourceImpl
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 
-		Fields fields = _journalConverter.getDDMFields(
-			ddmStructure, journalArticle.getContent());
+		Fields fields = _ddmFormValuesToFieldsConverter.convert(
+			ddmStructure,
+			_ddmFieldLocalService.getDDMFormValues(
+				ddmStructure.getDDMForm(), journalArticle.getId()));
 
 		if (ArrayUtil.isEmpty(contentFields)) {
 			return fields;
@@ -1219,6 +1223,12 @@ public class StructuredContentResourceImpl
 
 	@Reference
 	private DDM _ddm;
+
+	@Reference
+	private DDMFieldLocalService _ddmFieldLocalService;
+
+	@Reference
+	private DDMFormValuesToFieldsConverter _ddmFormValuesToFieldsConverter;
 
 	@Reference
 	private DDMFormValuesValidator _ddmFormValuesValidator;
