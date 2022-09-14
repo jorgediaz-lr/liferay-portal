@@ -66,6 +66,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alicia García
+ * @author Dummy Change
  */
 @Component(
 	property = "item.class.name=com.liferay.journal.model.JournalArticle",
