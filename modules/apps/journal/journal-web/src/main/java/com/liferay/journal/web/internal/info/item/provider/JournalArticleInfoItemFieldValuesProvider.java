@@ -19,7 +19,6 @@ import com.liferay.asset.info.item.provider.AssetEntryInfoItemFieldSetProvider;
 import com.liferay.dynamic.data.mapping.info.item.provider.DDMFormValuesInfoFieldValuesProvider;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.expando.info.item.provider.ExpandoInfoItemFieldSetProvider;
 import com.liferay.info.constants.InfoDisplayWebKeys;
@@ -41,6 +40,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalContent;
+import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.JournalHelper;
 import com.liferay.journal.web.internal.asset.JournalArticleDDMFormValuesReader;
 import com.liferay.journal.web.internal.info.item.JournalArticleInfoItemFields;
@@ -131,8 +131,10 @@ public class JournalArticleInfoItemFieldValuesProvider
 		JournalArticleDDMFormValuesReader journalArticleDDMFormValuesReader =
 			new JournalArticleDDMFormValuesReader(article);
 
-		journalArticleDDMFormValuesReader.setDDMFieldLocalService(
-			_ddmFieldLocalService);
+		journalArticleDDMFormValuesReader.setFieldsToDDMFormValuesConverter(
+			_fieldsToDDMFormValuesConverter);
+		journalArticleDDMFormValuesReader.setJournalConverter(
+			_journalConverter);
 
 		try {
 			return _ddmFormValuesInfoFieldValuesProvider.getInfoFieldValues(
@@ -432,9 +434,6 @@ public class JournalArticleInfoItemFieldValuesProvider
 		_assetEntryInfoItemFieldSetProvider;
 
 	@Reference
-	private DDMFieldLocalService _ddmFieldLocalService;
-
-	@Reference
 	private DDMFormValuesInfoFieldValuesProvider
 		_ddmFormValuesInfoFieldValuesProvider;
 
@@ -460,6 +459,9 @@ public class JournalArticleInfoItemFieldValuesProvider
 
 	@Reference
 	private JournalContent _journalContent;
+
+	@Reference
+	private JournalConverter _journalConverter;
 
 	@Reference
 	private JournalHelper _journalHelper;

@@ -20,7 +20,6 @@ import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassTypeReader;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
-import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.journal.constants.JournalConstants;
@@ -275,11 +274,10 @@ public class JournalArticleAssetRendererFactory
 
 		journalArticleAssetRenderer.setAssetDisplayPageFriendlyURLProvider(
 			_assetDisplayPageFriendlyURLProvider);
-		journalArticleAssetRenderer.setDDMFieldLocalService(
-			_ddmFieldLocalService);
 		journalArticleAssetRenderer.setFieldsToDDMFormValuesConverter(
 			_fieldsToDDMFormValuesConverter);
 		journalArticleAssetRenderer.setJournalContent(_journalContent);
+		journalArticleAssetRenderer.setJournalConverter(_journalConverter);
 		journalArticleAssetRenderer.setServletContext(_servletContext);
 
 		return journalArticleAssetRenderer;
@@ -291,9 +289,6 @@ public class JournalArticleAssetRendererFactory
 	@Reference
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
-
-	@Reference
-	private DDMFieldLocalService _ddmFieldLocalService;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
