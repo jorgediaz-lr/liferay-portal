@@ -78,6 +78,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jürgen Kappler
  * @author Jorge Ferrer
+ * @author Dummy Change
  */
 @Component(
 	immediate = true, property = Constants.SERVICE_RANKING + ":Integer=10",

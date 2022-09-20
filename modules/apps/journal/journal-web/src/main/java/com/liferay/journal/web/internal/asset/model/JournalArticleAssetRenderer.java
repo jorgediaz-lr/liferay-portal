@@ -81,6 +81,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Juan Fernández
  * @author Sergio González
  * @author Raymond Augé
+ * @author Dummy Change
  */
 public class JournalArticleAssetRenderer
 	extends BaseJSPAssetRenderer<JournalArticle> implements TrashRenderer {
