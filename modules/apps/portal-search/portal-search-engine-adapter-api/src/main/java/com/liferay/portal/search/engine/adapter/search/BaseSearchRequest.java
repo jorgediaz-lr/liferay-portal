@@ -159,6 +159,10 @@ public abstract class BaseSearchRequest extends CrossClusterRequest {
 		return _basicFacetSelection;
 	}
 
+	public boolean isDfsQueryThenFetchEnabled() {
+		return _dfsQueryThenFetchEnabled;
+	}
+
 	public boolean isExplain() {
 		if (_explain != null) {
 			return _explain;
@@ -197,6 +201,10 @@ public abstract class BaseSearchRequest extends CrossClusterRequest {
 
 	public void setBasicFacetSelection(boolean basicFacetSelection) {
 		_basicFacetSelection = basicFacetSelection;
+	}
+
+	public void setDfsQueryThenFetchEnabled(boolean dfsQueryThenFetchEnabled) {
+		_dfsQueryThenFetchEnabled = dfsQueryThenFetchEnabled;
 	}
 
 	public void setExplain(Boolean explain) {
@@ -272,6 +280,7 @@ public abstract class BaseSearchRequest extends CrossClusterRequest {
 		new LinkedHashMap<>();
 	private boolean _basicFacetSelection;
 	private final List<ComplexQueryPart> _complexQueryParts = new ArrayList<>();
+	private boolean _dfsQueryThenFetchEnabled;
 	private Boolean _explain;
 	private final Map<String, Facet> _facets = new LinkedHashMap<>();
 	private Highlight _highlight;
