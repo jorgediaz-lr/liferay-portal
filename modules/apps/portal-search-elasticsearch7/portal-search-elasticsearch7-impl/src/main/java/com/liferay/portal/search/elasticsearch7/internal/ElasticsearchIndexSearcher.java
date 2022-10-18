@@ -253,6 +253,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 		searchSearchRequest.putAllFacets(searchContext.getFacets());
 
+		searchSearchRequest.setDfsQueryThenFetchEnabled(
+			_elasticsearchConfigurationWrapper.dfsQueryThenFetch());
 		searchSearchRequest.setFetchSource(searchRequest.getFetchSource());
 		searchSearchRequest.setFetchSourceExcludes(
 			searchRequest.getFetchSourceExcludes());
