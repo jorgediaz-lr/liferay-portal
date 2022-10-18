@@ -147,6 +147,10 @@ public class SearchSearchRequest
 		return _allFieldsSelected;
 	}
 
+	public boolean isDfsQueryThenFetchEnabled() {
+		return _dfsQueryThenFetchEnabled;
+	}
+
 	public boolean isHighlightEnabled() {
 		return _highlightEnabled;
 	}
@@ -181,6 +185,10 @@ public class SearchSearchRequest
 
 	public void setAlternateUidFieldName(String alternateUidFieldName) {
 		_alternateUidFieldName = alternateUidFieldName;
+	}
+
+	public void setDfsQueryThenFetchEnabled(boolean dfsQueryThenFetchEnabled) {
+		_dfsQueryThenFetchEnabled = dfsQueryThenFetchEnabled;
 	}
 
 	public void setFetchSource(Boolean fetchSource) {
@@ -289,6 +297,7 @@ public class SearchSearchRequest
 
 	private boolean _allFieldsSelected;
 	private String _alternateUidFieldName;
+	private boolean _dfsQueryThenFetchEnabled;
 	private Boolean _fetchSource;
 	private String[] _fetchSourceExcludes;
 	private String[] _fetchSourceIncludes;
