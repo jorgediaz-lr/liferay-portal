@@ -438,6 +438,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 		baseSearchRequest.addComplexQueryParts(
 			searchRequest.getComplexQueryParts());
+		baseSearchRequest.setDfsQueryThenFetchEnabled(
+			_elasticsearchConfigurationWrapper.dfsQueryThenFetch());
 		baseSearchRequest.setExplain(searchRequest.isExplain());
 		baseSearchRequest.setHighlight(searchRequest.getHighlight());
 		baseSearchRequest.setIncludeResponseString(
