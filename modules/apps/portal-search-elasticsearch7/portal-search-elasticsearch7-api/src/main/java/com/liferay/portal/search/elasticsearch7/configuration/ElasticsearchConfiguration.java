@@ -322,4 +322,10 @@ public interface ElasticsearchConfiguration {
 	)
 	public String proxyPassword();
 
+	@Meta.AD(
+		deflt = "false", description = "dfs-query-then-fetch-help",
+		name = "dfs-query-then-fetch", required = false
+	)
+	public boolean dfsQueryThenFetch();
+
 }
