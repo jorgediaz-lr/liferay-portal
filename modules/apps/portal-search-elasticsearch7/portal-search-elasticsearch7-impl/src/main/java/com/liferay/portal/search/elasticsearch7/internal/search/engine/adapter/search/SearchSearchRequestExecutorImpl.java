@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -49,6 +50,10 @@ public class SearchSearchRequestExecutorImpl
 
 		if (searchSearchRequest.isRequestCache()) {
 			searchRequest.requestCache(searchSearchRequest.isRequestCache());
+		}
+
+		if (searchSearchRequest.isDfsQueryThenFetchEnabled()) {
+			searchRequest.searchType(SearchType.DFS_QUERY_THEN_FETCH);
 		}
 
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();

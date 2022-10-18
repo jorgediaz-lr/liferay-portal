@@ -90,6 +90,10 @@ public class ElasticsearchConfigurationWrapper
 		return -1;
 	}
 
+	public boolean dfsQueryThenFetch() {
+		return _elasticsearchConfiguration.dfsQueryThenFetch();
+	}
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x)
 	 */
