@@ -159,7 +159,7 @@ public interface ElasticsearchConfiguration {
 	public RESTClientLoggerLevel restClientLoggerLevel();
 
 	@Meta.AD(
-		deflt = "false", description = "dfs-query-then-fetch-help",
+		deflt = "true", description = "dfs-query-then-fetch-help",
 		name = "dfs-query-then-fetch", required = false
 	)
 	public boolean dfsQueryThenFetch();
