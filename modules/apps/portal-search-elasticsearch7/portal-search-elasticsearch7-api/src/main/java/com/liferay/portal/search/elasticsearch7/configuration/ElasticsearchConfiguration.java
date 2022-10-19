@@ -159,6 +159,18 @@ public interface ElasticsearchConfiguration {
 	public RESTClientLoggerLevel restClientLoggerLevel();
 
 	@Meta.AD(
+		deflt = "false", description = "dfs-query-then-fetch-help",
+		name = "dfs-query-then-fetch", required = false
+	)
+	public boolean dfsQueryThenFetch();
+
+	@Meta.AD(
+		deflt = "true", description = "track-total-hits-help",
+		name = "track-total-hits", required = false
+	)
+	public boolean trackTotalHits();
+
+	@Meta.AD(
 		deflt = "LiferayElasticsearchCluster",
 		description = "cluster-name-help", name = "cluster-name",
 		required = false
@@ -221,12 +233,6 @@ public interface ElasticsearchConfiguration {
 		name = "network-publish-host", required = false
 	)
 	public String networkPublishHost();
-
-	@Meta.AD(
-		deflt = "true", description = "track-total-hits-help",
-		name = "track-total-hits", required = false
-	)
-	public boolean trackTotalHits();
 
 	@Meta.AD(
 		deflt = "", description = "transport-tcp-port-help",
@@ -321,11 +327,5 @@ public interface ElasticsearchConfiguration {
 		name = "proxy-password", required = false, type = Meta.Type.Password
 	)
 	public String proxyPassword();
-
-	@Meta.AD(
-		deflt = "false", description = "dfs-query-then-fetch-help",
-		name = "dfs-query-then-fetch", required = false
-	)
-	public boolean dfsQueryThenFetch();
 
 }
