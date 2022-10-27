@@ -180,6 +180,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Marco Leo
  * @author Brian Wing Shun Chan
+ * @author Dummy Change
  */
 @Component(
 	configurationPid = "com.liferay.object.configuration.ObjectConfiguration",
