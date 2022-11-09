@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -63,7 +64,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -84,19 +84,8 @@ public class CalendarUtilTest {
 	public static void setUpClass() throws Exception {
 		Bundle testBundle = FrameworkUtil.getBundle(CalendarUtilTest.class);
 
-		BundleContext bundleContext = testBundle.getBundleContext();
-
-		Bundle calendarWebBundle = null;
-
-		for (Bundle bundle : bundleContext.getBundles()) {
-			String symbolicName = bundle.getSymbolicName();
-
-			if (symbolicName.equals("com.liferay.calendar.web")) {
-				calendarWebBundle = bundle;
-
-				break;
-			}
-		}
+		Bundle calendarWebBundle = BundleUtil.getBundle(
+			testBundle.getBundleContext(), "com.liferay.calendar.web");
 
 		BundleWiring bundleWiring = calendarWebBundle.adapt(BundleWiring.class);
 

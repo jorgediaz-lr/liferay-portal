@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -59,7 +60,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -184,24 +184,8 @@ public class AssetEntriesCheckerHelperTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			AssetEntriesCheckerHelperTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		Bundle assetPublisherWebBundle = null;
-
-		for (Bundle curBundle : bundleContext.getBundles()) {
-			if (Objects.equals(
-					curBundle.getSymbolicName(),
-					"com.liferay.asset.publisher.web")) {
-
-				assetPublisherWebBundle = curBundle;
-
-				break;
-			}
-		}
-
-		Assert.assertNotNull(
-			"Unable to find asset-publisher-web bundle",
-			assetPublisherWebBundle);
+		Bundle assetPublisherWebBundle = BundleUtil.getBundle(
+			bundle.getBundleContext(), "com.liferay.asset.publisher.web");
 
 		Class<?> clazz = assetPublisherWebBundle.loadClass(
 			"com.liferay.asset.publisher.web.internal.messaging.helper." +

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -76,8 +77,8 @@ public class ConfigurationModelIndexerTest {
 
 		_bundleContext = _bundle.getBundleContext();
 
-		Bundle configAdminWebBundle = _getBundle(
-			"com.liferay.configuration.admin.web");
+		Bundle configAdminWebBundle = BundleUtil.getBundle(
+			_bundleContext, "com.liferay.configuration.admin.web");
 
 		Class<?> configurationModelClass = configAdminWebBundle.loadClass(
 			"com.liferay.configuration.admin.web.internal.model." +
@@ -188,18 +189,6 @@ public class ConfigurationModelIndexerTest {
 		Hits hits = _indexer.search(searchContext);
 
 		Assert.assertEquals(hits.toString(), 1, hits.getLength());
-	}
-
-	private Bundle _getBundle(String bundleSymbolicName) {
-		Bundle[] bundles = _bundleContext.getBundles();
-
-		for (Bundle bundle : bundles) {
-			if (bundleSymbolicName.equals(bundle.getSymbolicName())) {
-				return bundle;
-			}
-		}
-
-		return null;
 	}
 
 	private static final String _PID = RandomTestUtil.randomString(50);

@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.rss.util.RSSUtil;
 
 import java.lang.reflect.Method;
@@ -73,7 +74,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -1171,24 +1171,8 @@ public class JournalTestUtil {
 	static {
 		Bundle testBundle = FrameworkUtil.getBundle(JournalTestUtil.class);
 
-		BundleContext bundleContext = testBundle.getBundleContext();
-
-		Bundle journalServiceBundle = null;
-
-		for (Bundle bundle : bundleContext.getBundles()) {
-			String symbolicName = bundle.getSymbolicName();
-
-			if (symbolicName.equals("com.liferay.journal.service")) {
-				journalServiceBundle = bundle;
-
-				break;
-			}
-		}
-
-		if (journalServiceBundle == null) {
-			throw new ExceptionInInitializerError(
-				"Unable to find com.liferay.journal.service bundle");
-		}
+		Bundle journalServiceBundle = BundleUtil.getBundle(
+			testBundle.getBundleContext(), "com.liferay.journal.service");
 
 		BundleWiring bundleWiring = journalServiceBundle.adapt(
 			BundleWiring.class);
