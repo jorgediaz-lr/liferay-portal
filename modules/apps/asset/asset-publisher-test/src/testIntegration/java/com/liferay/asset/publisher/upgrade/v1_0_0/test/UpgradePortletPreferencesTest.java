@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -53,7 +54,6 @@ import java.text.DateFormat;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.portlet.PortletPreferences;
 
@@ -66,7 +66,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -407,24 +406,8 @@ public class UpgradePortletPreferencesTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			UpgradePortletPreferencesTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		Bundle assetPublisherWebBundle = null;
-
-		for (Bundle curBundle : bundleContext.getBundles()) {
-			if (Objects.equals(
-					curBundle.getSymbolicName(),
-					"com.liferay.asset.publisher.web")) {
-
-				assetPublisherWebBundle = curBundle;
-
-				break;
-			}
-		}
-
-		Assert.assertNotNull(
-			"Unable to find asset-publisher-web bundle",
-			assetPublisherWebBundle);
+		Bundle assetPublisherWebBundle = BundleUtil.getBundle(
+			bundle.getBundleContext(), "com.liferay.asset.publisher.web");
 
 		Class<?> clazz = assetPublisherWebBundle.loadClass(
 			"com.liferay.asset.publisher.web.internal.upgrade.v1_0_0." +

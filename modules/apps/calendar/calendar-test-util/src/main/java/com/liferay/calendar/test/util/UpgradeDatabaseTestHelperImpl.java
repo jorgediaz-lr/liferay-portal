@@ -15,12 +15,12 @@
 package com.liferay.calendar.test.util;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.module.util.BundleUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -72,19 +72,8 @@ public class UpgradeDatabaseTestHelperImpl
 		Bundle testBundle = FrameworkUtil.getBundle(
 			UpgradeDatabaseTestHelperImpl.class);
 
-		BundleContext bundleContext = testBundle.getBundleContext();
-
-		Bundle calendarServiceBundle = null;
-
-		for (Bundle bundle : bundleContext.getBundles()) {
-			String symbolicName = bundle.getSymbolicName();
-
-			if (symbolicName.equals("com.liferay.calendar.service")) {
-				calendarServiceBundle = bundle;
-
-				break;
-			}
-		}
+		Bundle calendarServiceBundle = BundleUtil.getBundle(
+			testBundle.getBundleContext(), "com.liferay.calendar.service");
 
 		BundleWiring bundleWiring = calendarServiceBundle.adapt(
 			BundleWiring.class);

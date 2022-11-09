@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.test.mail.MailServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -96,7 +97,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -117,17 +117,8 @@ public class BlogsEntryLocalServiceTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			BlogsEntryAttachmentFileEntryHelperTest.class);
 
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		for (Bundle installedBundle : bundleContext.getBundles()) {
-			String symbolicName = installedBundle.getSymbolicName();
-
-			if (symbolicName.equals("com.liferay.blogs.web")) {
-				bundle = installedBundle;
-
-				break;
-			}
-		}
+		bundle = BundleUtil.getBundle(
+			bundle.getBundleContext(), "com.liferay.blogs.web");
 
 		Class<?> clazz = bundle.loadClass(
 			"com.liferay.blogs.web.internal.util.BlogsUtil");

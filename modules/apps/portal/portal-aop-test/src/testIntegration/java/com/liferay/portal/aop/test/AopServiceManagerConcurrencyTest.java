@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
 import com.liferay.portal.spring.transaction.TransactionHandler;
 import com.liferay.portal.spring.transaction.TransactionStatusAdapter;
@@ -74,15 +75,8 @@ public class AopServiceManagerConcurrencyTest {
 		_executorService = Executors.newFixedThreadPool(
 			runtime.availableProcessors());
 
-		for (Bundle currentBundle : _bundleContext.getBundles()) {
-			String symbolicName = currentBundle.getSymbolicName();
-
-			if (symbolicName.equals("com.liferay.portal.aop.impl")) {
-				_aopImplBundle = currentBundle;
-
-				break;
-			}
-		}
+		_aopImplBundle = BundleUtil.getBundle(
+			_bundleContext, "com.liferay.portal.aop.impl");
 
 		Assert.assertNotNull(_aopImplBundle);
 	}

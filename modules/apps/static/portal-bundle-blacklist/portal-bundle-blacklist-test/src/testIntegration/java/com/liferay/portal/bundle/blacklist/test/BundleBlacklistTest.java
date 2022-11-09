@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.lpkg.deployer.test.util.LPKGTestUtil;
+import com.liferay.portal.module.util.BundleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -151,7 +152,7 @@ public class BundleBlacklistTest {
 
 	@Test
 	public void testAddToAndRemoveFromBlacklist() throws Exception {
-		Bundle bundle = _findBundle(_SYMBOLIC_NAME);
+		Bundle bundle = BundleUtil.getBundle(_bundleContext, _SYMBOLIC_NAME);
 
 		Assert.assertEquals(Bundle.ACTIVE, bundle.getState());
 
@@ -179,7 +180,7 @@ public class BundleBlacklistTest {
 
 		_bundleBlacklistManager.removeFromBlacklistAndInstall(_SYMBOLIC_NAME);
 
-		bundle = _findBundle(_SYMBOLIC_NAME);
+		bundle = BundleUtil.getBundle(_bundleContext, _SYMBOLIC_NAME);
 
 		Assert.assertEquals(Bundle.ACTIVE, bundle.getState());
 
@@ -245,13 +246,15 @@ public class BundleBlacklistTest {
 
 		_updateConfiguration(properties);
 
-		warWrapperBundle = _findBundle(warWrapperBundle.getSymbolicName());
+		warWrapperBundle = BundleUtil.getBundle(
+			_bundleContext, warWrapperBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"WAR wrapper bundle not reinstalled", Bundle.ACTIVE,
 			warWrapperBundle.getState());
 
-		warBundle = _findBundle(warBundle.getSymbolicName());
+		warBundle = BundleUtil.getBundle(
+			_bundleContext, warBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"WAR bundle not reinstalled", Bundle.ACTIVE, warBundle.getState());
@@ -270,7 +273,8 @@ public class BundleBlacklistTest {
 
 		_updateConfiguration(properties);
 
-		warBundle = _findBundle(warBundle.getSymbolicName());
+		warBundle = BundleUtil.getBundle(
+			_bundleContext, warBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"WAR bundle not reinstalled", Bundle.ACTIVE, warBundle.getState());
@@ -289,7 +293,8 @@ public class BundleBlacklistTest {
 
 		_updateConfiguration(properties);
 
-		jarBundle = _findBundle(jarBundle.getSymbolicName());
+		jarBundle = BundleUtil.getBundle(
+			_bundleContext, jarBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"JAR bundle not reinstalled", Bundle.ACTIVE, jarBundle.getState());
@@ -319,37 +324,30 @@ public class BundleBlacklistTest {
 
 		_updateConfiguration(properties);
 
-		lpkgBundle = _findBundle(lpkgBundle.getSymbolicName());
+		lpkgBundle = BundleUtil.getBundle(
+			_bundleContext, lpkgBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"LPKG not reinstalled", Bundle.ACTIVE, lpkgBundle.getState());
 
-		jarBundle = _findBundle(jarBundle.getSymbolicName());
+		jarBundle = BundleUtil.getBundle(
+			_bundleContext, jarBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"JAR bundle not reinstalled", Bundle.ACTIVE, jarBundle.getState());
 
-		warWrapperBundle = _findBundle(warWrapperBundle.getSymbolicName());
+		warWrapperBundle = BundleUtil.getBundle(
+			_bundleContext, warWrapperBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"WAR wrapper bundle not reinstalled", Bundle.ACTIVE,
 			warWrapperBundle.getState());
 
-		warBundle = _findBundle(warBundle.getSymbolicName());
+		warBundle = BundleUtil.getBundle(
+			_bundleContext, warBundle.getSymbolicName());
 
 		Assert.assertEquals(
 			"WAR bundle not reinstalled", Bundle.ACTIVE, warBundle.getState());
-	}
-
-	private Bundle _findBundle(String symbolicName) {
-		for (Bundle bundle : _bundleContext.getBundles()) {
-			if (symbolicName.equals(bundle.getSymbolicName())) {
-				return bundle;
-			}
-		}
-
-		throw new IllegalArgumentException(
-			"No bundle installed with symbolic name " + symbolicName);
 	}
 
 	private void _updateConfiguration(Dictionary<String, Object> dictionary)
