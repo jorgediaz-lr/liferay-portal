@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tika.internal.util;
 
+import org.apache.tika.config.ServiceLoader;
 import org.apache.tika.config.TikaConfig;
 
 /**
@@ -29,8 +30,10 @@ public class TikaConfigUtil {
 
 	static {
 		try {
-			_tikaConfig = new TikaConfig(
-				TikaConfigUtil.class.getResource("dependencies/tika.xml"));
+			ServiceLoader.setContextClassLoader(
+				TikaConfigUtil.class.getClassLoader());
+
+			_tikaConfig = new TikaConfig();
 		}
 		catch (Exception exception) {
 			throw new ExceptionInInitializerError(exception);
