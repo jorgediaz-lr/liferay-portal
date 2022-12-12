@@ -41,6 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.tika.Tika;
+import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
@@ -100,7 +101,9 @@ public class TextExtractorImpl implements TextExtractor {
 					_processExecutor.execute(
 						ProcessConfigUtil.getProcessConfig(),
 						new ExtractTextProcessCallable(
-							StreamUtil.toByteArray(finalInputStream)));
+							StreamUtil.toByteArray(finalInputStream),
+							StreamUtil.toByteArray(
+								TikaConfigUtil.getTikaConfigInputStream())));
 
 				Future<String> future =
 					processChannel.getProcessNoticeableFuture();
@@ -227,9 +230,11 @@ public class TextExtractorImpl implements TextExtractor {
 
 			logger.setLevel(Level.SEVERE);
 
-			Tika tika = new Tika(TikaConfigUtil.getTikaConfig());
-
 			try {
+				Tika tika = new Tika(
+					new TikaConfig(
+						new UnsyncByteArrayInputStream(_tikaConfig)));
+
 				return _parseToString(
 					tika, new UnsyncByteArrayInputStream(_data));
 			}
@@ -238,13 +243,15 @@ public class TextExtractorImpl implements TextExtractor {
 			}
 		}
 
-		private ExtractTextProcessCallable(byte[] data) {
+		private ExtractTextProcessCallable(byte[] data, byte[] tikaConfig) {
 			_data = data;
+			_tikaConfig = tikaConfig;
 		}
 
 		private static final long serialVersionUID = 1L;
 
 		private final byte[] _data;
+		private final byte[] _tikaConfig;
 
 	}
 
