@@ -14,27 +14,65 @@
 
 package com.liferay.portal.tika.internal.util;
 
+import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.tika.internal.configuration.TikaConfiguration;
+
+import java.io.IOException;
+
+import java.util.Map;
+
 import org.apache.tika.config.TikaConfig;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Shuyang Zhou
+ * @author Jorge Díaz
  */
+@Component(
+	configurationPid = "com.liferay.portal.tika.internal.configuration.TikaConfiguration",
+	service = {}
+)
 public class TikaConfigUtil {
 
 	public static TikaConfig getTikaConfig() {
 		return _tikaConfig;
 	}
 
-	private static final TikaConfig _tikaConfig;
+	public static String getTikaConfigXml() throws IOException {
+		String tikaConfigXml = _tikaConfiguration.tikaConfigXml();
 
-	static {
+		if (Validator.isNotNull(tikaConfigXml)) {
+			return tikaConfigXml;
+		}
+
+		return StreamUtil.toString(
+			TikaConfigUtil.class.getResourceAsStream("dependencies/tika.xml"));
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_tikaConfiguration = ConfigurableUtil.createConfigurable(
+			TikaConfiguration.class, properties);
+
 		try {
 			_tikaConfig = new TikaConfig(
-				TikaConfigUtil.class.getResource("dependencies/tika.xml"));
+				new UnsyncByteArrayInputStream(
+					getTikaConfigXml().getBytes()));
 		}
 		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
+			throw new SystemException(exception);
 		}
 	}
+
+	private static volatile TikaConfig _tikaConfig;
+	private static volatile TikaConfiguration _tikaConfiguration;
 
 }
