@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
 import com.liferay.portal.tika.internal.util.TikaConfigHelper;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -203,9 +202,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		boolean forkProcess = false;
 
-		if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED &&
+		if (_tikaConfigHelper.isTextExtractionForkProcessEnabled() &&
 			ArrayUtil.contains(
-				PropsValues.TEXT_EXTRACTION_FORK_PROCESS_MIME_TYPES,
+				_tikaConfigHelper.getTextExtractionForkProcessMimeTypes(),
 				mimeType)) {
 
 			forkProcess = true;
