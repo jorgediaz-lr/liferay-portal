@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.tika.config.TikaConfig;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.Parser;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -56,6 +58,10 @@ public class TikaConfigUtil {
 			TikaConfigUtil.class.getResourceAsStream("dependencies/tika.xml"));
 	}
 
+	public static Parser getTikaParser() {
+		return _parser;
+	}
+
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
@@ -64,14 +70,16 @@ public class TikaConfigUtil {
 
 		try {
 			_tikaConfig = new TikaConfig(
-				new UnsyncByteArrayInputStream(
-					getTikaConfigXml().getBytes()));
+				new UnsyncByteArrayInputStream(getTikaConfigXml().getBytes()));
+
+			_parser = new AutoDetectParser(_tikaConfig);
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
 		}
 	}
 
+	private static volatile Parser _parser;
 	private static volatile TikaConfig _tikaConfig;
 	private static volatile TikaConfiguration _tikaConfiguration;
 
