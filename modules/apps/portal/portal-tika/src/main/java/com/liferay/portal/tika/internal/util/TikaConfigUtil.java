@@ -43,6 +43,10 @@ import org.osgi.service.component.annotations.Modified;
 )
 public class TikaConfigUtil {
 
+	public static String[] getTextExtractionForkProcessMimeTypes() {
+		return _tikaConfiguration.textExtractionForkProcessMimeTypes();
+	}
+
 	public static TikaConfig getTikaConfig() {
 		return _tikaConfig;
 	}
@@ -60,6 +64,10 @@ public class TikaConfigUtil {
 
 	public static Parser getTikaParser() {
 		return _parser;
+	}
+
+	public static boolean isTextExtractionForkProcessEnabled() {
+		return _tikaConfiguration.textExtractionForkProcessEnabled();
 	}
 
 	@Activate
