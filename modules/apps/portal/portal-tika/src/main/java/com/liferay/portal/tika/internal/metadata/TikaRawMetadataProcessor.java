@@ -87,10 +87,6 @@ import org.xml.sax.helpers.DefaultHandler;
 @Component(service = RawMetadataProcessor.class)
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
-	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(_tikaConfigHelper.getTikaConfig());
-	}
-
 	@Override
 	public Map<String, Set<String>> getFieldNames() {
 		return Collections.singletonMap(TIKA_RAW_METADATA, _fields.keySet());
@@ -203,6 +199,8 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 	private Metadata _extractMetadata(
 		String mimeType, InputStream inputStream) {
 
+		Parser parser = new AutoDetectParser(_tikaConfigHelper.getTikaConfig());
+
 		boolean forkProcess = false;
 
 		if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED &&
@@ -224,7 +222,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 				}
 
 				ExtractMetadataProcessCallable extractMetadataProcessCallable =
-					new ExtractMetadataProcessCallable(file, _parser);
+					new ExtractMetadataProcessCallable(file, parser);
 
 				ProcessChannel<Metadata> processChannel =
 					_processExecutor.execute(
@@ -248,7 +246,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 			return _postProcessMetadata(
 				mimeType,
 				ExtractMetadataProcessCallable._extractMetadata(
-					inputStream, _parser));
+					inputStream, parser));
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -300,8 +298,6 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		_fields = fields;
 	}
-
-	private final Parser _parser;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
