@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
 import com.liferay.portal.tika.internal.util.TikaConfigUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,7 +68,6 @@ import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.TikaMetadataKeys;
 import org.apache.tika.metadata.TikaMimeKeys;
 import org.apache.tika.metadata.XMPDM;
-import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 
@@ -86,10 +84,6 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 @Component(service = RawMetadataProcessor.class)
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
-
-	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(TikaConfigUtil.getTikaConfig());
-	}
 
 	@Override
 	public Map<String, Set<String>> getFieldNames() {
@@ -205,9 +199,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		boolean forkProcess = false;
 
-		if (PropsValues.TEXT_EXTRACTION_FORK_PROCESS_ENABLED &&
+		if (TikaConfigUtil.isTextExtractionForkProcessEnabled() &&
 			ArrayUtil.contains(
-				PropsValues.TEXT_EXTRACTION_FORK_PROCESS_MIME_TYPES,
+				TikaConfigUtil.getTextExtractionForkProcessMimeTypes(),
 				mimeType)) {
 
 			forkProcess = true;
@@ -224,7 +218,8 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 				}
 
 				ExtractMetadataProcessCallable extractMetadataProcessCallable =
-					new ExtractMetadataProcessCallable(file, _parser);
+					new ExtractMetadataProcessCallable(
+						file, TikaConfigUtil.getTikaParser());
 
 				ProcessChannel<Metadata> processChannel =
 					_processExecutor.execute(
@@ -248,7 +243,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 			return _postProcessMetadata(
 				mimeType,
 				ExtractMetadataProcessCallable._extractMetadata(
-					inputStream, _parser));
+					inputStream, TikaConfigUtil.getTikaParser()));
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -300,8 +295,6 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		_fields = fields;
 	}
-
-	private final Parser _parser;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
