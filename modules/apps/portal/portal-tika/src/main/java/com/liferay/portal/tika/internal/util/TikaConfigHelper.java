@@ -39,19 +39,19 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.portal.tika.internal.configuration.TikaConfiguration",
-	service = {}
+	service = TikaConfigHelper.class
 )
-public class TikaConfigUtil {
+public class TikaConfigHelper {
 
-	public static String[] getTextExtractionForkProcessMimeTypes() {
+	public String[] getTextExtractionForkProcessMimeTypes() {
 		return _tikaConfiguration.textExtractionForkProcessMimeTypes();
 	}
 
-	public static TikaConfig getTikaConfig() {
+	public TikaConfig getTikaConfig() {
 		return _tikaConfig;
 	}
 
-	public static String getTikaConfigXml() throws IOException {
+	public String getTikaConfigXml() throws IOException {
 		String tikaConfigXml = _tikaConfiguration.tikaConfigXml();
 
 		if (Validator.isNotNull(tikaConfigXml)) {
@@ -59,14 +59,15 @@ public class TikaConfigUtil {
 		}
 
 		return StreamUtil.toString(
-			TikaConfigUtil.class.getResourceAsStream("dependencies/tika.xml"));
+			TikaConfigHelper.class.getResourceAsStream(
+				"dependencies/tika.xml"));
 	}
 
-	public static Parser getTikaParser() {
+	public Parser getTikaParser() {
 		return _parser;
 	}
 
-	public static boolean isTextExtractionForkProcessEnabled() {
+	public boolean isTextExtractionForkProcessEnabled() {
 		return _tikaConfiguration.textExtractionForkProcessEnabled();
 	}
 
@@ -87,8 +88,8 @@ public class TikaConfigUtil {
 		}
 	}
 
-	private static volatile Parser _parser;
-	private static volatile TikaConfig _tikaConfig;
-	private static volatile TikaConfiguration _tikaConfiguration;
+	private volatile Parser _parser;
+	private volatile TikaConfig _tikaConfig;
+	private volatile TikaConfiguration _tikaConfiguration;
 
 }

@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
+import com.liferay.portal.tika.internal.util.TikaConfigHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -199,9 +199,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		boolean forkProcess = false;
 
-		if (TikaConfigUtil.isTextExtractionForkProcessEnabled() &&
+		if (_tikaConfigHelper.isTextExtractionForkProcessEnabled() &&
 			ArrayUtil.contains(
-				TikaConfigUtil.getTextExtractionForkProcessMimeTypes(),
+				_tikaConfigHelper.getTextExtractionForkProcessMimeTypes(),
 				mimeType)) {
 
 			forkProcess = true;
@@ -219,7 +219,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 				ExtractMetadataProcessCallable extractMetadataProcessCallable =
 					new ExtractMetadataProcessCallable(
-						file, TikaConfigUtil.getTikaParser());
+						file, _tikaConfigHelper.getTikaParser());
 
 				ProcessChannel<Metadata> processChannel =
 					_processExecutor.execute(
@@ -243,7 +243,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 			return _postProcessMetadata(
 				mimeType,
 				ExtractMetadataProcessCallable._extractMetadata(
-					inputStream, TikaConfigUtil.getTikaParser()));
+					inputStream, _tikaConfigHelper.getTikaParser()));
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -298,6 +298,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
 
 	private static class ExtractMetadataProcessCallable
 		implements ProcessCallable<Metadata> {

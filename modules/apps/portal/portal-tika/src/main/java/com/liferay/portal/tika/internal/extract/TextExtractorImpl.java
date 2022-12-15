@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.TextExtractor;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
+import com.liferay.portal.tika.internal.util.TikaConfigHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +72,7 @@ public class TextExtractorImpl implements TextExtractor {
 		String text = null;
 
 		try {
-			Tika tika = new Tika(TikaConfigUtil.getTikaConfig());
+			Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
 
 			tika.setMaxStringLength(maxStringLength);
 
@@ -82,11 +82,12 @@ public class TextExtractorImpl implements TextExtractor {
 				inputStream = new UnsyncBufferedInputStream(inputStream);
 			}
 
-			if (TikaConfigUtil.isTextExtractionForkProcessEnabled()) {
+			if (_tikaConfigHelper.isTextExtractionForkProcessEnabled()) {
 				String mimeType = tika.detect(inputStream);
 
 				if (ArrayUtil.contains(
-						TikaConfigUtil.getTextExtractionForkProcessMimeTypes(),
+						_tikaConfigHelper.
+							getTextExtractionForkProcessMimeTypes(),
 						mimeType)) {
 
 					forkProcess = true;
@@ -101,7 +102,7 @@ public class TextExtractorImpl implements TextExtractor {
 						ProcessConfigUtil.getProcessConfig(),
 						new ExtractTextProcessCallable(
 							StreamUtil.toByteArray(finalInputStream),
-							TikaConfigUtil.getTikaConfigXml()));
+							_tikaConfigHelper.getTikaConfigXml()));
 
 				Future<String> future =
 					processChannel.getProcessNoticeableFuture();
@@ -209,6 +210,9 @@ public class TextExtractorImpl implements TextExtractor {
 
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
 
 	private static class ExtractTextProcessCallable
 		implements ProcessCallable<String> {
