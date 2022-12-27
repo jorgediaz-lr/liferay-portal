@@ -91,6 +91,10 @@ public class TextExtractorImpl implements TextExtractor {
 						mimeType)) {
 
 					forkProcess = true;
+
+					if (_log.isDebugEnabled()) {
+						_log.debug("Fork is enabled for " + mimeType);
+					}
 				}
 			}
 
@@ -118,6 +122,10 @@ public class TextExtractorImpl implements TextExtractor {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception);
 			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Extracted text: " + text);
 		}
 
 		return text;
