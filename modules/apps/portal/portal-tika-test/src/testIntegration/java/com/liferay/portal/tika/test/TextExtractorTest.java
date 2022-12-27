@@ -17,6 +17,7 @@ package com.liferay.portal.tika.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.io.unsync.UnsyncBufferedInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
@@ -123,6 +124,31 @@ public class TextExtractorTest {
 	}
 
 	@Test
+	public void testIsTextExtractionForkProcessEnabledMethod()
+		throws Exception {
+
+		_withTikaConfiguration(
+			true, new String[] {ContentTypes.APPLICATION_PDF}, null,
+			() -> {
+				InputStream inputStream = _getInputStream("test-2010.pdf");
+
+				Assert.assertTrue(
+					_isTextExtractionForkProcessEnabled(inputStream));
+
+				inputStream = _getInputStream("test.txt");
+
+				Assert.assertFalse(
+					_isTextExtractionForkProcessEnabled(inputStream));
+			});
+
+		_withTikaConfiguration(
+			false, null, null,
+			() -> Assert.assertFalse(
+				_isTextExtractionForkProcessEnabled(
+					_getInputStream("test-2010.pdf"))));
+	}
+
+	@Test
 	public void testJpg() {
 		String text = extractText("test.jpg");
 
@@ -179,8 +205,7 @@ public class TextExtractorTest {
 	public void testTxtEncodedWithShift_JIS() throws IOException {
 		String expectedText = new String(
 			StreamUtil.toByteArray(
-				TextExtractorTest.class.getResourceAsStream(
-					"dependencies/test-encoding-Shift_JIS.txt")),
+				_getInputStream("test-encoding-Shift_JIS.txt")),
 			Charset.forName("Shift_JIS"));
 
 		Assert.assertEquals(
@@ -209,14 +234,27 @@ public class TextExtractorTest {
 	}
 
 	protected String extractText(String fileName) {
-		Class<?> clazz = getClass();
-
-		InputStream inputStream = clazz.getResourceAsStream(
-			"dependencies/" + fileName);
-
-		String text = _textExtractor.extractText(inputStream, -1);
+		String text = _textExtractor.extractText(_getInputStream(fileName), -1);
 
 		return text.trim();
+	}
+
+	private InputStream _getInputStream(String fileName) {
+		Class<?> clazz = getClass();
+
+		return clazz.getResourceAsStream("dependencies/" + fileName);
+	}
+
+	private boolean _isTextExtractionForkProcessEnabled(InputStream inputStream)
+		throws Exception {
+
+		if (!inputStream.markSupported()) {
+			inputStream = new UnsyncBufferedInputStream(inputStream);
+		}
+
+		return (boolean)ReflectionTestUtil.invoke(
+			_textExtractor, "_isTextExtractionForkProcessEnabled",
+			new Class<?>[] {InputStream.class}, inputStream);
 	}
 
 	private void _withTikaConfiguration(
