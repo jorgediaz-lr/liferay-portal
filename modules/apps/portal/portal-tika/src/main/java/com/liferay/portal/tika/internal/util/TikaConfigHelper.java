@@ -16,6 +16,9 @@ package com.liferay.portal.tika.internal.util;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.tika.internal.configuration.TikaConfiguration;
 
@@ -40,10 +43,6 @@ import org.osgi.service.component.annotations.Modified;
 )
 public class TikaConfigHelper {
 
-	public String[] getTextExtractionForkProcessMimeTypes() {
-		return _tikaConfiguration.textExtractionForkProcessMimeTypes();
-	}
-
 	public TikaConfig getTikaConfig() {
 		return _tikaConfig;
 	}
@@ -66,6 +65,22 @@ public class TikaConfigHelper {
 		return _tikaConfiguration.textExtractionForkProcessEnabled();
 	}
 
+	public boolean isTextExtractionForkProcessEnabled(String mimeType) {
+		if (_tikaConfiguration.textExtractionForkProcessEnabled() &&
+			ArrayUtil.contains(
+				_tikaConfiguration.textExtractionForkProcessMimeTypes(),
+				mimeType)) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Fork is enabled for " + mimeType);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
@@ -79,6 +94,9 @@ public class TikaConfigHelper {
 			throw new SystemException(exception);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TikaConfigHelper.class);
 
 	private volatile TikaConfig _tikaConfig;
 	private volatile TikaConfiguration _tikaConfiguration;

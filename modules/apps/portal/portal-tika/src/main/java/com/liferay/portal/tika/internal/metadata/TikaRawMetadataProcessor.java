@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -202,21 +201,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 		Parser parser = new AutoDetectParser(_tikaConfigHelper.getTikaConfig());
 
-		boolean forkProcess = false;
-
-		if (_tikaConfigHelper.isTextExtractionForkProcessEnabled() &&
-			ArrayUtil.contains(
-				_tikaConfigHelper.getTextExtractionForkProcessMimeTypes(),
-				mimeType)) {
-
-			forkProcess = true;
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Fork is enabled for " + mimeType);
-			}
-		}
-
-		if (forkProcess) {
+		if (_tikaConfigHelper.isTextExtractionForkProcessEnabled(mimeType)) {
 			File file = FileUtil.createTempFile();
 
 			try {

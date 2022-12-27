@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
+import org.apache.tika.detect.Detector;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
@@ -72,33 +73,11 @@ public class TextExtractorImpl implements TextExtractor {
 		String text = null;
 
 		try {
-			Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
-
-			tika.setMaxStringLength(maxStringLength);
-
-			boolean forkProcess = false;
-
 			if (!inputStream.markSupported()) {
 				inputStream = new UnsyncBufferedInputStream(inputStream);
 			}
 
-			if (_tikaConfigHelper.isTextExtractionForkProcessEnabled()) {
-				String mimeType = tika.detect(inputStream);
-
-				if (ArrayUtil.contains(
-						_tikaConfigHelper.
-							getTextExtractionForkProcessMimeTypes(),
-						mimeType)) {
-
-					forkProcess = true;
-
-					if (_log.isDebugEnabled()) {
-						_log.debug("Fork is enabled for " + mimeType);
-					}
-				}
-			}
-
-			if (forkProcess) {
+			if (_isTextExtractionForkProcessEnabled(inputStream)) {
 				InputStream finalInputStream = inputStream;
 
 				ProcessChannel<String> processChannel =
@@ -115,6 +94,10 @@ public class TextExtractorImpl implements TextExtractor {
 				text = future.get();
 			}
 			else {
+				Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
+
+				tika.setMaxStringLength(maxStringLength);
+
 				text = _parseToString(tika, inputStream);
 			}
 		}
@@ -212,6 +195,23 @@ public class TextExtractorImpl implements TextExtractor {
 		}
 
 		return writeOutContentHandler.toString();
+	}
+
+	private boolean _isTextExtractionForkProcessEnabled(InputStream inputStream)
+		throws IOException {
+
+		if (!_tikaConfigHelper.isTextExtractionForkProcessEnabled()) {
+			return false;
+		}
+
+		TikaConfig tikaConfig = _tikaConfigHelper.getTikaConfig();
+
+		Detector detector = tikaConfig.getDetector();
+
+		String mimeType = String.valueOf(
+			detector.detect(inputStream, new Metadata()));
+
+		return _tikaConfigHelper.isTextExtractionForkProcessEnabled(mimeType);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
