@@ -19,7 +19,7 @@ import org.apache.tika.config.TikaConfig;
 /**
  * @author Shuyang Zhou
  */
-public class TikaConfigUtil {
+public class TikaConfigHelper {
 
 	public static TikaConfig getTikaConfig() {
 		return _tikaConfig;
@@ -30,7 +30,7 @@ public class TikaConfigUtil {
 	static {
 		try {
 			_tikaConfig = new TikaConfig(
-				TikaConfigUtil.class.getResource("dependencies/tika.xml"));
+				TikaConfigHelper.class.getResource("dependencies/tika.xml"));
 		}
 		catch (Exception exception) {
 			throw new ExceptionInInitializerError(exception);

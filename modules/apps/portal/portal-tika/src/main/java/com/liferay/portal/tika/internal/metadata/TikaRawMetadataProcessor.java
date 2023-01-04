@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
+import com.liferay.portal.tika.internal.util.TikaConfigHelper;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -88,7 +88,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(TikaConfigUtil.getTikaConfig());
+		_parser = new AutoDetectParser(TikaConfigHelper.getTikaConfig());
 	}
 
 	@Override
