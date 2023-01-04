@@ -14,27 +14,65 @@
 
 package com.liferay.portal.tika.internal.util;
 
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.tika.internal.configuration.TikaConfiguration;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.Map;
+
 import org.apache.tika.config.TikaConfig;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Shuyang Zhou
+ * @author Jorge Díaz
  */
+@Component(
+	configurationPid = "com.liferay.portal.tika.internal.configuration.TikaConfiguration",
+	service = TikaConfigHelper.class
+)
 public class TikaConfigHelper {
 
-	public static TikaConfig getTikaConfig() {
+	public TikaConfig getTikaConfig() {
 		return _tikaConfig;
 	}
 
-	private static final TikaConfig _tikaConfig;
+	public InputStream getTikaConfigInputStream() throws IOException {
+		InputStream inputStream = TikaConfigHelper.class.getResourceAsStream(
+			_tikaConfiguration.tikaConfigXml());
 
-	static {
+		if (inputStream != null) {
+			return inputStream;
+		}
+
+		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+
+		return classLoader.getResourceAsStream(
+			_tikaConfiguration.tikaConfigXml());
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_tikaConfiguration = ConfigurableUtil.createConfigurable(
+			TikaConfiguration.class, properties);
+
 		try {
-			_tikaConfig = new TikaConfig(
-				TikaConfigHelper.class.getResource("dependencies/tika.xml"));
+			_tikaConfig = new TikaConfig(getTikaConfigInputStream());
 		}
 		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
+			throw new SystemException(exception);
 		}
 	}
+
+	private volatile TikaConfig _tikaConfig;
+	private volatile TikaConfiguration _tikaConfiguration;
 
 }

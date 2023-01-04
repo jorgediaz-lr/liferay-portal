@@ -72,7 +72,7 @@ public class TextExtractorImpl implements TextExtractor {
 		String text = null;
 
 		try {
-			Tika tika = new Tika(TikaConfigHelper.getTikaConfig());
+			Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
 
 			tika.setMaxStringLength(maxStringLength);
 
@@ -209,6 +209,9 @@ public class TextExtractorImpl implements TextExtractor {
 	@Reference
 	private ProcessExecutor _processExecutor;
 
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
+
 	private static class ExtractTextProcessCallable
 		implements ProcessCallable<String> {
 
@@ -227,7 +230,7 @@ public class TextExtractorImpl implements TextExtractor {
 
 			logger.setLevel(Level.SEVERE);
 
-			Tika tika = new Tika(TikaConfigHelper.getTikaConfig());
+			Tika tika = new Tika(_tikaConfigHelper.getTikaConfig());
 
 			try {
 				return _parseToString(

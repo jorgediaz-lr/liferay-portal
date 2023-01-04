@@ -88,7 +88,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(TikaConfigHelper.getTikaConfig());
+		_parser = new AutoDetectParser(_tikaConfigHelper.getTikaConfig());
 	}
 
 	@Override
@@ -305,6 +305,9 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigHelper _tikaConfigHelper;
 
 	private static class ExtractMetadataProcessCallable
 		implements ProcessCallable<Metadata> {
