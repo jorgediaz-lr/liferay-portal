@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.tika.config.TikaConfig;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -60,6 +61,7 @@ public class TikaConfigurationHelper {
 	}
 
 	@Activate
+	@Modified
 	protected void activate(Map<String, Object> properties) {
 		_tikaConfiguration = ConfigurableUtil.createConfigurable(
 			TikaConfiguration.class, properties);
