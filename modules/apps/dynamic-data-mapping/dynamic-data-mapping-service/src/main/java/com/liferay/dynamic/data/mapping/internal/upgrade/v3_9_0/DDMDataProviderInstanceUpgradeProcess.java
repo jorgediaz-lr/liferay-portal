@@ -29,6 +29,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.sql.PreparedStatement;
@@ -69,19 +71,29 @@ public class DDMDataProviderInstanceUpgradeProcess extends UpgradeProcess {
 			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			while (resultSet.next()) {
+				long dataProviderInstanceId = resultSet.getLong(1);
 				String dataProviderInstanceDefinition = resultSet.getString(2);
 				String type = resultSet.getString(3);
 
-				preparedStatement2.setString(
-					1,
-					_upgradeDataProviderInstanceDefinition(
-						dataProviderInstanceDefinition, type));
+				try {
+					preparedStatement2.setString(
+						1,
+						_upgradeDataProviderInstanceDefinition(
+							dataProviderInstanceDefinition, type));
 
-				long dataProviderInstanceId = resultSet.getLong(1);
+					preparedStatement2.setLong(2, dataProviderInstanceId);
 
-				preparedStatement2.setLong(2, dataProviderInstanceId);
+					preparedStatement2.addBatch();
+				}
+				catch (Exception exception) {
+					_log.error(
+						StringBundler.concat(
+							exception.getMessage(), " for type=", type,
+							" and dataProviderInstanceId=",
+							dataProviderInstanceId));
 
-				preparedStatement2.addBatch();
+					throw exception;
+				}
 			}
 
 			preparedStatement2.executeBatch();
@@ -179,6 +191,9 @@ public class DDMDataProviderInstanceUpgradeProcess extends UpgradeProcess {
 		return DDMFormValuesSerializeUtil.serialize(
 			ddmFormValues, _ddmFormValuesSerializer);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDMDataProviderInstanceUpgradeProcess.class);
 
 	private final DDMFormValuesDeserializer _ddmFormValuesDeserializer;
 	private final DDMFormValuesSerializer _ddmFormValuesSerializer;
