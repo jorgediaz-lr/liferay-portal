@@ -56,6 +56,15 @@ public class DDMDataProviderInstanceUpgradeProcess extends UpgradeProcess {
 		_ddmFormValuesSerializer = ddmFormValuesSerializer;
 
 		_serviceTrackerMap = ddmDataProviderSettingsProviderServiceTracker;
+
+		_log.error("DEBUG - Registered DDMDataProviderSettingsProviders");
+
+		for (String key : _serviceTrackerMap.keySet()) {
+			DDMDataProviderSettingsProvider service =
+				_serviceTrackerMap.getService(key);
+
+			_log.error(key + ": " + service);
+		}
 	}
 
 	@Override
