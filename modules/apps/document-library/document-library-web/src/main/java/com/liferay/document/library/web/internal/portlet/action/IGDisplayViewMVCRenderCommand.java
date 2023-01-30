@@ -43,8 +43,12 @@ public class IGDisplayViewMVCRenderCommand extends BaseFolderMVCRenderCommand {
 			PermissionChecker permissionChecker, Folder folder)
 		throws PortalException {
 
-		_folderModelResourcePermission.check(
-			permissionChecker, folder, ActionKeys.ACCESS);
+		if (!_folderModelResourcePermission.contains(
+				permissionChecker, folder, ActionKeys.ACCESS)) {
+
+			_folderModelResourcePermission.check(
+				permissionChecker, folder, ActionKeys.VIEW);
+		}
 	}
 
 	@Override
