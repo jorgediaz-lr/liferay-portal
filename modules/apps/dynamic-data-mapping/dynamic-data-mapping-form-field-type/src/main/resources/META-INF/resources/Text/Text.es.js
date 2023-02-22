@@ -171,7 +171,7 @@ const Text = ({
 						dir={Liferay.Language.direction[editingLanguageId]}
 						disabled={disabled}
 						id={id}
-						lang={editingLanguageId?.replace('_', '-')}
+						lang={editingLanguageId?.replaceAll('_', '-')}
 						maxLength={showCounter ? '' : maxLength}
 						name={name}
 						onBlur={(event) => {
@@ -233,7 +233,7 @@ const Textarea = ({
 						dir={Liferay.Language.direction[editingLanguageId]}
 						disabled={disabled}
 						id={id}
-						lang={editingLanguageId?.replace('_', '-')}
+						lang={editingLanguageId?.replaceAll('_', '-')}
 						name={name}
 						onBlur={onBlur}
 						onChange={(event) => {
@@ -346,7 +346,7 @@ const Autocomplete = ({
 				dir={Liferay.Language.direction[editingLanguageId]}
 				disabled={disabled}
 				id={id}
-				lang={editingLanguageId?.replace('_', '-')}
+				lang={editingLanguageId?.replaceAll('_', '-')}
 				name={name}
 				onBlur={onBlur}
 				onChange={(event) => {

@@ -690,7 +690,7 @@ AUI.add(
 							'currentlySelected'
 						];
 
-					languageId = languageId.replace('_', '-');
+					languageId = languageId.replaceAll('_', '-');
 
 					const triggerContent = A.Lang.sub(
 						instance.TRIGGER_TEMPLATE,
