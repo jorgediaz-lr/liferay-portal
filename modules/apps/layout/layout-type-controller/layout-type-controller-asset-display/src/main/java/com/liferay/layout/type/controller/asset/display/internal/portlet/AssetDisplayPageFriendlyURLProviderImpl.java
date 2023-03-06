@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.servlet.filters.i18n.I18nFilter;
+import com.liferay.portal.servlet.I18nServlet;
 
 import java.util.Locale;
 import java.util.Set;
@@ -164,7 +164,7 @@ public class AssetDisplayPageFriendlyURLProviderImpl
 
 		String i18nPath = null;
 
-		Set<String> languageIds = I18nFilter.getLanguageIds();
+		Set<String> languageIds = I18nServlet.getLanguageIds();
 
 		int localePrependFriendlyURLStyle = PrefsPropsUtil.getInteger(
 			themeDisplay.getCompanyId(),
