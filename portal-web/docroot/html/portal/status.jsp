@@ -33,21 +33,46 @@ if (Validator.isNull(url)) {
 
 url = HttpComponentsUtil.decodeURL(themeDisplay.getPortalURL() + url);
 
+if (_log.isDebugEnabled()) {
+	_log.debug("url: " + url + " status: " + status);
+}
+
 boolean noSuchResourceException = false;
 
 for (String key : SessionErrors.keySet(request)) {
-	key = key.substring(key.lastIndexOf(StringPool.PERIOD) + 1);
+	String substring = key.substring(key.lastIndexOf(StringPool.PERIOD) + 1);
 
-	if (key.startsWith("NoSuch") && key.endsWith("Exception")) {
+	if (substring.startsWith("NoSuch") && substring.endsWith("Exception")) {
 		noSuchResourceException = true;
+
+		if (_log.isDebugEnabled()) {
+			Object value = SessionErrors.get(request, key);
+
+			if (value instanceof Exception) {
+				Exception exception2 = (Exception)value;
+
+				_log.debug("DEBUG1: " + key + " - " + exception2.getMessage(), exception2);
+			}
+			else {
+				_log.debug("DEBUG2: " + key + " - " + value.toString());
+			}
+		}
 	}
 }
 
 if (GetterUtil.getBoolean(request.getAttribute(NoSuchLayoutException.class.getName()))) {
 	noSuchResourceException = true;
+
+	if (_log.isDebugEnabled()) {
+		_log.debug("DEBUG3: " + NoSuchLayoutException.class.getName() + " request attribute is true");
+	}
 }
 else if (Validator.isNotNull(exception)) {
 	exception = exception.substring(exception.lastIndexOf(StringPool.PERIOD) + 1);
+
+	if (_log.isDebugEnabled()) {
+		_log.debug("DEBUG4: exception: " + exception);
+	}
 
 	if (exception.startsWith("NoSuch") && exception.endsWith("Exception")) {
 		noSuchResourceException = true;
