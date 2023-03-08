@@ -14,24 +14,46 @@
 
 package com.liferay.portal.kernel.exception;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 /**
  * @author Brian Wing Shun Chan
  */
 public class NoSuchLayoutException extends NoSuchModelException {
 
 	public NoSuchLayoutException() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("new NoSuchLayoutException", new Exception());
+		}
 	}
 
 	public NoSuchLayoutException(String msg) {
 		super(msg);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("new NoSuchLayoutException " + msg, new Exception());
+		}
 	}
 
 	public NoSuchLayoutException(String msg, Throwable throwable) {
 		super(msg, throwable);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"new NoSuchLayoutException " + msg, new Exception(throwable));
+		}
 	}
 
 	public NoSuchLayoutException(Throwable throwable) {
 		super(throwable);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("new NoSuchLayoutException", new Exception(throwable));
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		NoSuchLayoutException.class);
 
 }
