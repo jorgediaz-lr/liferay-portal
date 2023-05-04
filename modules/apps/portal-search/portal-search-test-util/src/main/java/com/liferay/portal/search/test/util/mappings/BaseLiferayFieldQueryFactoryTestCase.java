@@ -279,7 +279,7 @@ public abstract class BaseLiferayFieldQueryFactoryTestCase
 			_liferayFieldQueryFactoryFixture.getFieldQueryFactory();
 
 		Query query = fieldQueryFactory.createQuery(
-			_fieldName, value, false, false);
+			_fieldName, value);
 
 		assertSearch(
 			indexingTestHelper -> {
