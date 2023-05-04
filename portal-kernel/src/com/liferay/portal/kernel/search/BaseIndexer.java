@@ -870,10 +870,10 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		Query query = null;
 
 		if (searchContext.isAndSearch()) {
-			query = searchQuery.addRequiredTerm(field, value, like);
+			query = searchQuery.addRequiredTerm(field, value);
 		}
 		else {
-			query = searchQuery.addTerm(field, value, like);
+			query = searchQuery.addTerm(field, value);
 		}
 
 		return query;
