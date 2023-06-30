@@ -1080,6 +1080,16 @@
 			}
 		},
 		{
+			"template_date": {
+				"mapping": {
+					"format": "yyyyMMddHHmmss",
+					"store": true,
+					"type": "date"
+				},
+				"match": "*_date"
+			}
+		},
+		{
 			"template_ddmFieldArray_ddmFieldValueText": {
 				"mapping": {
 					"store": true,
