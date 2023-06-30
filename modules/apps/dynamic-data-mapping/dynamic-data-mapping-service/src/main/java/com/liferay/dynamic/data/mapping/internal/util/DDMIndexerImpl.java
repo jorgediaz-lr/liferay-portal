@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.NestedQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlParser;
@@ -72,6 +73,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import java.text.Format;
+import java.text.ParseException;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -141,7 +143,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 						if (legacyDDMIndexFieldsEnabled) {
 							_addToDocument(
-								document, field, indexType, name, value);
+								document, field, indexType, locale, name,
+								value);
 						}
 						else if (value != null) {
 							fieldArray.addField(
@@ -158,13 +161,15 @@ public class DDMIndexerImpl implements DDMIndexer {
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					if (legacyDDMIndexFieldsEnabled) {
-						_addToDocument(document, field, indexType, name, value);
+						_addToDocument(
+							document, field, indexType,
+							ddmFormValues.getDefaultLocale(), name, value);
 					}
 					else if (value != null) {
 						fieldArray.addField(
 							createField(
-								ddmFormField, field, indexType, null, name,
-								value));
+								ddmFormField, field, indexType,
+								ddmFormValues.getDefaultLocale(), name, value));
 					}
 				}
 			}
@@ -428,7 +433,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 		String valueFieldName = getValueFieldName(indexType, locale);
 
 		_addToDocument(
-			document, ddmStructureField, indexType, valueFieldName,
+			document, ddmStructureField, indexType, locale, valueFieldName,
 			_getSortableValue(ddmFormField, locale, value), value);
 
 		Map<String, com.liferay.portal.kernel.search.Field> documentFields =
@@ -601,16 +606,16 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	private void _addToDocument(
-			Document document, Field field, String indexType, String name,
-			Serializable value)
+			Document document, Field field, String indexType, Locale locale,
+			String name, Serializable value)
 		throws PortalException {
 
-		_addToDocument(document, field, indexType, name, value, value);
+		_addToDocument(document, field, indexType, locale, name, value, value);
 	}
 
 	private void _addToDocument(
-			Document document, Field field, String indexType, String name,
-			Serializable sortableValue, Serializable value)
+			Document document, Field field, String indexType, Locale locale,
+			String name, Serializable sortableValue, Serializable value)
 		throws PortalException {
 
 		if (value == null) {
@@ -706,7 +711,29 @@ public class DDMIndexerImpl implements DDMIndexer {
 						_jsonFactory.createJSONArray(valueString)));
 			}
 			else {
-				if (type.equals(DDMFormFieldTypeConstants.RICH_TEXT)) {
+				if (type.equals(DDMFormFieldTypeConstants.DATE)) {
+					try {
+						Date date = DateUtil.parseDate(
+							"yyyy-MM-dd", valueString, locale);
+
+						document.addDate(name.concat("_date"), date);
+					}
+					catch (ParseException parseException) {
+						throw new PortalException(parseException);
+					}
+				}
+				else if (type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
+					try {
+						Date date = DateUtil.parseDate(
+							"yyyy-MM-dd hh:mm", valueString, locale);
+
+						document.addDate(name.concat("_date"), date);
+					}
+					catch (ParseException parseException) {
+						throw new PortalException(parseException);
+					}
+				}
+				else if (type.equals(DDMFormFieldTypeConstants.RICH_TEXT)) {
 					valueString = _htmlParser.extractText(valueString);
 					sortableValueString = _htmlParser.extractText(
 						sortableValueString);
