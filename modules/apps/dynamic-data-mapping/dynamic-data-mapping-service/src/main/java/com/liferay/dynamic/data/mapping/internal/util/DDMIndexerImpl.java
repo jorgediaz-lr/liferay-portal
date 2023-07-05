@@ -713,8 +713,12 @@ public class DDMIndexerImpl implements DDMIndexer {
 			else {
 				if (type.equals(DDMFormFieldTypeConstants.DATE)) {
 					try {
-						Date date = DateUtil.parseDate(
-							"yyyy-MM-dd", valueString, locale);
+						Date date = null;
+
+						if (!Validator.isBlank(valueString)) {
+							date = DateUtil.parseDate(
+								"yyyy-MM-dd", valueString, locale);
+						}
 
 						document.addDate(name.concat("_date"), date);
 					}
@@ -724,8 +728,12 @@ public class DDMIndexerImpl implements DDMIndexer {
 				}
 				else if (type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
 					try {
-						Date date = DateUtil.parseDate(
-							"yyyy-MM-dd hh:mm", valueString, locale);
+						Date date = null;
+
+						if (!Validator.isBlank(valueString)) {
+							date = DateUtil.parseDate(
+								"yyyy-MM-dd hh:mm", valueString, locale);
+						}
 
 						document.addDate(name.concat("_date"), date);
 					}
