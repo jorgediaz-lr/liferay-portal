@@ -711,31 +711,22 @@ public class DDMIndexerImpl implements DDMIndexer {
 						_jsonFactory.createJSONArray(valueString)));
 			}
 			else {
-				if (type.equals(DDMFormFieldTypeConstants.DATE)) {
-					try {
-						Date date = null;
+				if (type.equals(DDMFormFieldTypeConstants.DATE) ||
+					type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
 
-						if (!Validator.isBlank(valueString)) {
-							date = DateUtil.parseDate(
-								"yyyy-MM-dd", valueString, locale);
+					try {
+						String pattern = "yyyy-MM-dd";
+
+						if (type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
+							pattern = "yyyy-MM-dd hh:mm";
 						}
 
-						document.addDate(name.concat("_date"), date);
-					}
-					catch (ParseException parseException) {
-						throw new PortalException(parseException);
-					}
-				}
-				else if (type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
-					try {
-						Date date = null;
-
 						if (!Validator.isBlank(valueString)) {
-							date = DateUtil.parseDate(
-								"yyyy-MM-dd hh:mm", valueString, locale);
+							document.addDate(
+								name.concat("_date"),
+								DateUtil.parseDate(
+									pattern, valueString, locale));
 						}
-
-						document.addDate(name.concat("_date"), date);
 					}
 					catch (ParseException parseException) {
 						throw new PortalException(parseException);
