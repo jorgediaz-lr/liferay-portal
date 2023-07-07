@@ -708,9 +708,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 					ArrayUtil.toStringArray(
 						_jsonFactory.createJSONArray(valueString)));
 			}
-			else if (Validator.isNotNull(valueString)) {
-				if (type.equals(DDMFormFieldTypeConstants.DATE) ||
-					type.equals(DDMFormFieldTypeConstants.DATE_TIME)) {
+			else {
+				if ((type.equals(DDMFormFieldTypeConstants.DATE) ||
+					 type.equals(DDMFormFieldTypeConstants.DATE_TIME)) &&
+					Validator.isNotNull(valueString)) {
 
 					String pattern = "yyyy-MM-dd";
 
