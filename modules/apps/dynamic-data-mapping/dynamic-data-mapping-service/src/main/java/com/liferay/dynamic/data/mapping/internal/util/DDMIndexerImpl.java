@@ -683,6 +683,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 				String.valueOf(sortableValue));
 			String valueString = String.valueOf(value);
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(valueString);
+			}
+
 			String type = field.getType();
 
 			if (type.equals(DDMFormFieldTypeConstants.GEOLOCATION)) {
