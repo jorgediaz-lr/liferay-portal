@@ -81,6 +81,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
+import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -119,7 +120,9 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
 import com.liferay.ratings.kernel.service.RatingsEntryLocalService;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,6 +132,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -717,6 +721,16 @@ public class StructuredContentResourceImpl
 
 		LocalDateTime localDateTime = LocalDateTimeUtil.toLocalDateTime(
 			structuredContent.getDatePublished());
+
+		User user = GuestOrUserUtil.getGuestOrUser();
+
+		Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
+
+		TimeZone timeZone = user.getTimeZone();
+
+		localDateTime = instant.atZone(
+			timeZone.toZoneId()
+		).toLocalDateTime();
 
 		Map<Locale, String> titleMap = LocalizedMapUtil.getLocalizedMap(
 			contextAcceptLanguage.getPreferredLocale(),

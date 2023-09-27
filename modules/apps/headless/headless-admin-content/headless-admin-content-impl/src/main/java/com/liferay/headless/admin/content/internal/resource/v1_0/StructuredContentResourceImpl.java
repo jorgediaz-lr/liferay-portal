@@ -37,12 +37,14 @@ import com.liferay.journal.util.JournalConverter;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.TermFilter;
+import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -71,7 +73,9 @@ import com.liferay.portal.vulcan.util.LocalDateTimeUtil;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -79,6 +83,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -279,6 +284,16 @@ public class StructuredContentResourceImpl
 
 		LocalDateTime localDateTime = LocalDateTimeUtil.toLocalDateTime(
 			structuredContent.getDatePublished());
+
+		User user = GuestOrUserUtil.getGuestOrUser();
+
+		Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
+
+		TimeZone timeZone = user.getTimeZone();
+
+		localDateTime = instant.atZone(
+			timeZone.toZoneId()
+		).toLocalDateTime();
 
 		ServiceContext serviceContext = ServiceContextBuilder.create(
 			siteId, contextHttpServletRequest,
