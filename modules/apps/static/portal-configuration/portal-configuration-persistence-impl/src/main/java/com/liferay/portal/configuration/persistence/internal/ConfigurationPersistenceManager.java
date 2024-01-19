@@ -39,6 +39,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -321,6 +322,10 @@ public class ConfigurationPersistenceManager
 	}
 
 	private void _createConfigurationTable() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("create table Configuration_ STACKTRACE: " +  Arrays.toString(Thread.currentThread().getStackTrace()));
+		}
+
 		try (Connection connection = _dataSource.getConnection();
 			Statement statement = connection.createStatement()) {
 
@@ -342,6 +347,10 @@ public class ConfigurationPersistenceManager
 	}
 
 	private void _deleteFromDatabase(String pid) throws IOException {
+		if (_log.isDebugEnabled()) {
+			_log.debug("delete configurationId=" + pid + " STACKTRACE: " +  Arrays.toString(Thread.currentThread().getStackTrace()));
+		}
+
 		try (Connection connection = _dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				_db.buildSQL(
@@ -391,6 +400,9 @@ public class ConfigurationPersistenceManager
 	private boolean _insertConfiguration(
 			Connection connection, String pid, String configuration)
 		throws IOException {
+		if (_log.isDebugEnabled()) {
+			_log.debug("insert configurationId=" + pid + " STACKTRACE: " +  Arrays.toString(Thread.currentThread().getStackTrace()));
+		}
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				_db.buildSQL(
@@ -495,6 +507,10 @@ public class ConfigurationPersistenceManager
 	private boolean _updateConfiguration(
 			Connection connection, String pid, String configuration)
 		throws IOException, SQLException {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("update configurationId=" + pid + " STACKTRACE: " +  Arrays.toString(Thread.currentThread().getStackTrace()));
+		}
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				_db.buildSQL(

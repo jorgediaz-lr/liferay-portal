@@ -15,12 +15,14 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.File;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.util.Arrays;
 import java.util.Dictionary;
 
 import org.apache.felix.cm.file.ConfigurationHandler;
@@ -108,10 +110,16 @@ public class ConfigurationUpgradeProcess extends UpgradeProcess {
 				preparedStatement2.setString(3, currentConfigurationId);
 
 				preparedStatement2.addBatch();
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("update configurationId=" + currentConfigurationId + " to configurationId=" + updatedConfigurationId + " STACKTRACE: " + Arrays.toString(Thread.currentThread().getStackTrace()));
+				}
 			}
 
 			preparedStatement2.executeBatch();
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ConfigurationUpgradeProcess.class);
 }
