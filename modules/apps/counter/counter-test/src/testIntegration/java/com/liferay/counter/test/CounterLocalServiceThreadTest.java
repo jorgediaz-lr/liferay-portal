@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author Shuyang Zhou
+ * @author Dummy
  */
 @RunWith(Arquillian.class)
 public class CounterLocalServiceThreadTest {

@@ -29,6 +29,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
+ * @author Dummy
  */
 @Component(
 	configurationPid = "com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration",

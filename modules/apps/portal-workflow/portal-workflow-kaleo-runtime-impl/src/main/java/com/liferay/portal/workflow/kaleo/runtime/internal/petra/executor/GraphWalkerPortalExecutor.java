@@ -52,6 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rafael Praxedes
+ * @author Dummy
  */
 @Component(service = GraphWalkerPortalExecutor.class)
 public class GraphWalkerPortalExecutor {

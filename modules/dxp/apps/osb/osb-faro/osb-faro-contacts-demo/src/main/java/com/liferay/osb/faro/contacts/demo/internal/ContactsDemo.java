@@ -24,6 +24,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shinn Lok
+ * @author Dummy
  */
 @Component(service = {})
 public class ContactsDemo {

@@ -178,6 +178,7 @@ import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Dummy
  */
 @FeatureFlags(
 	featureFlags = {

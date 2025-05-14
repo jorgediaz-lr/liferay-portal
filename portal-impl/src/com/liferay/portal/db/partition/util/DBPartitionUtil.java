@@ -63,6 +63,7 @@ import javax.sql.DataSource;
 
 /**
  * @author Alberto Chaparro
+ * @author Dummy
  */
 public class DBPartitionUtil {
 

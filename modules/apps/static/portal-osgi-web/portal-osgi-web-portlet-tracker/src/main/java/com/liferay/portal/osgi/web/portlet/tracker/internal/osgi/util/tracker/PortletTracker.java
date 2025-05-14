@@ -114,6 +114,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Raymond Augé
+ * @author Dummy
  */
 @Component(service = {})
 public class PortletTracker

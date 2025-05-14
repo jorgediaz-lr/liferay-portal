@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Michael C. Han
+ * @author Dummy
  */
 public class IndexerRequestBufferExecutorUtil {
 
