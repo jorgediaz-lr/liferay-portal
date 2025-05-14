@@ -233,6 +233,7 @@ public class CompanyLocalServiceTest {
 		_serviceRegistrations.clear();
 
 		deleteClassName(_layoutFriendlyURLEntryHelper.getClassName(true));
+		deleteClassName("com.liferay.info.item.provider.InfoItemFormProvider");
 		deleteStagingClassNameEntries();
 	}
 
