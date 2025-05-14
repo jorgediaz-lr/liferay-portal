@@ -234,6 +234,7 @@ public class CompanyLocalServiceTest {
 
 		deleteClassName(_layoutFriendlyURLEntryHelper.getClassName(true));
 		deleteClassName("com.liferay.commerce.order.content.web.internal.portlet.CommerceOrderContentPortlet");
+		deleteClassName("com.liferay.commerce.product.content.web.internal.portlet.CPContentPortlet");
 		deleteClassName("com.liferay.info.item.provider.InfoItemFormProvider");
 		deleteStagingClassNameEntries();
 	}
