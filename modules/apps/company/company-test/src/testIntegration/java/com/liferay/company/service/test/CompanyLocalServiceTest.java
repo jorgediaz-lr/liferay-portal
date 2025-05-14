@@ -236,6 +236,7 @@ public class CompanyLocalServiceTest {
 		deleteClassName("com.liferay.commerce.order.content.web.internal.portlet.CommerceOrderContentPortlet");
 		deleteClassName("com.liferay.commerce.product.content.web.internal.portlet.CPContentPortlet");
 		deleteClassName("com.liferay.commerce.product.content.web.internal.portlet.CPCompareContentMiniPortlet");
+		deleteClassName("com.liferay.commerce.product.type.virtual.order.content.web.internal.portlet.CommerceVirtualOrderItemContentPortlet");
 		deleteClassName("com.liferay.info.item.provider.InfoItemFormProvider");
 		deleteStagingClassNameEntries();
 	}
