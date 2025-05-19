@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * @author Shinn Lok
@@ -108,13 +107,6 @@ public class VerifyGroupedModel extends VerifyProcess {
 				return 0;
 			}
 		}
-	}
-
-	@Override
-	protected boolean isForceConcurrent(
-		Collection<? extends Callable<Void>> callables) {
-
-		return true;
 	}
 
 	protected void verifyGroupedModel(
