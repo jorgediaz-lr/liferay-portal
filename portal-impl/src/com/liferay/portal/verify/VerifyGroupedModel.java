@@ -110,13 +110,6 @@ public class VerifyGroupedModel extends VerifyProcess {
 		}
 	}
 
-	@Override
-	protected boolean isForceConcurrent(
-		Collection<? extends Callable<Void>> callables) {
-
-		return true;
-	}
-
 	protected void verifyGroupedModel(
 			VerifiableGroupedModel verifiableGroupedModel)
 		throws Exception {
@@ -124,7 +117,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableGroupedModel.getTableName())) {
 
-			try (Connection connection = DataAccess.getConnection();
+			try (Connection connection = getConnection();
 				PreparedStatement preparedStatement1 =
 					connection.prepareStatement(
 						StringBundler.concat(
