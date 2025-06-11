@@ -59,6 +59,7 @@ definition {
 		property custom.properties = "virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com";
 		property database.types = "mysql";
 		property liferay.online.properties = "true";
+		property test.jorge = "true";
 		property timeout.explicit.wait = "120";
 
 		User.firstLoginUI(
