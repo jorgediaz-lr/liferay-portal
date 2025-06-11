@@ -89,7 +89,13 @@ public class PreupgradeVerifyDatabaseCharacterSet
 
 	@Override
 	protected boolean isSkipDBPartitions() {
-		return true;
+		DB db = DBManagerUtil.getDB();
+
+		if (db.getDBType() != DBType.MYSQL) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
