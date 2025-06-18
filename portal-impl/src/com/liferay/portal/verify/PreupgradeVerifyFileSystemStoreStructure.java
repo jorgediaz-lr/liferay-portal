@@ -60,9 +60,9 @@ public class PreupgradeVerifyFileSystemStoreStructure
 				String companyIdDirectoryName = companyIdDirectory.getFileName(
 				).toString();
 
-				if (StringUtil.equalsIgnoreCase(
-						companyIdDirectoryName, "README.txt")) {
+				long companyId = GetterUtil.getLong(companyIdDirectoryName);
 
+				if (!companyIdSet.remove(companyId)) {
 					continue;
 				}
 
@@ -71,11 +71,8 @@ public class PreupgradeVerifyFileSystemStoreStructure
 						companyIdDirectory + " is not a directory");
 				}
 
-				long companyId = GetterUtil.getLong(companyIdDirectoryName);
-
-				if (!companyIdSet.remove(companyId) ||
-					(advancedFileSystemStore &&
-					 _hasAdvancedFileSystemPattern(companyIdDirectory))) {
+				if (advancedFileSystemStore &&
+					_hasAdvancedFileSystemPattern(companyIdDirectory)) {
 
 					continue;
 				}
