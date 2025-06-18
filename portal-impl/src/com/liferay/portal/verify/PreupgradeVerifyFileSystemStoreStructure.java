@@ -46,7 +46,7 @@ public class PreupgradeVerifyFileSystemStoreStructure
 		boolean fileSystemStore = StringUtil.equals(
 			PropsValues.DL_STORE_IMPL, _FILE_SYSTEM_STORE);
 
-		Set<Long> companyIdSet = SetUtil.fromArray(
+		Set<Long> companyIds = SetUtil.fromArray(
 			PortalInstancePool.getCompanyIds());
 
 		Path fileSystemStoreRootDir =
@@ -61,7 +61,7 @@ public class PreupgradeVerifyFileSystemStoreStructure
 
 				long companyId = GetterUtil.getLong(companyIdDirectoryName);
 
-				if (!companyIdSet.remove(companyId)) {
+				if (!companyIds.remove(companyId)) {
 					continue;
 				}
 
@@ -95,10 +95,10 @@ public class PreupgradeVerifyFileSystemStoreStructure
 			}
 		}
 
-		if (!companyIdSet.isEmpty()) {
+		if (!companyIds.isEmpty()) {
 			throw new VerifyException(
 				StringBundler.concat(
-					"Missing folders for companies: ", companyIdSet.toString(),
+					"Missing folders for companies: ", companyIds.toString(),
 					". Please create the corresponding directories in ",
 					fileSystemStoreRootDir.toString()));
 		}
