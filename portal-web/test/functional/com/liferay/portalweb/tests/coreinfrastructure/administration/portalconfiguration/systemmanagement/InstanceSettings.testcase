@@ -383,7 +383,6 @@ definition {
 	@description = "This test asserts that a user can create multi factory configurations."
 	@priority = 4
 	test CanCreateTwoFactoryConfigurations {
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1104,7 +1103,6 @@ definition {
 
 	@priority = 4
 	test FactoryConfigurationCanBeDeleted {
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1144,7 +1142,6 @@ definition {
 
 	@priority = 4
 	test FactoryConfigurationCanBeEdited {
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1200,7 +1197,6 @@ definition {
 
 	@priority = 4
 	test SingleFactoryConfigurationCanBeExported {
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1329,7 +1325,6 @@ definition {
 	@priority = 3
 	test ViewPasswordChangedNotificationTemplateUpdated {
 		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
@@ -1417,7 +1412,6 @@ definition {
 	@priority = 3
 	test ViewPasswordResetNotificationTemplateUpdated {
 		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
@@ -1498,7 +1492,6 @@ definition {
 	@description = "This is a use case for LPS-97907."
 	@priority = 5
 	test ViewSystemSettingsSavedByKeyboard {
-		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
 		ApplicationsMenu.gotoPortlet(
