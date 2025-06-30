@@ -383,6 +383,7 @@ definition {
 	@description = "This test asserts that a user can create multi factory configurations."
 	@priority = 4
 	test CanCreateTwoFactoryConfigurations {
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1103,6 +1104,7 @@ definition {
 
 	@priority = 4
 	test FactoryConfigurationCanBeDeleted {
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1142,6 +1144,7 @@ definition {
 
 	@priority = 4
 	test FactoryConfigurationCanBeEdited {
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1197,6 +1200,7 @@ definition {
 
 	@priority = 4
 	test SingleFactoryConfigurationCanBeExported {
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 
 		var openIdConnectClientId = PropsUtil.get("google.client.id.1");
@@ -1325,6 +1329,7 @@ definition {
 	@priority = 3
 	test ViewPasswordChangedNotificationTemplateUpdated {
 		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
@@ -1412,6 +1417,7 @@ definition {
 	@priority = 3
 	test ViewPasswordResetNotificationTemplateUpdated {
 		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
+		property portal.acceptance = "true";
 		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
