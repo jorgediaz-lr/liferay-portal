@@ -20,9 +20,9 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.ResourceActionsException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -1354,21 +1354,18 @@ public class PortletTracker
 			categoryNames.add("category.undefined");
 		}
 
-		if (companyId != null) {
-			_portletLocalService.deployRemotePortlet(
-				new long[] {companyId}, portletModel,
-				ArrayUtil.toStringArray(categoryNames), false, false);
+		long[] companyIds;
 
-			_portletLocalService.clearCache();
-
-			return;
+		if (companyId == null) {
+			companyIds = PortalInstancePool.getCompanyIds();
+		}
+		else {
+			companyIds = new long[] {companyId};
 		}
 
-		for (Company company : _companyLocalService.getCompanies()) {
-			_portletLocalService.deployRemotePortlet(
-				new long[] {company.getCompanyId()}, portletModel,
-				ArrayUtil.toStringArray(categoryNames), false, false);
-		}
+		_portletLocalService.deployRemotePortlet(
+			companyIds, portletModel, ArrayUtil.toStringArray(categoryNames),
+			false, false);
 
 		_portletLocalService.clearCache();
 	}
