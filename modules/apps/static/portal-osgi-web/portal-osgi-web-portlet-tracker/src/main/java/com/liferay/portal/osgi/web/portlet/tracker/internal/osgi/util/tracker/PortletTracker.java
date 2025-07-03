@@ -158,7 +158,7 @@ public class PortletTracker
 			"com.liferay.portlet.company");
 
 		if (companyId == null) {
-			companyId = CompanyThreadLocal.getNonsystemCompanyId();
+			companyId = CompanyConstants.SYSTEM;
 		}
 
 		try (SafeCloseable safeCloseable =
