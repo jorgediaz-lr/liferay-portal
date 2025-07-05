@@ -154,16 +154,17 @@ public class PortletTracker
 			return null;
 		}
 
+		SafeCloseable safeCloseable = null;
+
 		Long companyId = (Long)serviceReference.getProperty(
 			"com.liferay.portlet.company");
 
-		if (companyId == null) {
-			companyId = CompanyThreadLocal.getNonsystemCompanyId();
+		if (companyId != null) {
+			safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+				companyId);
 		}
 
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId)) {
-
+		try {
 			com.liferay.portal.kernel.model.Portlet portletModel =
 				_portletLocalService.getPortletById(portletId);
 
@@ -221,6 +222,11 @@ public class PortletTracker
 					return ReflectionUtil.throwException(exception);
 				}
 			};
+		}
+		finally {
+			if (safeCloseable != null) {
+				safeCloseable.close();
+			}
 		}
 	}
 
