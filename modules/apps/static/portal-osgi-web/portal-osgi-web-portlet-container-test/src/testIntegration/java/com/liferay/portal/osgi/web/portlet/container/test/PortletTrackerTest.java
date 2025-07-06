@@ -10,12 +10,17 @@ import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -57,8 +62,10 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,6 +90,27 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		if (DBPartition.isPartitionEnabled()) {
+			_safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+				PortalInstancePool.getDefaultCompanyId());
+
+			PermissionThreadLocal.setPermissionChecker(null);
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		super.tearDown();
+
+		if (_safeCloseable != null) {
+			_safeCloseable.close();
+		}
+	}
 
 	@Test
 	public void testLoadGetPortletsByCompany() throws Exception {
@@ -614,6 +642,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 	@Inject
 	private PortletLocalService _portletLocalService;
+
+	private SafeCloseable _safeCloseable;
 
 	private class InternalClassTestPortlet extends TestPortlet {
 
