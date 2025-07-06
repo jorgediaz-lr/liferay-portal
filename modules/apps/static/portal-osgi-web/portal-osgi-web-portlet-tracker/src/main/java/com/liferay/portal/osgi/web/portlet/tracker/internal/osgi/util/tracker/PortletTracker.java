@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.bean.BeanProperties;
 import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.ResourceActionsException;
@@ -156,12 +157,14 @@ public class PortletTracker
 
 		SafeCloseable safeCloseable = null;
 
-		Long companyId = (Long)serviceReference.getProperty(
-			"com.liferay.portlet.company");
+		if (DBPartition.isPartitionEnabled()) {
+			Long companyId = (Long)serviceReference.getProperty(
+				"com.liferay.portlet.company");
 
-		if (companyId != null) {
-			safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-				companyId);
+			if (companyId != null) {
+				safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId);
+			}
 		}
 
 		try {
