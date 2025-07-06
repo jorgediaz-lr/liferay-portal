@@ -10,12 +10,15 @@ import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -92,7 +95,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		PortalInstances.initCompany(company1);
 		PortalInstances.initCompany(company2);
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -137,7 +143,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 	public void testLoadGetPortletsByCompanyWithReload() throws Exception {
 		List<Company> companies = new ArrayList<>();
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			Company company1 = CompanyTestUtil.addCompany();
 
 			companies.add(company1);
@@ -201,7 +210,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 		String displayCategory = RandomTestUtil.randomString();
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -266,7 +278,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 		String displayCategory = RandomTestUtil.randomString();
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -356,7 +371,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		PortalInstances.initCompany(company1);
 		PortalInstances.initCompany(company2);
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
