@@ -139,6 +139,10 @@ public class PortletTracker
 
 		portletId = _portal.getJsSafePortletId(portletId);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(portletId);
+		}
+
 		if (portletId.length() >
 				PortletIdCodec.PORTLET_INSTANCE_KEY_MAX_LENGTH) {
 
