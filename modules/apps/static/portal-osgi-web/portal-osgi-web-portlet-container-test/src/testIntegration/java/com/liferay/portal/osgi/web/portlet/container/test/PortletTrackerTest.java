@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -130,18 +129,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				).build(),
 				"companyPortlet", false);
 
-			Map<String, Portlet> portlets =
-				_portletLocalService.loadGetPortletsMap(
-					company1.getCompanyId());
-
-			Assert.assertTrue(
-				portlets.toString(), portlets.containsKey("companyPortlet"));
-
-			portlets = _portletLocalService.loadGetPortletsMap(
-				company2.getCompanyId());
-
-			Assert.assertFalse(
-				portlets.toString(), portlets.containsKey("companyPortlet"));
+			_assertPortletDeployed(company1, "companyPortlet");
+			_assertPortletNotDeployed(company2, "companyPortlet");
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -187,18 +176,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 			PortalInstances.initCompany(company2);
 
-			Map<String, Portlet> portlets =
-				_portletLocalService.loadGetPortletsMap(
-					company1.getCompanyId());
-
-			Assert.assertTrue(
-				portlets.toString(), portlets.containsKey("companyPortlet"));
-
-			portlets = _portletLocalService.loadGetPortletsMap(
-				company2.getCompanyId());
-
-			Assert.assertFalse(
-				portlets.toString(), portlets.containsKey("companyPortlet"));
+			_assertPortletDeployed(company1, "companyPortlet");
+			_assertPortletNotDeployed(company2, "companyPortlet");
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -507,6 +486,37 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		public void stop(BundleContext bundleContext) {
 		}
 
+	}
+
+	private void _assertPortletDeployed(Company company, String portletId) {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					company.getCompanyId())) {
+
+			Map<String, Portlet> portlets =
+				_portletLocalService.loadGetPortletsMap(company.getCompanyId());
+
+			Assert.assertTrue(
+				portlets.toString(), portlets.containsKey(portletId));
+
+			Assert.assertNotNull(
+				_portletLocalService.getPortletById(portletId));
+		}
+	}
+
+	private void _assertPortletNotDeployed(Company company, String portletId) {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					company.getCompanyId())) {
+
+			Map<String, Portlet> portlets =
+				_portletLocalService.loadGetPortletsMap(company.getCompanyId());
+
+			Assert.assertFalse(
+				portlets.toString(), portlets.containsKey(portletId));
+
+			Assert.assertNull(_portletLocalService.getPortletById(portletId));
+		}
 	}
 
 	private InputStream _createBundle(String bundleSymbolicName)
