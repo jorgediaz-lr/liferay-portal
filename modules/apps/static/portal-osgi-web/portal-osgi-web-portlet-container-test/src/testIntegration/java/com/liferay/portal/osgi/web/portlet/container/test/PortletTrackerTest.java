@@ -142,6 +142,22 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 			Assert.assertFalse(
 				portlets.toString(), portlets.containsKey("companyPortlet"));
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						company1.getCompanyId())) {
+
+				Assert.assertNotNull(
+					_portletLocalService.getPortletById("companyPortlet"));
+			}
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						company2.getCompanyId())) {
+
+				Assert.assertNull(
+					_portletLocalService.getPortletById("companyPortlet"));
+			}
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -247,6 +263,22 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 			Assert.assertNotNull(portletCategory2.getCategory(displayCategory));
 
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						company1.getCompanyId())) {
+
+				Assert.assertNotNull(
+					_portletLocalService.getPortletById("companyPortlet"));
+			}
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						company2.getCompanyId())) {
+
+				Assert.assertNotNull(
+					_portletLocalService.getPortletById("companyPortlet"));
+			}
+
 			Company company3 = CompanyTestUtil.addCompany();
 
 			PortalInstances.initCompany(company3);
@@ -258,6 +290,14 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 				Assert.assertNotNull(
 					portletCategory3.getCategory(displayCategory));
+
+				try (SafeCloseable safeCloseable =
+						CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+							company3.getCompanyId())) {
+
+					Assert.assertNotNull(
+						_portletLocalService.getPortletById("companyPortlet"));
+				}
 			}
 			finally {
 				_companyLocalService.deleteCompany(company3);
