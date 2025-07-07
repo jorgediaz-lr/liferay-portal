@@ -120,15 +120,17 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		PortalInstances.initCompany(company2);
 
 		try {
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
 					"com.liferay.portlet.display-category", "company-scope"
 				).build(),
-				"companyPortlet", false);
+				portletName, false);
 
-			_assertPortletDeployed(company1, "companyPortlet");
-			_assertPortletDeployed(company2, "companyPortlet");
+			_assertPortletDeployed(company1, portletName);
+			_assertPortletDeployed(company2, portletName);
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -157,6 +159,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		PortalInstances.initCompany(company2);
 
 		try {
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -164,10 +168,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				).put(
 					"com.liferay.portlet.display-category", "company-scope"
 				).build(),
-				"companyPortlet", false);
+				portletName, false);
 
-			_assertPortletDeployed(company1, "companyPortlet");
-			_assertPortletNotDeployed(company2, "companyPortlet");
+			_assertPortletDeployed(company1, portletName);
+			_assertPortletNotDeployed(company2, portletName);
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -198,6 +202,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 			PortalInstances.initCompany(company1);
 
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -205,7 +211,7 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				).put(
 					"com.liferay.portlet.display-category", "company-scope"
 				).build(),
-				"companyPortlet", false);
+				portletName, false);
 
 			Company company2 = CompanyTestUtil.addCompany();
 
@@ -213,8 +219,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 
 			PortalInstances.initCompany(company2);
 
-			_assertPortletDeployed(company1, "companyPortlet");
-			_assertPortletNotDeployed(company2, "companyPortlet");
+			_assertPortletDeployed(company1, portletName);
+			_assertPortletNotDeployed(company2, portletName);
 		}
 		finally {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -246,12 +252,14 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		String displayCategory = RandomTestUtil.randomString();
 
 		try {
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
 					"com.liferay.portlet.display-category", displayCategory
 				).build(),
-				"companyPortlet", false);
+				portletName, false);
 
 			PortletCategory portletCategory1 = (PortletCategory)WebAppPool.get(
 				company1.getCompanyId(), WebKeys.PORTLET_CATEGORY);
@@ -311,6 +319,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		String displayCategory = RandomTestUtil.randomString();
 
 		try {
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -318,7 +328,7 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				).put(
 					"com.liferay.portlet.display-category", displayCategory
 				).build(),
-				"companyPortlet", false);
+				portletName, false);
 
 			PortletCategory portletCategory1 = (PortletCategory)WebAppPool.get(
 				company1.getCompanyId(), WebKeys.PORTLET_CATEGORY);
@@ -401,6 +411,8 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 		PortalInstances.initCompany(company2);
 
 		try {
+			String portletName = RandomTestUtil.randomString();
+
 			setUpPortlet(
 				_internalClassTestPortlet,
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -408,7 +420,7 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				).put(
 					"com.liferay.portlet.display-category", "company-scope"
 				).build(),
-				"companyScopePortlet", false);
+				portletName, false);
 
 			PortletCategory portletCategory1 = (PortletCategory)WebAppPool.get(
 				company1.getCompanyId(), WebKeys.PORTLET_CATEGORY);
@@ -420,8 +432,7 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 				companyScopePortletCategory.getPortletIds();
 
 			Assert.assertTrue(
-				portletIds.toString(),
-				portletIds.contains("companyScopePortlet"));
+				portletIds.toString(), portletIds.contains(portletName));
 
 			PortletCategory portletCategory2 = (PortletCategory)WebAppPool.get(
 				company2.getCompanyId(), WebKeys.PORTLET_CATEGORY);
