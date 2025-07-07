@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PortletIdException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.internal.configuration.ConfigurationFactoryImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -3038,15 +3037,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				(value.getCompanyId() == CompanyConstants.SYSTEM)) {
 
 				return super.put(key, value);
-			}
-
-			long companyId = CompanyThreadLocal.getCompanyId();
-
-			if ((companyId == CompanyConstants.SYSTEM) ||
-				(companyId == PortalInstancePool.getDefaultCompanyId())) {
-
-				return super.put(
-					key + StringPool.AT + value.getCompanyId(), value);
 			}
 
 			return super.put(DBPartitionUtil.getPartitionKey(key), value);
