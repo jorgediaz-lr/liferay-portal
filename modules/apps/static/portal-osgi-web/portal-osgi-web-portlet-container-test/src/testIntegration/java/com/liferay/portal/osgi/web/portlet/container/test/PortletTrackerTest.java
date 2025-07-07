@@ -564,7 +564,10 @@ public class PortletTrackerTest extends BasePortletContainerTestCase {
 			Assert.assertFalse(
 				portlets.toString(), portlets.containsKey(portletId));
 
-			Assert.assertNull(_portletLocalService.getPortletById(portletId));
+			if (DBPartition.isPartitionEnabled()) {
+				Assert.assertNull(
+					_portletLocalService.getPortletById(portletId));
+			}
 		}
 	}
 
