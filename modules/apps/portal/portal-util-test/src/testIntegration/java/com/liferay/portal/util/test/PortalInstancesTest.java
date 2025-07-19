@@ -177,6 +177,15 @@ public class PortalInstancesTest {
 			PortalInstances.getCompanyId(mockHttpServletRequest));
 
 		Assert.assertEquals(
+			_company.getCompanyId(),
+			CompanyThreadLocal.getCompanyId(
+			).longValue());
+
+		Assert.assertEquals(
+			_company.getCompanyId(),
+			mockHttpServletRequest.getAttribute(WebKeys.COMPANY_ID));
+
+		Assert.assertEquals(
 			expectedLayoutSet,
 			mockHttpServletRequest.getAttribute(
 				WebKeys.VIRTUAL_HOST_LAYOUT_SET));
