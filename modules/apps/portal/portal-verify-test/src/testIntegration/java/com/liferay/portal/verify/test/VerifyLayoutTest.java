@@ -36,7 +36,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -123,7 +122,6 @@ public class VerifyLayoutTest extends BaseVerifyProcessTestCase {
 			_errorMessages.toString(), 0, _errorMessages.size());
 	}
 
-	@Ignore
 	@Test
 	public void testVerifyLayoutsWithReservedLayoutFriendlyURLs()
 		throws Exception {
