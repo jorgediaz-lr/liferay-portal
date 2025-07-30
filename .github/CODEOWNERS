@@ -240,12 +240,12 @@ modules/apps/portal/portal-fragment-bundle-watcher/    @liferay-core-infra
 modules/apps/portal/portal-fragment-bundle-watcher-test/    @liferay-core-infra
 modules/apps/portal/portal-http-impl/    @liferay-core-infra
 modules/apps/portal/portal-init-servlet-filter/    @liferay-core-infra
-modules/apps/portal/portal-instance-lifecycle-api/    @liferay-core-infra
-modules/apps/portal/portal-instance-lifecycle-impl/    @liferay-core-infra
+modules/apps/portal/portal-instance-lifecycle-api/    @liferay-database-infra
+modules/apps/portal/portal-instance-lifecycle-impl/    @liferay-database-infra
 modules/apps/portal/portal-jmx/    @liferay-core-infra
 modules/apps/portal/portal-jmx-api/    @liferay-core-infra
 modules/apps/portal/portal-jmx-test/    @liferay-core-infra
-modules/apps/portal/portal-kernel-instance-test/    @liferay-core-infra
+modules/apps/portal/portal-kernel-instance-test/    @liferay-database-infra
 modules/apps/portal/portal-license-deployer/    @liferay-core-infra
 modules/apps/portal/portal-log4j-test/    @liferay-core-infra
 modules/apps/portal/portal-messaging/    @liferay-core-infra
