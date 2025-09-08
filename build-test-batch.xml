@@ -4340,12 +4340,20 @@ information. Make sure to commit in all build-lib-versions results.
 		<run-db-migration-container-test database.type="mysql" database.version="8.0" />
 	</target>
 
+	<target name="db-migration-container-mysql84">
+		<run-db-migration-container-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="db-migration-container-oracle193">
 		<run-db-migration-container-test database.type="oracle" database.version="19.3.0.0.0" />
 	</target>
 
 	<target name="db-migration-container-sqlserver2019">
 		<run-db-migration-container-test database.type="sqlserver" database.version="2019" />
+	</target>
+
+	<target name="db-migration-container-sqlserver2022">
+		<run-db-migration-container-test database.type="sqlserver" database.version="2022" />
 	</target>
 
 	<target name="dist-jdk7">
