@@ -34,7 +34,7 @@
 			<hint name="max-length">256</hint>
 		</field>
 		<field name="customClaimsJSON" type="String">
-			<hint-collection name="CLOB" />
+			<hint name="max-length">3999</hint>
 		</field>
 		<field name="infoJSON" type="String">
 			<hint-collection name="CLOB" />
