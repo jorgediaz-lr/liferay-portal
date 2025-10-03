@@ -261,8 +261,8 @@ public class OAuthClientEntryPersistenceTest {
 			"companyId", true, "userId", true, "userName", true, "createDate",
 			true, "modifiedDate", true, "authRequestParametersJSON", true,
 			"authServerWellKnownURI", true, "clientId", true,
-			"metadataCacheTime", true, "oidcUserInfoMapperJSON", true,
-			"tokenRequestParametersJSON", true);
+			"customClaimsJSON", true, "metadataCacheTime", true,
+			"oidcUserInfoMapperJSON", true, "tokenRequestParametersJSON", true);
 	}
 
 	@Test
