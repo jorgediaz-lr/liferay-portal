@@ -9,6 +9,8 @@ import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
@@ -1444,6 +1446,16 @@ public class ServiceContext implements Cloneable, Serializable {
 	 */
 	public void setRequest(HttpServletRequest httpServletRequest) {
 		_httpServletRequest = httpServletRequest;
+
+		if (_log.isDebugEnabled()) {
+			String threadName = Thread.currentThread(
+			).getName();
+
+			if (threadName.startsWith("liferay/background_task")) {
+				_log.debug(
+					"call to ServiceContext.setRequest", new Exception());
+			}
+		}
 	}
 
 	/**
@@ -1538,6 +1550,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog("LPP-60743");
 
 	private boolean _addGroupPermissions;
 	private boolean _addGuestPermissions;
