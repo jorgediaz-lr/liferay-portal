@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -40,9 +41,11 @@ import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.Serializable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -1452,8 +1455,68 @@ public class ServiceContext implements Cloneable, Serializable {
 			).getName();
 
 			if (threadName.startsWith("liferay/background_task")) {
+				_log.debug("=== ServiceContext.setRequest ===");
+				_log.debug("httpServletRequest: " + httpServletRequest);
+
+				if (httpServletRequest != null) {
+					String remoteUser = httpServletRequest.getRemoteUser();
+					String timestamp = new SimpleDateFormat(
+						"dd/MMM/yyyy:HH:mm:ss Z"
+					).format(
+						new Date()
+					);
+					String requestLine = StringBundler.concat(
+						httpServletRequest.getMethod(), " ",
+						httpServletRequest.getRequestURI(),
+						(httpServletRequest.getQueryString() != null) ?
+							"?" + httpServletRequest.getQueryString() : "",
+						" ", httpServletRequest.getProtocol());
+					String referer = httpServletRequest.getHeader("Referer");
+					String userAgent = httpServletRequest.getHeader("User-Agent");
+
+					_log.debug(
+						String.format(
+							"httpServletRequest: %s - %s [%s] \"%s\" \"%s\" \"%s\"",
+							httpServletRequest.getRemoteAddr(),
+							(remoteUser != null) ? remoteUser : "-", timestamp,
+							requestLine, (referer != null) ? referer : "-",
+							(userAgent != null) ? userAgent : "-"));
+
+					ThemeDisplay themeDisplay =
+						(ThemeDisplay)httpServletRequest.getAttribute(
+							WebKeys.THEME_DISPLAY);
+
+					_log.debug(
+						"httpServletRequest.getAttribute(THEME_DISPLAY): " +
+						themeDisplay);
+
+					if (themeDisplay != null) {
+						_log.debug(
+							String.format(
+								"ThemeDisplay - Company: %d, Group: %d, User: %s (ID: %d), Layout: %d, SignedIn: %b, Locale: %s, TimeZone: %s",
+								themeDisplay.getCompanyId(),
+								themeDisplay.getScopeGroupId(),
+								themeDisplay.getUser(
+								).getFullName(),
+								themeDisplay.getUserId(), themeDisplay.getPlid(),
+								themeDisplay.isSignedIn(), themeDisplay.getLocale(),
+								themeDisplay.getTimeZone(
+								).getID()));
+						_log.debug(
+							StringBundler.concat(
+								"Portal URL: ", themeDisplay.getPortalURL(),
+								", Current URL: ", themeDisplay.getURLCurrent()));
+					}
+
+					HttpSession httpSession = httpServletRequest.getSession(false);
+
+					_log.debug(
+						"Session: " +
+						((httpSession != null) ? httpSession.getId() : "null"));
+				}
 				_log.debug(
-					"call to ServiceContext.setRequest", new Exception());
+					"Thread dump", new Exception());
+				_log.debug("=================================");
 			}
 		}
 	}
