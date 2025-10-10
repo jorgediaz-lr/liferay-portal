@@ -197,11 +197,8 @@ public class KaleoServiceUpgradeStepRegistrator
 			"4.0.1", "4.1.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"KaleoDefinition", "kaleoDefinitionId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"KaleoDefinition"};
 				}
 
 			});
@@ -211,10 +208,8 @@ public class KaleoServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"KaleoDefinition", "kaleoDefinitionId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"KaleoDefinition"};
 				}
 
 			});

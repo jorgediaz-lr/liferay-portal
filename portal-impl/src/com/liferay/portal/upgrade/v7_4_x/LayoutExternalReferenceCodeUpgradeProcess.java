@@ -13,9 +13,8 @@ import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess
 public class LayoutExternalReferenceCodeUpgradeProcess
 	extends BaseExternalReferenceCodeUpgradeProcess {
 
-	@Override
-	protected String[][] getTableAndPrimaryKeyColumnNames() {
-		return new String[][] {{"Layout", "plid"}};
+	protected String[] getTableNames() {
+		return new String[] {"Layout"};
 	}
 
 	@Override

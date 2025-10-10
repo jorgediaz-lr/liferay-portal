@@ -81,8 +81,8 @@ public class ChangeTrackingServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"CTCollection", "ctCollectionId"}};
+				protected String[] getTableNames() {
+					return new String[] {"CTCollection"};
 				}
 
 			});
@@ -91,9 +91,8 @@ public class ChangeTrackingServiceUpgradeStepRegistrator
 			"2.9.0", "2.9.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"CTCollection", "ctCollectionId"}};
+				protected String[] getTableNames() {
+					return new String[] {"CTCollection"};
 				}
 
 			});
@@ -112,8 +111,8 @@ public class ChangeTrackingServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"CTEntry", "ctEntryId"}};
+				protected String[] getTableNames() {
+					return new String[] {"CTEntry"};
 				}
 
 			});
@@ -122,9 +121,8 @@ public class ChangeTrackingServiceUpgradeStepRegistrator
 			"2.12.0", "2.12.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"CTEntry", "ctEntryId"}};
+				protected String[] getTableNames() {
+					return new String[] {"CTEntry"};
 				}
 
 			});

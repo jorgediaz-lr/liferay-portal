@@ -70,11 +70,9 @@ public class StyleBookServiceUpgradeStepRegistrator
 			"1.4.1", "1.5.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"StyleBookEntry", "styleBookEntryId"},
-						{"StyleBookEntryVersion", "styleBookEntryId"}
+				protected String[] getTableNames() {
+					return new String[] {
+						"StyleBookEntry", "StyleBookEntryVersion"
 					};
 				}
 

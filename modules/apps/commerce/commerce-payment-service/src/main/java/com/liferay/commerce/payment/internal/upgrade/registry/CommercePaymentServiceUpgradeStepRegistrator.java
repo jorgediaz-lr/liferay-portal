@@ -104,11 +104,8 @@ public class CommercePaymentServiceUpgradeStepRegistrator
 					};
 				}
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"CommercePaymentEntry", "commercePaymentEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"CommercePaymentEntry"};
 				}
 
 			});

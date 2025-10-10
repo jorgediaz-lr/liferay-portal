@@ -337,9 +337,8 @@ public class JournalServiceUpgradeStepRegistrator
 			"4.2.0", "4.3.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"JournalFolder", "folderId"}};
+				protected String[] getTableNames() {
+					return new String[] {"JournalFolder"};
 				}
 
 			});

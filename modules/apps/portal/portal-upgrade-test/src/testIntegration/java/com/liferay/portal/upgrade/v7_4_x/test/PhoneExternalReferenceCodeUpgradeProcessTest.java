@@ -72,9 +72,8 @@ public class PhoneExternalReferenceCodeUpgradeProcessTest
 	protected BaseExternalReferenceCodeUpgradeProcess getUpgradeProcess() {
 		return new BaseExternalReferenceCodeUpgradeProcess() {
 
-			@Override
-			protected String[][] getTableAndPrimaryKeyColumnNames() {
-				return new String[][] {{"Phone", "phoneId"}};
+			protected String[] getTableNames() {
+				return new String[] {"Phone"};
 			}
 
 		};

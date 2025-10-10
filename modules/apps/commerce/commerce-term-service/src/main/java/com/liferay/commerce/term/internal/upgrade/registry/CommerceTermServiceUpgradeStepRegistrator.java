@@ -25,10 +25,8 @@ public class CommerceTermServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"CommerceTermEntry", "commerceTermEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"CommerceTermEntry"};
 				}
 
 			});
@@ -37,11 +35,8 @@ public class CommerceTermServiceUpgradeStepRegistrator
 			"1.1.0", "1.1.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"CommerceTermEntry", "commerceTermEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"CommerceTermEntry"};
 				}
 
 			});

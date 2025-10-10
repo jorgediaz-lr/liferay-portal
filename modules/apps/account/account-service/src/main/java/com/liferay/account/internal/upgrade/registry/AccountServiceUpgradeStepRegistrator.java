@@ -130,11 +130,8 @@ public class AccountServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"AccountEntry", "accountEntryId"},
-						{"AccountGroup", "accountGroupId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"AccountEntry", "AccountGroup"};
 				}
 
 			});
@@ -143,12 +140,8 @@ public class AccountServiceUpgradeStepRegistrator
 			"2.8.0", "2.8.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"AccountEntry", "accountEntryId"},
-						{"AccountGroup", "accountGroupId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"AccountEntry", "AccountGroup"};
 				}
 
 			});
@@ -195,9 +188,8 @@ public class AccountServiceUpgradeStepRegistrator
 			"2.10.4", "2.11.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"AccountRole", "accountRoleId"}};
+				protected String[] getTableNames() {
+					return new String[] {"AccountRole"};
 				}
 
 			});

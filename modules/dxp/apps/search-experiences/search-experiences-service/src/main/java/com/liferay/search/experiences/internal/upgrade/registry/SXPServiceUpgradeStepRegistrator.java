@@ -39,12 +39,8 @@ public class SXPServiceUpgradeStepRegistrator
 			"1.1.0", "1.2.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"SXPBlueprint", "sxpBlueprintId"},
-						{"SXPElement", "sxpElementId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"SXPBlueprint", "SXPElement"};
 				}
 
 			});

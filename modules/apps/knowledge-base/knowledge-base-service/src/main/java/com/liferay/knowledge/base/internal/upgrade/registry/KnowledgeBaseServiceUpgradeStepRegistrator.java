@@ -209,11 +209,8 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 			"4.1.0", "4.2.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"KBArticle", "kbArticleId"}, {"KBFolder", "kbFolderId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"KBArticle", "KBFolder"};
 				}
 
 			});

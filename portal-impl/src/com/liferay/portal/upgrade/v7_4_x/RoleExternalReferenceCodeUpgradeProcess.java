@@ -13,9 +13,8 @@ import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess
 public class RoleExternalReferenceCodeUpgradeProcess
 	extends BaseExternalReferenceCodeUpgradeProcess {
 
-	@Override
-	protected String[][] getTableAndPrimaryKeyColumnNames() {
-		return new String[][] {{"Role_", "roleId"}};
+	protected String[] getTableNames() {
+		return new String[] {"Role_"};
 	}
 
 }

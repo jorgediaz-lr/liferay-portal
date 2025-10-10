@@ -88,10 +88,8 @@ public class OAuth2ServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"OAuth2Application", "oAuth2ApplicationId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"OAuth2Application"};
 				}
 
 			});
@@ -100,11 +98,8 @@ public class OAuth2ServiceUpgradeStepRegistrator
 			"4.2.0", "4.2.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"OAuth2Application", "oAuth2ApplicationId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"OAuth2Application"};
 				}
 
 			});
