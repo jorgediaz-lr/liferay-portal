@@ -91,11 +91,8 @@ public class ClientExtensionUpgradeStepRegistrator
 			"3.2.0", "3.3.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"ClientExtensionEntry", "clientExtensionEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"ClientExtensionEntry"};
 				}
 
 			});

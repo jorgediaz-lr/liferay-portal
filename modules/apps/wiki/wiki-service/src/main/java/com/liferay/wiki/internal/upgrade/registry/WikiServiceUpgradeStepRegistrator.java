@@ -96,11 +96,8 @@ public class WikiServiceUpgradeStepRegistrator
 			"2.2.0", "2.3.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"WikiNode", "nodeId"}, {"WikiPage", "pageId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"WikiNode", "WikiPage"};
 				}
 
 			});

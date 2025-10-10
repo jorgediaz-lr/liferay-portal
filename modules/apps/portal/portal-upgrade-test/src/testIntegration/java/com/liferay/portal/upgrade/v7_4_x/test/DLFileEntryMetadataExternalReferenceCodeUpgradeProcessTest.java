@@ -152,11 +152,8 @@ public class DLFileEntryMetadataExternalReferenceCodeUpgradeProcessTest
 	protected BaseExternalReferenceCodeUpgradeProcess getUpgradeProcess() {
 		return new BaseExternalReferenceCodeUpgradeProcess() {
 
-			@Override
-			protected String[][] getTableAndPrimaryKeyColumnNames() {
-				return new String[][] {
-					{"DLFileEntryMetadata", "fileEntryMetadataId"}
-				};
+			protected String[] getTableNames() {
+				return new String[] {"DLFileEntryMetadata"};
 			}
 
 		};

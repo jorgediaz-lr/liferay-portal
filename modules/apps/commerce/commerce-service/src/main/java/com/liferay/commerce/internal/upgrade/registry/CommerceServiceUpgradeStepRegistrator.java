@@ -505,14 +505,11 @@ public class CommerceServiceUpgradeStepRegistrator
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"CommerceOrderItem", "commerceOrderItemId"},
-						{"CommerceOrderNote", "commerceOrderNoteId"},
-						{"CommerceOrderType", "commerceOrderTypeId"},
-						{"CommerceOrderTypeRel", "commerceOrderTypeRelId"},
-						{"CommerceShipment", "commerceShipmentId"},
-						{"CommerceShipmentItem", "commerceShipmentItemId"}
+				protected String[] getTableNames() {
+					return new String[] {
+						"CommerceOrderItem", "CommerceOrderNote",
+						"CommerceOrderType", "CommerceOrderTypeRel",
+						"CommerceShipment", "CommerceShipmentItem"
 					};
 				}
 
@@ -522,14 +519,11 @@ public class CommerceServiceUpgradeStepRegistrator
 			"8.6.0", "8.6.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"CommerceOrder", "commerceOrderId"},
-						{"CommerceOrderItem", "commerceOrderItemId"},
-						{"CommerceOrderNote", "commerceOrderNoteId"},
-						{"CommerceOrderType", "commerceOrderTypeId"},
-						{"CommerceOrderTypeRel", "commerceOrderTypeRelId"}
+				protected String[] getTableNames() {
+					return new String[] {
+						"CommerceOrder", "CommerceOrderItem",
+						"CommerceOrderNote", "CommerceOrderType",
+						"CommerceOrderTypeRel"
 					};
 				}
 

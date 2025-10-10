@@ -165,12 +165,8 @@ public class ObjectServiceUpgradeStepRegistrator
 			"3.12.0", "3.13.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"ObjectEntry", "objectEntryId"},
-						{"ObjectField", "objectFieldId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"ObjectEntry", "ObjectField"};
 				}
 
 			});
@@ -229,11 +225,8 @@ public class ObjectServiceUpgradeStepRegistrator
 			"3.22.0", "3.23.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"ObjectDefinition", "objectDefinitionId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"ObjectDefinition"};
 				}
 
 			});
@@ -279,9 +272,8 @@ public class ObjectServiceUpgradeStepRegistrator
 			"3.27.1", "3.28.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"ObjectAction", "objectActionId"}};
+				protected String[] getTableNames() {
+					return new String[] {"ObjectAction"};
 				}
 
 			});
@@ -393,11 +385,8 @@ public class ObjectServiceUpgradeStepRegistrator
 			"8.3.0", "8.4.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"ObjectValidationRule", "objectValidationRuleId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"ObjectValidationRule"};
 				}
 
 			});
@@ -424,11 +413,8 @@ public class ObjectServiceUpgradeStepRegistrator
 			"8.7.1", "8.8.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"ObjectRelationship", "objectRelationshipId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"ObjectRelationship"};
 				}
 
 			});

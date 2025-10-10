@@ -188,9 +188,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(16, 1, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"DLFolder", "folderId"}};
+				protected String[] getTableNames() {
+					return new String[] {"DLFolder"};
 				}
 
 			});
@@ -341,9 +340,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(26, 4, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"Group_", "groupId"}};
+				protected String[] getTableNames() {
+					return new String[] {"Group_"};
 				}
 
 			});
@@ -457,11 +455,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 5, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"DLFileEntryType", "fileEntryTypeId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"DLFileEntryType"};
 				}
 
 			});
@@ -474,11 +469,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 7, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"DLFileEntryMetadata", "fileEntryMetadataId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"DLFileEntryMetadata"};
 				}
 
 			});
@@ -491,9 +483,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 9, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"Website", "websiteId"}};
+				protected String[] getTableNames() {
+					return new String[] {"Website"};
 				}
 
 			});
@@ -502,9 +493,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 10, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"Repository", "repositoryId"}};
+				protected String[] getTableNames() {
+					return new String[] {"Repository"};
 				}
 
 			});
@@ -513,9 +503,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 11, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"Phone", "phoneId"}};
+				protected String[] getTableNames() {
+					return new String[] {"Phone"};
 				}
 
 			});
@@ -524,9 +513,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 12, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"AssetTag", "tagId"}};
+				protected String[] getTableNames() {
+					return new String[] {"AssetTag"};
 				}
 
 			});
@@ -541,10 +529,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new BaseUuidUpgradeProcess() {
 
 				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"WorkflowDefinitionLink", "workflowDefinitionLinkId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"WorkflowDefinitionLink"};
 				}
 
 			});
@@ -553,11 +539,8 @@ public class PortalUpgradeProcessRegistryImpl
 			new Version(31, 14, 0),
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"WorkflowDefinitionLink", "workflowDefinitionLinkId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"WorkflowDefinitionLink"};
 				}
 
 			});

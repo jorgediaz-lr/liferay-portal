@@ -226,14 +226,8 @@ public class LayoutPageTemplateServiceUpgradeStepRegistrator
 			"5.5.0", "5.6.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{
-							"LayoutPageTemplateCollection",
-							"layoutPageTemplateCollectionId"
-						}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"LayoutPageTemplateCollection"};
 				}
 
 			});
@@ -242,11 +236,8 @@ public class LayoutPageTemplateServiceUpgradeStepRegistrator
 			"5.6.0", "5.7.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"LayoutPageTemplateEntry", "layoutPageTemplateEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"LayoutPageTemplateEntry"};
 				}
 
 			});

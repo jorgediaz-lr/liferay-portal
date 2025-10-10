@@ -209,11 +209,8 @@ public class FragmentServiceUpgradeStepRegistrator
 			"2.10.3", "2.11.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"FragmentCollection", "fragmentCollectionId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"FragmentCollection"};
 				}
 
 			});
@@ -222,12 +219,10 @@ public class FragmentServiceUpgradeStepRegistrator
 			"2.11.0", "2.12.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"FragmentComposition", "fragmentCompositionId"},
-						{"FragmentEntry", "fragmentEntryId"},
-						{"FragmentEntryVersion", "fragmentEntryId"}
+				protected String[] getTableNames() {
+					return new String[] {
+						"FragmentComposition", "FragmentEntry",
+						"FragmentEntryVersion"
 					};
 				}
 
@@ -237,11 +232,8 @@ public class FragmentServiceUpgradeStepRegistrator
 			"2.12.0", "2.13.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"FragmentEntryLink", "fragmentEntryLinkId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"FragmentEntryLink"};
 				}
 
 			});

@@ -95,11 +95,8 @@ public class AssetListServiceUpgradeStepRegistrator
 			"2.0.1", "2.1.0",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
-				@Override
-				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {
-						{"AssetListEntry", "assetListEntryId"}
-					};
+				protected String[] getTableNames() {
+					return new String[] {"AssetListEntry"};
 				}
 
 			});
