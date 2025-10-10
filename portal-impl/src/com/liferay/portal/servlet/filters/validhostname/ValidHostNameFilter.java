@@ -8,11 +8,11 @@ package com.liferay.portal.servlet.filters.validhostname;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.servlet.TryFilter;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.servlet.filters.BasePortalFilter;
 import com.liferay.portal.util.PortalInstances;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Shuyang Zhou
  */
-public class ValidHostNameFilter extends BasePortalFilter implements TryFilter {
+public class ValidHostNameFilter extends BaseFilter implements TryFilter {
 
 	@Override
 	public Object doFilterTry(
@@ -66,11 +66,9 @@ public class ValidHostNameFilter extends BasePortalFilter implements TryFilter {
 	}
 
 	@Override
-	public boolean isFilterEnabled() {
-		return _FILTER_ENABLED;
+	protected Log getLog() {
+		return _log;
 	}
-
-	private static final boolean _FILTER_ENABLED = true;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ValidHostNameFilter.class);
