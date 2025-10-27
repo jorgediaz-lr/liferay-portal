@@ -521,6 +521,5 @@ portal-kernel/src/com/liferay/portal/kernel/db/    @liferay-database-infra
 portal-kernel/src/com/liferay/portal/kernel/instance/    @liferay-database-infra
 portal-kernel/src/com/liferay/portal/kernel/upgrade/    @liferay-database-infra
 portal-web/test/functional/com/liferay/portalweb/macros/upgrades/    @liferay-database-infra
-portal-kernel/src/com/liferay/portal/kernel/upgrade/    @liferay-database-infra
 util-taglib/    @liferay-frontend
 workspaces/liferay-marketplace-workspace/    @liferay-commerce
