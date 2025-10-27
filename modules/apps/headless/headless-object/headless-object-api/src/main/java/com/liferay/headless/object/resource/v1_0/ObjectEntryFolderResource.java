@@ -94,6 +94,21 @@ public interface ObjectEntryFolderResource {
 			String scopeKey, ObjectEntryFolder objectEntryFolder)
 		throws Exception;
 
+	public ObjectEntryFolder
+			postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeRestore(
+				String scopeKey, String externalReferenceCode)
+		throws Exception;
+
+	public void
+			postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeSubscribe(
+				String scopeKey, String externalReferenceCode)
+		throws Exception;
+
+	public void
+			postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeUnsubscribe(
+				String scopeKey, String externalReferenceCode)
+		throws Exception;
+
 	public ObjectEntryFolder putObjectEntryFolder(
 			Long objectEntryFolderId, ObjectEntryFolder objectEntryFolder)
 		throws Exception;

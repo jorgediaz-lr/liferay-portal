@@ -6,7 +6,6 @@
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.DownstreamBuildReport;
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightJUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightTestClassMethod;
@@ -14,7 +13,9 @@ import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -25,14 +26,12 @@ public class PlaywrightAxisTestClassGroup extends AxisTestClassGroup {
 
 	@Override
 	public List<DownstreamBuildReport> getCachedDownstreamBuildReports() {
-		if (!JenkinsResultsParserUtil.isBuildCachingEnabled() ||
-			!isResultsCached()) {
-
+		if (!isBuildCachingEnabled() || !isResultsCached()) {
 			return null;
 		}
 
-		List<DownstreamBuildReport> cachedDownstreamBuildReports =
-			new ArrayList<>();
+		Set<DownstreamBuildReport> cachedDownstreamBuildReports =
+			new HashSet<>();
 
 		for (PlaywrightTestClassMethod playwrightTestClassMethod :
 				getPlaywrightTestClassMethods()) {
@@ -40,14 +39,10 @@ public class PlaywrightAxisTestClassGroup extends AxisTestClassGroup {
 			DownstreamBuildReport downstreamBuildReport =
 				playwrightTestClassMethod.getCachedDownstreamBuildReport();
 
-			if (cachedDownstreamBuildReports.contains(downstreamBuildReport)) {
-				continue;
-			}
-
 			cachedDownstreamBuildReports.add(downstreamBuildReport);
 		}
 
-		return cachedDownstreamBuildReports;
+		return new ArrayList<>(cachedDownstreamBuildReports);
 	}
 
 	@Override
@@ -143,7 +138,7 @@ public class PlaywrightAxisTestClassGroup extends AxisTestClassGroup {
 
 	@Override
 	public boolean isResultsCached() {
-		if (!JenkinsResultsParserUtil.isBuildCachingEnabled()) {
+		if (!isBuildCachingEnabled()) {
 			return false;
 		}
 

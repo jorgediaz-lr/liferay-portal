@@ -8,15 +8,20 @@ package com.liferay.portal.upgrade.data.cleanup.util.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upgrade.data.cleanup.util.OrphanReferencesDataCleanupUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -27,6 +32,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -53,11 +59,36 @@ public class OrphanReferencesDataCleanupUtilTest {
 	}
 
 	@Test
-	public void testCleanUpExcludedTable() throws Exception {
+	public void testCleanUpTableDoesNotAffectControlTablesWithDatabasePartitionEnabled()
+		throws Exception {
+
+		Assume.assumeTrue(PropsValues.DATABASE_PARTITION_ENABLED);
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			_testCleanUpTable(
+				logCapture -> {
+					List<LogEntry> logEntries = logCapture.getLogEntries();
+
+					Assert.assertTrue(
+						logEntries.toString(), logEntries.isEmpty());
+				},
+				() -> {
+				},
+				() -> {
+				},
+				null, "companyId", "VirtualHost", "companyId", "Company");
+		}
+	}
+
+	@Test
+	public void testCleanUpTableExcludedTable() throws Exception {
 		long auditEventId = RandomTestUtil.nextLong();
 		long companyId = RandomTestUtil.nextLong();
 
-		_test(
+		_testCleanUpTable(
 			logCapture -> {
 				List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -77,10 +108,10 @@ public class OrphanReferencesDataCleanupUtilTest {
 	}
 
 	@Test
-	public void testCleanUpWithoutWhereClause() throws Exception {
+	public void testCleanUpTableWithoutWhereClause() throws Exception {
 		long companyId = RandomTestUtil.nextLong();
 
-		_test(
+		_testCleanUpTable(
 			logCapture -> {
 				List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -90,8 +121,9 @@ public class OrphanReferencesDataCleanupUtilTest {
 				LogEntry logEntry = logEntries.get(0);
 
 				Assert.assertEquals(
-					_getExpectedMessage(
-						2, _dbInspector.normalizeName("Portlet"),
+					_getCleanUpTableExpectedMessage(
+						2, _dbInspector.normalizeName("companyId"),
+						_dbInspector.normalizeName("Portlet"),
 						_dbInspector.normalizeName("companyId"),
 						_dbInspector.normalizeName("Company"), companyId),
 					logEntry.getMessage());
@@ -119,12 +151,12 @@ public class OrphanReferencesDataCleanupUtilTest {
 	}
 
 	@Test
-	public void testCleanUpWithWhereClause() throws Exception {
+	public void testCleanUpTableWithWhereClause() throws Exception {
 		long companyId = RandomTestUtil.nextLong();
 		long ownerType1 = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
 		long ownerType2 = PortletKeys.PREFS_OWNER_TYPE_GROUP;
 
-		_test(
+		_testCleanUpTable(
 			logCapture -> {
 				List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -134,8 +166,9 @@ public class OrphanReferencesDataCleanupUtilTest {
 				LogEntry logEntry = logEntries.get(0);
 
 				Assert.assertEquals(
-					_getExpectedMessage(
-						2, _dbInspector.normalizeName("PortletPreferences"),
+					_getCleanUpTableExpectedMessage(
+						2, _dbInspector.normalizeName("ownerId"),
+						_dbInspector.normalizeName("PortletPreferences"),
 						_dbInspector.normalizeName("companyId"),
 						_dbInspector.normalizeName("Company"), companyId),
 					logEntry.getMessage());
@@ -177,21 +210,67 @@ public class OrphanReferencesDataCleanupUtilTest {
 			"companyId", "Company");
 	}
 
-	private String _getExpectedMessage(
-			long count, String sourceTableName, String targetColumn,
-			String targetTable, long targetValue)
+	@Test
+	public void testCleanUpTableWrongCompanyWithDatabasePartitionEnabled()
+		throws Exception {
+
+		Assume.assumeTrue(PropsValues.DATABASE_PARTITION_ENABLED);
+
+		long companyId = RandomTestUtil.nextLong();
+
+		_testCleanUpTable(
+			logCapture -> {
+				List<LogEntry> logEntries = logCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				Assert.assertEquals(
+					_getCleanUpTableExpectedMessage(
+						1, _dbInspector.normalizeName("companyId"),
+						_dbInspector.normalizeName("DLFileEntry"),
+						_dbInspector.normalizeName("companyId"),
+						_dbInspector.normalizeName("Company"), companyId),
+					logEntry.getMessage());
+			},
+			() -> {
+				_db.runSQL(
+					"delete from Company where companyId = " + companyId);
+				_db.runSQL(
+					_connection,
+					"delete from DLFileEntry where companyId = " + companyId);
+			},
+			() -> {
+				_db.runSQL(
+					StringBundler.concat(
+						"insert into Company (mvccVersion, companyId) values ",
+						"(0 ,", companyId, ")"));
+				_db.runSQL(
+					StringBundler.concat(
+						"insert into DLFileEntry (mvccVersion, ",
+						"ctCollectionId, fileEntryId, companyId) values (0, ",
+						"0,", RandomTestUtil.nextLong(), ", ", companyId, ")"));
+			},
+			null, "companyId", "DLFileEntry", "companyId", "Company");
+	}
+
+	private String _getCleanUpTableExpectedMessage(
+			long count, String sourceColumnName, String sourceTableName,
+			String targetColumnName, String targetTableName, long targetValue)
 		throws Exception {
 
 		return StringBundler.concat(
-			count, " orphan entries from table ",
-			_dbInspector.normalizeName(sourceTableName),
-			" have been deleted because value ", targetValue,
-			" was not found in the origin table ",
-			_dbInspector.normalizeName(targetTable), " and column ",
-			_dbInspector.normalizeName(targetColumn));
+			"Table ", _dbInspector.normalizeName(sourceTableName), ", ", count,
+			(count == 1) ? " row " : " rows ", "deleted because ",
+			_dbInspector.normalizeName(sourceColumnName), StringPool.SPACE,
+			targetValue, " was not found in column ",
+			_dbInspector.normalizeName(targetColumnName), " from table ",
+			_dbInspector.normalizeName(targetTableName));
 	}
 
-	private void _test(
+	private void _testCleanUpTable(
 			UnsafeConsumer<LogCapture, Exception> assertUnsafeConsumer,
 			UnsafeRunnable<Exception> cleanUpDataUnsafeRunnable,
 			UnsafeRunnable<Exception> initializeDataUnsafeRunnable,
@@ -210,7 +289,7 @@ public class OrphanReferencesDataCleanupUtilTest {
 				_connection, sourceAdditionalWhereClause,
 				_dbInspector.normalizeName(sourceColumnName),
 				_dbInspector.normalizeName(sourceTableName),
-				_dbInspector.normalizeName(targetColumnName),
+				new String[] {_dbInspector.normalizeName(targetColumnName)},
 				_dbInspector.normalizeName(targetTableName));
 
 			assertUnsafeConsumer.accept(logCapture);

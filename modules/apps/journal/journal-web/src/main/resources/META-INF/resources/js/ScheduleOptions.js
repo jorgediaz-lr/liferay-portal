@@ -52,6 +52,23 @@ export default function ScheduleOptions({
 				</label>
 
 				<ClayDatePicker
+					ariaLabels={{
+						buttonChooseDate: `${Liferay.Language.get(
+							'select-date'
+						)}`,
+						buttonDot: `${Liferay.Language.get(
+							'select-current-date'
+						)}`,
+						buttonNextMonth: `${Liferay.Language.get(
+							'select-next-month'
+						)}`,
+						buttonPreviousMonth: `${Liferay.Language.get(
+							'select-previous-month'
+						)}`,
+						dialog: `${Liferay.Language.get('select-date')}`,
+						selectMonth: `${Liferay.Language.get('select-a-month')}`,
+						selectYear: `${Liferay.Language.get('select-a-year')}`,
+					}}
 					firstDayOfWeek={dateUtils.getFirstDayOfWeek()}
 					id={`${portletNamespace}displayDatePicker`}
 					months={[
@@ -69,7 +86,7 @@ export default function ScheduleOptions({
 						`${Liferay.Language.get('december')}`,
 					]}
 					onChange={setDisplayDate}
-					placeholder="YYYY-MM-DD HH:mm"
+					placeholder={Liferay.Language.get('yyyy-mm-dd-hh-mm')}
 					required
 					time
 					timezone={timeZone.name}

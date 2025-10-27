@@ -5,9 +5,11 @@
 
 package com.liferay.site.cms.site.initializer.internal.fragment.renderer;
 
-import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.fragment.renderer.FragmentRenderer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -32,12 +34,13 @@ public class ViewSpaceMembersSummaryJSPSectionFragmentRenderer
 	}
 
 	@Override
-	protected Object getDisplayContext(HttpServletRequest httpServletRequest) {
+	protected Object getDisplayContext(HttpServletRequest httpServletRequest)
+		throws PortalException {
+
 		return new ViewSpaceMembersSummarySectionDisplayContext(
-			_depotEntryLocalService,
 			InfoItemUtil.getGroupId(httpServletRequest), _groupLocalService,
-			httpServletRequest, _language, _userGroupLocalService,
-			_userLocalService);
+			_groupModelResourcePermission, httpServletRequest, _language,
+			_userGroupLocalService, _userLocalService);
 	}
 
 	@Override
@@ -51,10 +54,12 @@ public class ViewSpaceMembersSummaryJSPSectionFragmentRenderer
 	}
 
 	@Reference
-	private DepotEntryLocalService _depotEntryLocalService;
-
-	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.Group)"
+	)
+	private ModelResourcePermission<Group> _groupModelResourcePermission;
 
 	@Reference
 	private Language _language;

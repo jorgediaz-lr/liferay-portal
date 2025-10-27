@@ -12,16 +12,27 @@ ViewRecycleBinSectionDisplayContext viewRecycleBinSectionDisplayContext = (ViewR
 %>
 
 <div class="cms-section custom-empty-state">
-	<frontend-data-set:headless-display
-		apiURL="<%= viewRecycleBinSectionDisplayContext.getAPIURL() %>"
-		emptyState="<%= viewRecycleBinSectionDisplayContext.getEmptyState() %>"
-		fdsActionDropdownItems="<%= viewRecycleBinSectionDisplayContext.getFDSActionDropdownItems() %>"
-		formName="fm"
-		id="<%= CMSSiteInitializerFDSNames.RECYCLE_BIN_SECTION %>"
-		itemsPerPage="<%= 20 %>"
-		propsTransformer="{RecycleBinFDSPropsTransformer} from site-cms-site-initializer"
-		selectedItemsKey="id"
-		selectionType="multiple"
-		style="fluid"
-	/>
-</div> </div>
+	<div class="recycle-bin-section">
+		<div>
+			<react:component
+				module="{RecycleBinToolbar} from site-cms-site-initializer"
+				props="<%= viewRecycleBinSectionDisplayContext.getBreadcrumbProps() %>"
+			/>
+		</div>
+
+		<frontend-data-set:headless-display
+			apiURL="<%= viewRecycleBinSectionDisplayContext.getAPIURL() %>"
+			bulkActionDropdownItems="<%= viewRecycleBinSectionDisplayContext.getBulkActionDropdownItems() %>"
+			emptyState="<%= viewRecycleBinSectionDisplayContext.getEmptyState() %>"
+			fdsActionDropdownItems="<%= viewRecycleBinSectionDisplayContext.getFDSActionDropdownItems() %>"
+			formName="fm"
+			id="<%= CMSSiteInitializerFDSNames.RECYCLE_BIN_SECTION %>"
+			itemsPerPage="<%= 20 %>"
+			propsTransformer="{RecycleBinFDSPropsTransformer} from site-cms-site-initializer"
+			selectedItemsKey="embedded.id"
+			selectionType="multiple"
+			showSelectAll="<%= true %>"
+			style="fluid"
+		/>
+	</div>
+</div>

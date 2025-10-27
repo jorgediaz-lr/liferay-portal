@@ -18,7 +18,7 @@ export const test = mergeTests(
 	apiHelpersTest,
 	dataApiHelpersTest,
 	featureFlagsTest({
-		'LPD-47858': {enabled: true},
+		'LPD-35914': {enabled: true},
 	}),
 	loginTest(),
 	usersAndOrganizationsPagesTest
@@ -260,5 +260,22 @@ test(
 				'Approved'
 			)
 		).toBeVisible();
+	}
+);
+
+test(
+	'Country and region should not be required for a default organization.',
+	{tag: '@LPD-63206'},
+	async ({editOrganizationPage, usersAndOrganizationsPage}) => {
+		await usersAndOrganizationsPage.goToOrganizations();
+
+		await usersAndOrganizationsPage.addOrganizationButton.click();
+
+		await expect(editOrganizationPage.countrySelect).not.toHaveAttribute(
+			'required'
+		);
+		await expect(editOrganizationPage.regionSelect).not.toHaveAttribute(
+			'required'
+		);
 	}
 );

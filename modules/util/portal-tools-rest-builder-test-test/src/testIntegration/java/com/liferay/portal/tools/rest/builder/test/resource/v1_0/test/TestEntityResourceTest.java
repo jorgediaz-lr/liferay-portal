@@ -261,6 +261,13 @@ public class TestEntityResourceTest extends BaseTestEntityResourceTestCase {
 	@Ignore
 	@Override
 	@Test
+	public void testPutTestEntityStatus() throws Exception {
+		super.testPutTestEntityStatus();
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testVulcanCRUDItemDelegateGetItem() throws Exception {
 		super.testVulcanCRUDItemDelegateGetItem();
 	}
@@ -293,6 +300,14 @@ public class TestEntityResourceTest extends BaseTestEntityResourceTestCase {
 		throws Exception {
 
 		return testGetTestEntitiesPage_addTestEntity(randomTestEntity());
+	}
+
+	@Override
+	protected TestEntity testGraphQLTestEntity_addTestEntity(
+			TestEntity testEntity)
+		throws Exception {
+
+		return testEntityResource.postTestEntity(testEntity);
 	}
 
 	@Override

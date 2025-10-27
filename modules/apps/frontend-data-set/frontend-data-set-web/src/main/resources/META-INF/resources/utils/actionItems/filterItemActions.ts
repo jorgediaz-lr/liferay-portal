@@ -3,9 +3,14 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {getObjectValueFromPath} from 'frontend-js-web';
+
 import {getLocalizedValue} from '../getLocalizedValue';
-import getSelectedItemValue from '../getSelectedItemValue';
-import {IItemActionsDataFilter, IItemsActions} from '../types';
+import {
+	EItemActionsType,
+	IItemActionsDataFilter,
+	IItemsActions,
+} from '../types';
 import {ACTION_ITEM_TARGETS} from './constants';
 
 const hasPermission = (action: IItemsActions, itemData: any): boolean => {
@@ -133,7 +138,7 @@ const filterItemActions = ({
 	const selectedItem =
 		selectedItemsValue?.length === 1 &&
 		!!selectedItemsValue?.includes(
-			getSelectedItemValue({item: itemData, path: selectedItemsKey})
+			getObjectValueFromPath({object: itemData, path: selectedItemsKey})
 		);
 
 	return actions
@@ -141,14 +146,33 @@ const filterItemActions = ({
 				.filter((action: IItemsActions) =>
 					isVisible(action, itemData, selectable)
 				)
-				.map((action: IItemsActions) =>
-					transformAction({
+				.map((action: IItemsActions) => {
+					const transformedAction = transformAction({
 						action,
 						infoPanelOpen,
 						itemData,
 						selectedItem,
-					})
-				)
+					});
+
+					if (
+						action.type === EItemActionsType.GROUP &&
+						action.items
+					) {
+						return {
+							...transformedAction,
+							items: filterItemActions({
+								actions: action.items,
+								infoPanelOpen,
+								itemData,
+								selectable,
+								selectedItemsKey,
+								selectedItemsValue,
+							}),
+						};
+					}
+
+					return transformedAction;
+				})
 		: [];
 };
 

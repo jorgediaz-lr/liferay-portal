@@ -8,16 +8,25 @@ import {Locator, Page} from '@playwright/test';
 import {EFDSVisualizationMode, waitForFDS} from '../../../../utils/waitFor';
 
 export class ItemSelectorSamplePage {
+	readonly fdsContentContainer: Locator;
 	readonly fragmentWidgetSearchInput: Locator;
+	readonly inputGroup: (label: string) => Locator;
 	readonly modal: {
 		cancelButton: Locator;
 		selectButton: Locator;
 	};
+	readonly multiselectGridItem: (name: string) => Locator;
 	readonly page: Page;
+	readonly filtersButton: Locator;
+	readonly jsUtilityButton: Locator;
 	readonly publishPageButton: Locator;
 	readonly samplePageHeader: Locator;
+	readonly selectCMSFileButton: Locator;
+	readonly selectCMSFileModalHeader: Locator;
 	readonly selectDocumentButton: Locator;
 	readonly selectDocumentModalHeader: Locator;
+	readonly selectUserButton: Locator;
+	readonly selectUserModalHeader: Locator;
 	readonly table: {
 		bodyRows: Locator;
 		container: Locator;
@@ -25,9 +34,14 @@ export class ItemSelectorSamplePage {
 	readonly visualizationModeSelector: Locator;
 
 	constructor(page: Page) {
+		this.fdsContentContainer = page.locator(
+			'.fds .data-set-content-wrapper'
+		);
 		this.fragmentWidgetSearchInput = page.getByLabel(
 			'Search Fragments and Widgets'
 		);
+		this.inputGroup = (label: string) =>
+			page.getByText(label).locator('..');
 		this.modal = {
 			cancelButton: page.getByRole('button', {
 				exact: true,
@@ -38,7 +52,19 @@ export class ItemSelectorSamplePage {
 				name: 'Select',
 			}),
 		};
+		this.multiselectGridItem = (name: string) =>
+			page.getByRole('gridcell', {
+				exact: true,
+				name,
+			});
 		this.page = page;
+		this.filtersButton = page.getByRole('button', {
+			name: 'Filter',
+		});
+		this.jsUtilityButton = page.getByRole('button', {
+			exact: true,
+			name: 'Open Modal With JS Utility',
+		});
 		this.publishPageButton = page.getByRole('button', {
 			name: 'Publish',
 		});
@@ -46,13 +72,29 @@ export class ItemSelectorSamplePage {
 			exact: true,
 			name: 'Item Selector Samples',
 		});
+		this.selectCMSFileButton = page.getByRole('button', {
+			exact: true,
+			name: 'Select CMS Files',
+		});
+		this.selectCMSFileModalHeader = page.getByRole('heading', {
+			exact: true,
+			name: 'Select Files',
+		});
 		this.selectDocumentButton = page.getByRole('button', {
 			exact: true,
-			name: 'Select Document',
+			name: 'Select Documents',
 		});
 		this.selectDocumentModalHeader = page.getByRole('heading', {
 			exact: true,
-			name: 'Select Document',
+			name: 'Select Documents',
+		});
+		this.selectUserButton = page.getByRole('button', {
+			exact: true,
+			name: 'Select User',
+		});
+		this.selectUserModalHeader = page.getByRole('heading', {
+			exact: true,
+			name: 'Select User',
 		});
 
 		const tableContainer = page.locator('.fds table');

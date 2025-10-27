@@ -152,7 +152,8 @@ public class GetCollectionFieldMVCResourceCommand
 				layoutObjectReference, listStyle, listItemStyle,
 				resourceResponse.getNamespace(), numberOfItems,
 				numberOfItemsPerPage, numberOfPages, paginationType,
-				segmentsExperienceId, templateKey);
+				themeDisplay.getScopeGroupId(), segmentsExperienceId,
+				templateKey);
 		}
 		catch (Exception exception) {
 			_log.error("Unable to get collection field", exception);
@@ -221,7 +222,7 @@ public class GetCollectionFieldMVCResourceCommand
 			String layoutObjectReference, String listStyle,
 			String listItemStyle, String namespace, int numberOfItems,
 			int numberOfItemsPerPage, int numberOfPages, String paginationType,
-			long segmentsExperienceId, String templateKey)
+			long scopeGroupId, long segmentsExperienceId, String templateKey)
 		throws PortalException {
 
 		JSONObject layoutObjectReferenceJSONObject =
@@ -312,6 +313,7 @@ public class GetCollectionFieldMVCResourceCommand
 			CollectionPaginationUtil.getPagination(
 				activePage, displayAllItems, numberOfItems,
 				numberOfItemsPerPage, paginationType));
+		defaultLayoutListRetrieverContext.setScopeGroupId(scopeGroupId);
 		defaultLayoutListRetrieverContext.setSegmentsEntryIds(
 			_filterSegmentsEntryIds(
 				layoutListRetriever, listObjectReference,
@@ -613,23 +615,27 @@ public class GetCollectionFieldMVCResourceCommand
 		InfoItemIdentifier infoItemIdentifier = null;
 		InfoItemObjectProvider<Object> infoItemObjectProvider = null;
 
-		if (Validator.isNotNull(externalReferenceCode)) {
-			infoItemIdentifier = new ERCInfoItemIdentifier(
-				externalReferenceCode);
-			infoItemObjectProvider =
-				(InfoItemObjectProvider<Object>)
-					_infoItemServiceRegistry.getFirstInfoItemService(
-						InfoItemObjectProvider.class, className,
-						ERCInfoItemIdentifier.INFO_ITEM_SERVICE_FILTER);
-		}
-
-		if ((infoItemObjectProvider == null) && (classPK > 0)) {
+		if (classPK > 0) {
 			infoItemIdentifier = new ClassPKInfoItemIdentifier(classPK);
 			infoItemObjectProvider =
 				(InfoItemObjectProvider<Object>)
 					_infoItemServiceRegistry.getFirstInfoItemService(
 						InfoItemObjectProvider.class, className,
 						ClassPKInfoItemIdentifier.INFO_ITEM_SERVICE_FILTER);
+		}
+
+		if ((infoItemObjectProvider == null) &&
+			Validator.isNotNull(externalReferenceCode)) {
+
+			infoItemIdentifier = new ERCInfoItemIdentifier(
+				externalReferenceCode,
+				ParamUtil.getString(
+					httpServletRequest, "scopeExternalReferenceCode", null));
+			infoItemObjectProvider =
+				(InfoItemObjectProvider<Object>)
+					_infoItemServiceRegistry.getFirstInfoItemService(
+						InfoItemObjectProvider.class, className,
+						ERCInfoItemIdentifier.INFO_ITEM_SERVICE_FILTER);
 		}
 
 		if (infoItemObjectProvider == null) {

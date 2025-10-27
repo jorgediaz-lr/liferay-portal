@@ -14,7 +14,6 @@ import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.db.partition.DBPartition;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.ServiceComponent;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -22,6 +21,8 @@ import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -67,7 +68,7 @@ public class PreupgradeVerifyDatabaseStateTest
 				connection, _TEST_SCHEMA_VERSION);
 		}
 
-		if (DBPartition.isPartitionEnabled()) {
+		if (PropsValues.DATABASE_PARTITION_ENABLED) {
 			_safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 				PortalInstancePool.getDefaultCompanyId());
 		}
@@ -83,6 +84,42 @@ public class PreupgradeVerifyDatabaseStateTest
 			if (_safeCloseable != null) {
 				_safeCloseable.close();
 			}
+		}
+	}
+
+	@Test
+	public void testVerifyPreupgradeIsCaseInsensitive() throws Exception {
+		ServiceComponent serviceComponent =
+			_serviceComponentLocalService.createServiceComponent(
+				RandomTestUtil.nextLong());
+
+		String tableName = "TestTable";
+
+		serviceComponent.setMvccVersion(0);
+		serviceComponent.setBuildNamespace("com.liferay.test.service.impl");
+		serviceComponent.setData(
+			StringBundler.concat(
+				"<![CDATA[create table ", StringUtil.toUpperCase(tableName),
+				" ("));
+
+		_serviceComponentLocalService.addServiceComponent(serviceComponent);
+
+		DB db = DBManagerUtil.getDB();
+
+		try {
+			db.runSQL(
+				"create table " + StringUtil.toLowerCase("testtable") +
+					"(id LONG)");
+
+			testVerify();
+		}
+		finally {
+			_serviceComponentLocalService.deleteServiceComponent(
+				serviceComponent);
+
+			db.runSQL(
+				"DROP_TABLE_IF_EXISTS(" + StringUtil.toLowerCase("testtable") +
+					")");
 		}
 	}
 
@@ -121,7 +158,7 @@ public class PreupgradeVerifyDatabaseStateTest
 
 	@Test
 	public void testVerifyPreupgradeMissingView() throws Exception {
-		Assume.assumeTrue(DBPartition.isPartitionEnabled());
+		Assume.assumeTrue(PropsValues.DATABASE_PARTITION_ENABLED);
 
 		_renameView("Release_", "Release_backup");
 

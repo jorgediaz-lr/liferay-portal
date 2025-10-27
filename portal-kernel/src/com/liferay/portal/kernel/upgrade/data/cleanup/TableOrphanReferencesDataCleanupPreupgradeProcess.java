@@ -9,7 +9,10 @@ import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.data.cleanup.util.OrphanReferencesDataCleanupUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringBundler;
+
+import java.util.List;
 
 /**
  * @author Luis Ortiz
@@ -31,9 +34,17 @@ public class TableOrphanReferencesDataCleanupPreupgradeProcess
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		List<String> excludedTableNames =
+			OrphanReferencesDataCleanupUtil.getNormalizedExcludedTableNames(
+				connection);
+
 		DBInspector dbInspector = new DBInspector(connection);
 
 		String sourceTableName = dbInspector.normalizeName(_sourceTableName);
+
+		if (excludedTableNames.contains(sourceTableName)) {
+			return;
+		}
 
 		if (!dbInspector.hasTable(sourceTableName)) {
 			if (_log.isDebugEnabled()) {
@@ -58,7 +69,11 @@ public class TableOrphanReferencesDataCleanupPreupgradeProcess
 
 		String targetTableName = dbInspector.normalizeName(_targetTableName);
 
-		if (!dbInspector.hasTable(targetTableName)) {
+		if (!dbInspector.hasTable(targetTableName) &&
+			!(PropsValues.DATABASE_PARTITION_ENABLED &&
+			  dbInspector.isControlTable(targetTableName) &&
+			  dbInspector.hasView(targetTableName))) {
+
 			if (_log.isDebugEnabled()) {
 				_log.debug("Table " + targetTableName + " does not exist");
 			}
@@ -81,7 +96,7 @@ public class TableOrphanReferencesDataCleanupPreupgradeProcess
 
 		OrphanReferencesDataCleanupUtil.cleanUpTable(
 			connection, _sourceAdditionalWhereClause, sourceColumnName,
-			sourceTableName, targetColumnName, targetTableName);
+			sourceTableName, new String[] {targetColumnName}, targetTableName);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

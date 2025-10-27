@@ -173,7 +173,7 @@ public abstract class BaseBuild implements Build {
 		List<String> badBuildURLs = new ArrayList<>();
 
 		for (Invocation invocation :
-				_invocations.subList(0, _invocations.size() - 2)) {
+				_invocations.subList(0, _invocations.size() - 1)) {
 
 			badBuildURLs.add(invocation.getBuildURL());
 		}
@@ -1300,7 +1300,7 @@ public abstract class BaseBuild implements Build {
 		String consoleText = getConsoleText();
 
 		for (String line : consoleText.split("\\n")) {
-			Matcher matcher = _testrayS3ObjectURLPattern.matcher(line);
+			Matcher matcher = _testrayCloudObjectURLPattern.matcher(line);
 
 			if (!matcher.find()) {
 				continue;
@@ -1528,6 +1528,17 @@ public abstract class BaseBuild implements Build {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isBuildCachingEnabled() {
+		Job job = getJob();
+
+		if (job == null) {
+			return false;
+		}
+
+		return job.isBuildCachingEnabled();
 	}
 
 	@Override
@@ -3048,6 +3059,9 @@ public abstract class BaseBuild implements Build {
 			JenkinsResultsParserUtil.redact(replaceBuildURL(content)));
 	}
 
+	protected static final String BAD_BUILD_URLS_PROPERTIES_KEY =
+		"bad-build-urls.properties";
+
 	protected static final String BUILD_URLS_PROPERTIES_KEY =
 		"build-urls.properties";
 
@@ -3057,13 +3071,13 @@ public abstract class BaseBuild implements Build {
 		"(?<baseJob>[^\\(]+)\\((?<branchName>[^\\)]+)\\)");
 	protected static final Pattern stopWatchPattern = Pattern.compile(
 		JenkinsResultsParserUtil.combine(
-			"\\s*(\\[beanshell\\])?\\s*\\[stopwatch\\]\\s*\\[(?<name>[^:]+): ",
-			"((?<minutes>\\d+):)?((?<seconds>\\d+))?\\.",
+			"\\s*(\\[(beanshell|exec)\\])?\\s*\\[stopwatch\\]\\s*",
+			"\\[(?<name>[^:]+): ((?<minutes>\\d+):)?((?<seconds>\\d+))?\\.",
 			"(?<milliseconds>\\d+) sec\\]"));
 	protected static final Pattern stopWatchStartTimestampPattern =
 		Pattern.compile(
 			JenkinsResultsParserUtil.combine(
-				"\\s*(\\[beanshell\\])?\\s*\\[echo\\] (?<name>.*)" +
+				"\\s*(\\[(beanshell|exec)\\])?\\s*\\[echo\\] (?<name>.*)" +
 					"\\.start\\.timestamp: (?<timestamp>.*)$"));
 	protected static final SimpleDateFormat stopWatchTimestampSimpleDateFormat =
 		new SimpleDateFormat("MM-dd-yyyy HH:mm:ss:SSS z");
@@ -3540,10 +3554,11 @@ public abstract class BaseBuild implements Build {
 			"\\w+://(?<cohortName>test-\\d+)(-(?<masterId>\\d+))?",
 			"(\\.liferay\\.com)?/+job\\/+(?<jobName>[^\\/]+).*\\/",
 			"buildWithParameters\\?(?<queryString>.*)"));
-	private static final Pattern _testrayS3ObjectURLPattern = Pattern.compile(
-		JenkinsResultsParserUtil.combine(
-			"\\[(beanshell|exec)\\] Created S3 Object (?<url>",
-			"https://storage.cloud.google.com/[^\\s?]+).*"));
+	private static final Pattern _testrayCloudObjectURLPattern =
+		Pattern.compile(
+			JenkinsResultsParserUtil.combine(
+				"\\[(beanshell|exec)\\] Created Cloud Object (?<url>",
+				"https://storage.cloud.google.com/[^\\s?]+).*"));
 
 	static {
 		Properties properties = null;

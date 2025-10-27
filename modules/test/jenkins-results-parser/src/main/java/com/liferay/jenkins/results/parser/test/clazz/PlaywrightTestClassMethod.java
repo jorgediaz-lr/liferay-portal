@@ -11,8 +11,6 @@ import com.liferay.jenkins.results.parser.TestClassReport;
 import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 
-import java.util.Objects;
-
 import org.json.JSONObject;
 
 /**
@@ -21,9 +19,7 @@ import org.json.JSONObject;
 public class PlaywrightTestClassMethod extends TestClassMethod {
 
 	public DownstreamBuildReport getCachedDownstreamBuildReport() {
-		if (JenkinsResultsParserUtil.isBuildCachingEnabled() &&
-			!_cachedTestReportSearched) {
-
+		if (isBuildCachingEnabled() && !_cachedTestReportSearched) {
 			getCachedTestReport();
 		}
 
@@ -31,48 +27,32 @@ public class PlaywrightTestClassMethod extends TestClassMethod {
 	}
 
 	public TestReport getCachedTestReport() {
-		if (!JenkinsResultsParserUtil.isBuildCachingEnabled() ||
-			_cachedTestReportSearched) {
-
+		if (!isBuildCachingEnabled() || _cachedTestReportSearched) {
 			return _cachedTestReport;
 		}
 
 		BatchTestClassGroup batchTestClassGroup =
 			_playwrightJUnitTestClass.getBatchTestClassGroup();
 
-		TestClassReport testClassReport = null;
+		TestClassReport testClassReport =
+			batchTestClassGroup.getCachedTestClassReport(
+				_playwrightJUnitTestClass.getSpecFilePath());
 
-		for (DownstreamBuildReport cachedDownstreamBuildReport :
-				batchTestClassGroup.getCachedDownstreamBuildReports()) {
+		if (testClassReport == null) {
+			return null;
+		}
 
-			for (TestClassReport cachedTestClassReport :
-					cachedDownstreamBuildReport.getTestClassReports()) {
+		for (TestReport testReport : testClassReport.getTestReports()) {
+			String fullTestName = JenkinsResultsParserUtil.combine(
+				testReport.getTestClassName(), " > ", testReport.getTestName());
 
-				if (Objects.equals(
-						_playwrightJUnitTestClass.getSpecFilePath(),
-						cachedTestClassReport.getTestClassName())) {
+			if (fullTestName.equals(getName())) {
+				_cachedDownstreamBuildReport =
+					testClassReport.getDownstreamBuildReport();
+				_cachedTestReport = testReport;
+				_cachedTestReportSearched = true;
 
-					testClassReport = cachedTestClassReport;
-				}
-			}
-
-			if (testClassReport == null) {
-				return null;
-			}
-
-			for (TestReport testReport : testClassReport.getTestReports()) {
-				String fullTestName = JenkinsResultsParserUtil.combine(
-					testReport.getTestClassName(), " > ",
-					testReport.getTestName());
-
-				if (fullTestName.equals(getName())) {
-					_cachedDownstreamBuildReport =
-						testClassReport.getDownstreamBuildReport();
-					_cachedTestReport = testReport;
-					_cachedTestReportSearched = true;
-
-					return _cachedTestReport;
-				}
+				return _cachedTestReport;
 			}
 		}
 

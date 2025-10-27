@@ -6,6 +6,7 @@
 package com.liferay.layout.page.template.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateCollectionTypeConstants;
@@ -28,9 +29,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -38,6 +41,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
@@ -247,7 +251,8 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 
 		DepotEntry depotEntry = _depotEntryLocalService.addDepotEntry(
 			RandomTestUtil.randomLocaleStringMap(),
-			RandomTestUtil.randomLocaleStringMap(), _serviceContext);
+			RandomTestUtil.randomLocaleStringMap(),
+			DepotConstants.TYPE_ASSET_LIBRARY, _serviceContext);
 
 		Group depotGroup = depotEntry.getGroup();
 
@@ -318,6 +323,7 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 	}
 
 	@Test
+	@TestInfo("LPD-67157")
 	public void testDeleteLayoutPageTemplateEntryByExternalReferenceCode()
 		throws Exception {
 
@@ -338,6 +344,17 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 		Assert.assertNull(
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
 				layoutPageTemplateEntry.getLayoutPageTemplateEntryId()));
+		Assert.assertNull(
+			_systemEventLocalService.fetchSystemEvent(
+				_group.getGroupId(), _portal.getClassNameId(Layout.class),
+				layoutPageTemplateEntry.getPlid(),
+				SystemEventConstants.TYPE_DELETE));
+		Assert.assertNotNull(
+			_systemEventLocalService.fetchSystemEvent(
+				_group.getGroupId(),
+				_portal.getClassNameId(LayoutPageTemplateEntry.class),
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+				SystemEventConstants.TYPE_DELETE));
 	}
 
 	@Test
@@ -571,15 +588,16 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 		Layout layout = _layoutLocalService.fetchLayout(
 			layoutPageTemplateEntry.getPlid());
 
-		_layoutLocalService.updateStyleBookEntryId(
+		_layoutLocalService.updateStyleBookEntryERC(
 			layout.getGroupId(), layout.isPrivateLayout(), layout.getLayoutId(),
-			styleBookEntry.getStyleBookEntryId());
+			styleBookEntry.getExternalReferenceCode());
 
 		Layout draftLayout = layout.fetchDraftLayout();
 
-		_layoutLocalService.updateStyleBookEntryId(
+		_layoutLocalService.updateStyleBookEntryERC(
 			draftLayout.getGroupId(), draftLayout.isPrivateLayout(),
-			draftLayout.getLayoutId(), styleBookEntry.getStyleBookEntryId());
+			draftLayout.getLayoutId(),
+			styleBookEntry.getExternalReferenceCode());
 
 		layoutPageTemplateEntry =
 			_layoutPageTemplateEntryLocalService.updateLayoutPageTemplateEntry(
@@ -593,7 +611,8 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 			masterLayoutPageTemplateEntry.getPlid(),
 			layout.getMasterLayoutPlid());
 		Assert.assertEquals(
-			styleBookEntry.getStyleBookEntryId(), layout.getStyleBookEntryId());
+			styleBookEntry.getExternalReferenceCode(),
+			layout.getStyleBookEntryERC());
 
 		draftLayout = layout.fetchDraftLayout();
 
@@ -601,8 +620,8 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 			masterLayoutPageTemplateEntry.getPlid(),
 			draftLayout.getMasterLayoutPlid());
 		Assert.assertEquals(
-			styleBookEntry.getStyleBookEntryId(),
-			draftLayout.getStyleBookEntryId());
+			styleBookEntry.getExternalReferenceCode(),
+			draftLayout.getStyleBookEntryERC());
 	}
 
 	private void _assertLayoutPageTemplateEntry(
@@ -750,9 +769,15 @@ public class LayoutPageTemplateEntryLocalServiceTest {
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
 
+	@Inject
+	private Portal _portal;
+
 	private ServiceContext _serviceContext;
 
 	@Inject
 	private StyleBookEntryLocalService _styleBookEntryLocalService;
+
+	@Inject
+	private SystemEventLocalService _systemEventLocalService;
 
 }

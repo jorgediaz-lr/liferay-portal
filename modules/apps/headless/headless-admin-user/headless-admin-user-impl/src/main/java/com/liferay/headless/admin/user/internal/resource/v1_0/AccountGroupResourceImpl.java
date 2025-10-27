@@ -29,7 +29,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -70,6 +69,7 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/account-group.properties",
+	property = "export.import.vulcan.batch.engine.task.item.delegate=true",
 	scope = ServiceScope.PROTOTYPE, service = AccountGroupResource.class
 )
 public class AccountGroupResourceImpl
@@ -203,24 +203,30 @@ public class AccountGroupResourceImpl
 	}
 
 	@Override
-	public List<String> getNestedFields() {
-		return List.of("accountBriefs");
-	}
+	public ExportImportDescriptor getExportImportDescriptor() {
+		return new ExportImportDescriptor() {
 
-	@Override
-	public String getPortletId() {
-		if (FeatureFlagManagerUtil.isEnabled(
-				CompanyConstants.SYSTEM, "LPD-35914")) {
+			@Override
+			public String getItemClassName() {
+				return com.liferay.account.model.AccountGroup.class.getName();
+			}
 
-			return AccountPortletKeys.ACCOUNT_GROUPS_ADMIN;
-		}
+			@Override
+			public List<String> getNestedFields() {
+				return List.of("accountBriefs", "creator");
+			}
 
-		return null;
-	}
+			@Override
+			public String getPortletId() {
+				return AccountPortletKeys.ACCOUNT_GROUPS_ADMIN;
+			}
 
-	@Override
-	public Scope getScope() {
-		return Scope.COMPANY;
+			@Override
+			public Scope getScope() {
+				return Scope.COMPANY;
+			}
+
+		};
 	}
 
 	@Override
@@ -333,7 +339,7 @@ public class AccountGroupResourceImpl
 
 		try {
 			AccountEntry accountEntry =
-				_accountEntryService.getOrAddIncompleteAccountEntry(
+				_accountEntryService.getOrAddEmptyAccountEntry(
 					externalReferenceCode, accountBrief.getName(), type);
 
 			_accountGroupRelService.addAccountGroupRel(
@@ -487,7 +493,7 @@ public class AccountGroupResourceImpl
 			com.liferay.account.model.AccountGroup serviceBuilderAccountGroup)
 		throws Exception {
 
-		if (!FeatureFlagManagerUtil.isEnabled("LPD-47858")) {
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-35914")) {
 			return serviceBuilderAccountGroup;
 		}
 

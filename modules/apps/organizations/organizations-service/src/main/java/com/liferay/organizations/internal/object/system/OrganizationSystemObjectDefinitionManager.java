@@ -16,6 +16,7 @@ import com.liferay.object.system.JaxRsApplicationDescriptor;
 import com.liferay.object.system.SystemObjectDefinitionManager;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.OrganizationTable;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.OrganizationService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -43,11 +45,12 @@ public class OrganizationSystemObjectDefinitionManager
 	extends BaseSystemObjectDefinitionManager {
 
 	@Override
-	public long addBaseModel(User user, Map<String, Object> values)
+	public long addBaseModel(
+			boolean checkPermissions, User user, Map<String, Object> values)
 		throws Exception {
 
 		OrganizationResource organizationResource = _buildOrganizationResource(
-			false, user);
+			checkPermissions, user);
 
 		Organization organization = organizationResource.postOrganization(
 			_toOrganization(values));
@@ -152,6 +155,15 @@ public class OrganizationSystemObjectDefinitionManager
 	}
 
 	@Override
+	public BaseModel<?> getOrAddEmptyBaseModel(
+			String externalReferenceCode, User user)
+		throws PortalException {
+
+		return _organizationService.getOrAddEmptyOrganization(
+			externalReferenceCode, StringPool.BLANK);
+	}
+
+	@Override
 	public Page<?> getPage(
 			User user, String search, Filter filter, Pagination pagination,
 			Sort[] sorts)
@@ -226,5 +238,8 @@ public class OrganizationSystemObjectDefinitionManager
 
 	@Reference
 	private OrganizationResource.Factory _organizationResourceFactory;
+
+	@Reference
+	private OrganizationService _organizationService;
 
 }

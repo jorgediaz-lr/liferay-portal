@@ -140,8 +140,7 @@ public class JiraService extends BaseService {
 
 	private String _getLiferayAuthorization() {
 		return _liferayOAuth2AccessTokenManager.getAuthorization(
-			"liferay-testray-etc-spring-boot-oauth-application-headless-" +
-				"server");
+			"liferay-testray-etc-spring-boot-oahs");
 	}
 
 	private String _getNestedKey(JSONObject jsonObject, String... keys) {
@@ -232,6 +231,15 @@ public class JiraService extends BaseService {
 		Map<String, String> map = _getParentIssuesMap(
 			_getNestedKey(jsonObject, "fields", "parent", "key"));
 
+		String issueType = StringUtil.removeSubstring(
+			StringUtil.upperCase(
+				_getNestedKey(jsonObject, "fields", "issuetype", "name")),
+			" ");
+
+		if (!ArrayUtil.contains(_ALLOWED_ISSUE_TYPES, issueType)) {
+			issueType = "UNDEFINED";
+		}
+
 		put(
 			_getLiferayAuthorization(),
 			new JSONObject(
@@ -239,12 +247,7 @@ public class JiraService extends BaseService {
 				"description",
 				_getNestedKey(jsonObject, "renderedFields", "description")
 			).put(
-				"issueType",
-				StringUtil.removeSubstring(
-					StringUtil.upperCase(
-						_getNestedKey(
-							jsonObject, "fields", "issuetype", "name")),
-					" ")
+				"issueType", issueType
 			).put(
 				"r_epic_c_jiraIssueERC", map.get("r_epic_c_jiraIssueERC")
 			).put(
@@ -277,6 +280,11 @@ public class JiraService extends BaseService {
 
 		return map;
 	}
+
+	private static final String[] _ALLOWED_ISSUE_TYPES = {
+		"BUG", "EPIC", "IMPEDIBUG", "INITIATIVE", "STORY", "TASK",
+		"TECHNICALTASK"
+	};
 
 	private static final Log _log = LogFactory.getLog(JiraService.class);
 

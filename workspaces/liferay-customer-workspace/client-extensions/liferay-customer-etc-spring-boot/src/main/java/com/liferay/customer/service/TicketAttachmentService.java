@@ -6,10 +6,16 @@
 package com.liferay.customer.service;
 
 import com.liferay.client.extension.util.spring.boot3.service.BaseService;
+import com.liferay.customer.exception.TicketAttachmentAlreadyApprovedException;
 import com.liferay.customer.exception.TicketAttachmentNotFoundException;
 import com.liferay.customer.model.TicketAttachment;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.net.URI;
+import java.net.URLEncoder;
+
+import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +91,13 @@ public class TicketAttachmentService extends BaseService {
 			String authorization, long ticketAttachmentId)
 		throws Exception {
 
+		TicketAttachment ticketAttachment = getTicketAttachment(
+			authorization, ticketAttachmentId);
+
+		if (ticketAttachment.isApproved()) {
+			throw new TicketAttachmentAlreadyApprovedException();
+		}
+
 		JSONObject requestJSONObject = new JSONObject();
 
 		JSONObject statusJSONObject = new JSONObject();
@@ -117,6 +130,48 @@ public class TicketAttachmentService extends BaseService {
 	}
 
 	public TicketAttachment fetchTicketAttachment(
+			String authorization, String fileName, String jiraIssueKey,
+			String md5Checksum)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(9);
+
+		sb.append("fileName eq '");
+		sb.append(fileName);
+		sb.append("'");
+
+		if (!md5Checksum.equals("")) {
+			sb.append(" and md5Checksum eq '");
+			sb.append(md5Checksum);
+			sb.append("'");
+		}
+
+		sb.append(" and jiraIssueKey eq '");
+		sb.append(jiraIssueKey);
+		sb.append("'");
+
+		String uriString =
+			"/o/c/ticketattachments?filter=" +
+				URLEncoder.encode(sb.toString(), StandardCharsets.UTF_8.name());
+
+		String response = get(authorization, new URI(uriString));
+
+		if (Validator.isNull(response)) {
+			return null;
+		}
+
+		JSONObject jsonObject = new JSONObject(response);
+
+		JSONArray jsonArray = jsonObject.getJSONArray("items");
+
+		if (jsonArray.length() > 0) {
+			return new TicketAttachment(jsonArray.getJSONObject(0));
+		}
+
+		return null;
+	}
+
+	public TicketAttachment getTicketAttachment(
 			String authorization, long ticketAttachmentId)
 		throws TicketAttachmentNotFoundException {
 
@@ -146,47 +201,35 @@ public class TicketAttachmentService extends BaseService {
 		}
 	}
 
-	public TicketAttachment fetchTicketAttachment(
-			String authorization, String fileName, String jiraIssueKey,
-			String md5Checksum)
-		throws Exception {
+	public TicketAttachment getTicketAttachment(
+			String authorization, String externalReferenceCode)
+		throws TicketAttachmentNotFoundException {
 
-		StringBundler sb = new StringBundler(7);
+		try {
+			JSONObject jsonObject = new JSONObject(
+				get(
+					authorization,
+					UriComponentsBuilder.fromPath(
+						"/o/c/ticketattachments/by-external-reference-code/" +
+							externalReferenceCode
+					).build(
+					).toUri()));
 
-		sb.append("fileName eq '");
-		sb.append(fileName);
+			if (jsonObject.isNull("id")) {
+				throw new TicketAttachmentNotFoundException();
+			}
 
-		if (!md5Checksum.equals("")) {
-			sb.append("' and md5Checksum eq '");
-			sb.append(md5Checksum);
+			return new TicketAttachment(jsonObject);
 		}
-
-		sb.append("' and jiraIssueKey eq '");
-		sb.append(jiraIssueKey);
-		sb.append("'");
-
-		String response = get(
-			authorization,
-			UriComponentsBuilder.fromPath(
-				"/o/c/ticketattachments"
-			).queryParam(
-				"filter", sb.toString()
-			).build(
-			).toUri());
-
-		if (Validator.isNull(response)) {
-			return null;
+		catch (HttpClientErrorException.NotFound httpClientErrorException) {
+			throw new TicketAttachmentNotFoundException(
+				httpClientErrorException);
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-		JSONObject jsonObject = new JSONObject(response);
-
-		JSONArray jsonArray = jsonObject.getJSONArray("items");
-
-		if (jsonArray.length() > 0) {
-			return new TicketAttachment(jsonArray.getJSONObject(0));
+			throw exception;
 		}
-
-		return null;
 	}
 
 	public List<TicketAttachment> search(

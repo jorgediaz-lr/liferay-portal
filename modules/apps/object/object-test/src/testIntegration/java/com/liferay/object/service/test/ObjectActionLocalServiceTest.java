@@ -48,6 +48,7 @@ import com.liferay.object.action.util.ObjectActionThreadLocal;
 import com.liferay.object.constants.ObjectActionConstants;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.constants.ObjectActionKeys;
+import com.liferay.object.constants.ObjectActionNameConstants;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectEntryFolderConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -59,6 +60,7 @@ import com.liferay.object.exception.ObjectActionNameException;
 import com.liferay.object.exception.ObjectActionParametersException;
 import com.liferay.object.exception.ObjectActionSystemException;
 import com.liferay.object.exception.ObjectActionTriggerKeyException;
+import com.liferay.object.field.builder.AssigneeObjectFieldBuilder;
 import com.liferay.object.field.builder.AutoIncrementObjectFieldBuilder;
 import com.liferay.object.field.builder.TextObjectFieldBuilder;
 import com.liferay.object.field.setting.builder.ObjectFieldSettingBuilder;
@@ -87,6 +89,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -98,6 +101,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.auth.CompanyInheritableThreadLocalCallable;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -224,7 +228,8 @@ public class ObjectActionLocalServiceTest {
 			_group.getGroupId(), _commerceCurrency.getCode());
 
 		_objectDefinition = ObjectDefinitionTestUtil.addCustomObjectDefinition(
-			false,
+			FeatureFlagManagerUtil.isEnabled(
+				TestPropsValues.getCompanyId(), "LPD-32050"),
 			Arrays.asList(
 				ObjectFieldUtil.createObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_DATE,
@@ -738,6 +743,7 @@ public class ObjectActionLocalServiceTest {
 
 			objectEntry = _objectEntryLocalService.partialUpdateObjectEntry(
 				TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+				objectEntry.getObjectEntryFolderId(),
 				HashMapBuilder.<String, Serializable>put(
 					"firstName", "João"
 				).put(
@@ -796,6 +802,7 @@ public class ObjectActionLocalServiceTest {
 
 			objectEntry = _objectEntryLocalService.partialUpdateObjectEntry(
 				TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+				objectEntry.getObjectEntryFolderId(),
 				HashMapBuilder.<String, Serializable>put(
 					"firstName", RandomTestUtil.randomString()
 				).build(),
@@ -863,6 +870,7 @@ public class ObjectActionLocalServiceTest {
 
 			_objectEntryLocalService.updateObjectEntry(
 				TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+				objectEntry.getObjectEntryFolderId(),
 				HashMapBuilder.<String, Serializable>put(
 					"firstName", "Peter"
 				).build(),
@@ -1786,7 +1794,9 @@ public class ObjectActionLocalServiceTest {
 					"usePreferredLanguageForGuests")));
 	}
 
-	@FeatureFlag("LPD-42577")
+	@FeatureFlags(
+		featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-32050")}
+	)
 	@Test
 	public void testAddOrUpdateSubscriptionObjectActions() throws Exception {
 		ObjectDefinition objectDefinition =
@@ -1804,18 +1814,21 @@ public class ObjectActionLocalServiceTest {
 			_objectActionLocalService.getObjectActions(
 				objectDefinition.getObjectDefinitionId());
 
-		Assert.assertEquals(objectActions.size(), 2, objectActions.size());
+		Assert.assertEquals(objectActions.size(), 3, objectActions.size());
 
+		_assertObjectAction(
+			true, "SubscriptionAdded",
+			"L_SUBSCRIPTION_ADDED_NOTIFICATION_TEMPLATE", objectActions.get(0));
 		_assertObjectAction(
 			true, "SubscriptionExpired",
 			"L_SUBSCRIPTION_EXPIRED_NOTIFICATION_TEMPLATE",
-			objectActions.get(0));
+			objectActions.get(1));
 		_assertObjectAction(
 			true, "SubscriptionUpdated",
 			"L_SUBSCRIPTION_UPDATED_NOTIFICATION_TEMPLATE",
-			objectActions.get(1));
+			objectActions.get(2));
 
-		_objectActionLocalService.deleteObjectAction(objectActions.get(1));
+		_objectActionLocalService.deleteObjectAction(objectActions.get(2));
 
 		objectDefinition.setEnableObjectEntrySubscription(false);
 
@@ -1828,9 +1841,10 @@ public class ObjectActionLocalServiceTest {
 		objectActions = _objectActionLocalService.getObjectActions(
 			objectDefinition.getObjectDefinitionId());
 
-		Assert.assertEquals(objectActions.size(), 1, objectActions.size());
+		Assert.assertEquals(objectActions.size(), 2, objectActions.size());
 
-		_assertObjectAction(false, "SubscriptionExpired", objectActions.get(0));
+		_assertObjectAction(false, "SubscriptionAdded", objectActions.get(0));
+		_assertObjectAction(false, "SubscriptionExpired", objectActions.get(1));
 
 		objectDefinition.setEnableObjectEntrySubscription(true);
 
@@ -1843,10 +1857,11 @@ public class ObjectActionLocalServiceTest {
 		objectActions = _objectActionLocalService.getObjectActions(
 			objectDefinition.getObjectDefinitionId());
 
-		Assert.assertEquals(objectActions.size(), 2, objectActions.size());
+		Assert.assertEquals(objectActions.size(), 3, objectActions.size());
 
-		_assertObjectAction(true, "SubscriptionExpired", objectActions.get(0));
-		_assertObjectAction(true, "SubscriptionUpdated", objectActions.get(1));
+		_assertObjectAction(true, "SubscriptionAdded", objectActions.get(0));
+		_assertObjectAction(true, "SubscriptionExpired", objectActions.get(1));
+		_assertObjectAction(true, "SubscriptionUpdated", objectActions.get(2));
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
 			objectDefinition.getObjectDefinitionId());
@@ -2005,11 +2020,132 @@ public class ObjectActionLocalServiceTest {
 	}
 
 	@Test
+	public void testExecuteObjectActionAfterUserLogin() throws Exception {
+		ObjectDefinition userObjectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinitionByClassName(
+				TestPropsValues.getCompanyId(), User.class.getName());
+
+		ObjectAction objectAction = _addObjectAction(
+			userObjectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_WEBHOOK,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_LOGIN,
+			UnicodePropertiesBuilder.put(
+				"secret", "onafterlogin"
+			).put(
+				"url", "https://onafterlogin.com"
+			).build());
+
+		Assert.assertEquals(0, _argumentsList.size());
+
+		int authResult = _userLocalService.authenticateByUserId(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			TestPropsValues.USER_PASSWORD, null, null, null);
+
+		Assert.assertEquals(Authenticator.SUCCESS, authResult);
+
+		Assert.assertEquals(1, _argumentsList.size());
+
+		Object[] arguments = _argumentsList.poll();
+
+		Http.Options options = (Http.Options)arguments[0];
+
+		Http.Body body = options.getBody();
+
+		JSONObject payloadJSONObject = _jsonFactory.createJSONObject(
+			body.getContent());
+
+		Assert.assertEquals(
+			ObjectActionTriggerConstants.KEY_ON_AFTER_LOGIN,
+			payloadJSONObject.getString("objectActionTriggerKey"));
+		Assert.assertEquals(
+			userObjectDefinition.getObjectDefinitionId(),
+			payloadJSONObject.getLong("objectDefinitionId"));
+
+		Assert.assertTrue(payloadJSONObject.has("modelUser"));
+
+		User user = _userLocalService.getUser(TestPropsValues.getUserId());
+
+		Assert.assertEquals(
+			user.getExternalReferenceCode(),
+			JSONUtil.getValue(
+				payloadJSONObject, "JSONObject/modelUser",
+				"Object/externalReferenceCode"));
+		Assert.assertEquals(
+			user.getFirstName(),
+			JSONUtil.getValue(
+				payloadJSONObject, "JSONObject/modelUser", "Object/firstName"));
+		Assert.assertEquals(
+			user.getLastName(),
+			JSONUtil.getValue(
+				payloadJSONObject, "JSONObject/modelUser", "Object/lastName"));
+
+		authResult = _userLocalService.authenticateByUserId(
+			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(),
+			RandomTestUtil.randomString(), null, null, null);
+
+		Assert.assertEquals(Authenticator.FAILURE, authResult);
+
+		Assert.assertEquals(0, _argumentsList.size());
+
+		_objectActionLocalService.deleteObjectAction(objectAction);
+	}
+
+	@Test
 	public void testExecuteObjectActionMultipleTimesInTheSameThread()
 		throws Exception {
 
 		_testExecuteObjectActionMultipleTimesInTheSameThreadWithACustomObjectDefinition();
 		_testExecuteObjectActionMultipleTimesInTheSameThreadWithASystemObjectDefinition();
+	}
+
+	@FeatureFlag("LPD-6233")
+	@Test
+	public void testExecuteObjectActionWithAssigneeObjectField()
+		throws Exception {
+
+		ObjectFieldUtil.addCustomObjectField(
+			new AssigneeObjectFieldBuilder(
+			).labelMap(
+				RandomTestUtil.randomLocaleStringMap()
+			).name(
+				"assignee"
+			).objectDefinitionId(
+				_objectDefinition.getObjectDefinitionId()
+			).userId(
+				TestPropsValues.getUserId()
+			).build());
+
+		_objectDefinition = _publishCustomObjectDefinition();
+
+		ObjectAction objectAction = _objectActionLocalService.fetchObjectAction(
+			_objectDefinition.getObjectDefinitionId(),
+			ObjectActionNameConstants.NAME_ASSIGN_TO_ME);
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			0, _objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "John"
+			).build());
+
+		User user = UserTestUtil.addUser();
+
+		_addModelResourcePermissions(
+			objectAction.getName(), objectEntry.getObjectEntryId(),
+			user.getUserId());
+
+		ObjectEntryResource objectEntryResource = _getObjectEntryResource(user);
+
+		objectEntryResource.putObjectEntryObjectActionObjectActionName(
+			objectEntry.getObjectEntryId(), objectAction.getName());
+
+		objectEntry = _objectEntryLocalService.fetchObjectEntry(
+			objectEntry.getObjectEntryId());
+
+		Map<String, Serializable> values = objectEntry.getValues();
+
+		Assert.assertEquals(
+			user.getUserId(),
+			MapUtil.getLong(
+				(Map<String, Long>)values.get("assignee"), "classPK"));
 	}
 
 	@Test
@@ -2118,6 +2254,7 @@ public class ObjectActionLocalServiceTest {
 
 		_objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntry.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", RandomTestUtil.randomString()
 			).build(),
@@ -2170,6 +2307,7 @@ public class ObjectActionLocalServiceTest {
 
 		_objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntry.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", "Paulo"
 			).build(),
@@ -2182,6 +2320,7 @@ public class ObjectActionLocalServiceTest {
 
 		_objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntry.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", RandomTestUtil.randomString()
 			).build(),
@@ -2241,7 +2380,7 @@ public class ObjectActionLocalServiceTest {
 				getSystemObjectDefinitionManager("User");
 
 		long userId = systemObjectDefinitionManager.addBaseModel(
-			TestPropsValues.getUser(),
+			false, TestPropsValues.getUser(),
 			HashMapBuilder.putAll(
 				values
 			).put(
@@ -2837,6 +2976,7 @@ public class ObjectActionLocalServiceTest {
 
 		objectEntry = _objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
+			objectEntry.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", RandomTestUtil.randomString()
 			).build(),
@@ -3795,6 +3935,7 @@ public class ObjectActionLocalServiceTest {
 
 		objectEntry5 = _objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry5.getObjectEntryId(),
+			objectEntry5.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", "John"
 			).put(
@@ -3809,6 +3950,7 @@ public class ObjectActionLocalServiceTest {
 
 		objectEntry6 = _objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry6.getObjectEntryId(),
+			objectEntry6.getObjectEntryFolderId(),
 			HashMapBuilder.<String, Serializable>put(
 				"firstName", "João"
 			).put(

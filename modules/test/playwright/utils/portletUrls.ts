@@ -14,13 +14,18 @@ export const PORTLET_URLS = {
 	bookmarks:
 		'/~/control_panel/manage?p_p_id=com_liferay_bookmarks_web_portlet_BookmarksAdminPortlet',
 	categoriesAdmin: '/~/control_panel/manage/-/categories_admin/vocabularies',
+	cms: 'web/cms/home',
+	cmsAll: 'web/cms/all',
+	cmsAllSpaces: 'web/cms/all-spaces',
 	cmsCategories: 'web/cms/categorization/view-categories',
 	cmsContents: 'web/cms/contents',
 	cmsEditCategory: 'web/cms/categorization/edit-category',
 	cmsFiles: 'web/cms/files',
+	cmsHome: 'web/cms/home',
 	cmsNewCategory: 'web/cms/categorization/new-category',
 	cmsNewVocabulary: 'web/cms/categorization/new-vocabulary',
 	cmsPicklistBuilder: 'web/cms/picklist-builder',
+	cmsRecycleBin: 'web/cms/recycle-bin',
 	cmsStructureBuilder: 'web/cms/structure-builder',
 	cmsStructures: 'web/cms/structures',
 	cmsTags: 'web/cms/categorization/view-tags',
@@ -97,6 +102,8 @@ export const PORTLET_URLS = {
 	staging:
 		'/~/control_panel/manage?p_p_id=com_liferay_staging_processes_web_portlet_StagingProcessesPortlet',
 	styleBooks: '/~/control_panel/manage/-/style_books/style_books',
+	systemBundleBlacklist:
+		'/group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_mvcRenderCommandName=%2Fconfiguration_admin%2Fedit_configuration&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_pid=com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration',
 	systemFeatureFlagBeta:
 		'/group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_mvcRenderCommandName=%2Fconfiguration_admin%2Fview_configuration_screen&_com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet_configurationScreenKey=feature.flag.1.beta.system',
 	systemFeatureFlagDeprecation:

@@ -27,7 +27,13 @@ export class InstanceSettingsPage {
 		await this.applicationsMenuPage.goToInstanceSettings(forceReload);
 	}
 
-	async checkSetting(options: {
+	async checkOption(label: string, checked: boolean) {
+		const checkbox = this.page.getByLabel(label).first();
+		await expect(checkbox).toBeVisible();
+		checked ? await checkbox.check() : await checkbox.uncheck();
+	}
+
+	async assertOptionVisible(options: {
 		customLocator?: Locator;
 		description?: string;
 		label?: string;

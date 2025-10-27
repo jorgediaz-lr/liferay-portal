@@ -117,11 +117,7 @@ import org.junit.runner.RunWith;
  * @author Petteri Karttunen
  * @author Almir Ferreira
  */
-@FeatureFlags(
-	featureFlags = {
-		@FeatureFlag(value = "LPD-11232"), @FeatureFlag(value = "LPS-179669")
-	}
-)
+@FeatureFlags(featureFlags = @FeatureFlag(value = "LPS-179669"))
 @RunWith(Arquillian.class)
 public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 
@@ -1557,8 +1553,8 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 	}
 
 	private static final String[] _IGNORED_ENTITY_FIELD_NAMES = {
-		"cmsKind", "cmsRoot", "cmsSection", "dateDisplay", "dateExpiration",
-		"datePublish", "dateReview", "folderId",
+		"cmsKind", "cmsRoot", "cmsSection", "extension", "dateDisplay",
+		"dateExpiration", "datePublish", "dateReview", "folderId",
 		"objectFolderExternalReferenceCode"
 	};
 

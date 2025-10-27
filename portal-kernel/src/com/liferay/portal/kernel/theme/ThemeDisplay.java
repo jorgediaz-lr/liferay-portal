@@ -13,6 +13,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.frontend.hashed.files.HashedFilesRegistryUtil;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -190,8 +191,22 @@ public class ThemeDisplay
 			return _clayCSSURL;
 		}
 
-		return PortalUtil.getStaticResourceURL(
-			getRequest(), getPathThemeCss() + "/clay.css");
+		String hashedFileURI = HashedFilesRegistryUtil.getHashedFileURI(
+			StringBundler.concat(
+				PortalUtil.getPathModule(), StringPool.SLASH,
+				_theme.getServletContextName(), _theme.getCssPath(),
+				PortalUtil.isRightToLeft(_httpServletRequest) ?
+					"/clay_rtl.css" : "/clay.css"));
+
+		if (Validator.isNotNull(hashedFileURI)) {
+			_clayCSSURL = hashedFileURI;
+		}
+		else {
+			_clayCSSURL = PortalUtil.getStaticResourceURL(
+				getRequest(), getPathThemeCss() + "/clay.css");
+		}
+
+		return _clayCSSURL;
 	}
 
 	public ColorScheme getColorScheme() {
@@ -557,8 +572,22 @@ public class ThemeDisplay
 			return _mainCSSURL;
 		}
 
-		return PortalUtil.getStaticResourceURL(
-			getRequest(), getPathThemeCss() + "/main.css");
+		String hashedFileURI = HashedFilesRegistryUtil.getHashedFileURI(
+			StringBundler.concat(
+				PortalUtil.getPathModule(), StringPool.SLASH,
+				_theme.getServletContextName(), _theme.getCssPath(),
+				PortalUtil.isRightToLeft(_httpServletRequest) ?
+					"/main_rtl.css" : "/main.css"));
+
+		if (Validator.isNotNull(hashedFileURI)) {
+			_mainCSSURL = hashedFileURI;
+		}
+		else {
+			_mainCSSURL = PortalUtil.getStaticResourceURL(
+				getRequest(), getPathThemeCss() + "/main.css");
+		}
+
+		return _mainCSSURL;
 	}
 
 	public String getMainJSURL() {
@@ -566,8 +595,21 @@ public class ThemeDisplay
 			return _mainJSURL;
 		}
 
-		return PortalUtil.getStaticResourceURL(
-			getRequest(), getPathThemeJavaScript() + "/main.js");
+		String hashedFileURI = HashedFilesRegistryUtil.getHashedFileURI(
+			StringBundler.concat(
+				PortalUtil.getPathModule(), StringPool.SLASH,
+				_theme.getServletContextName(), _theme.getJavaScriptPath(),
+				"/main.js"));
+
+		if (Validator.isNotNull(hashedFileURI)) {
+			_mainJSURL = hashedFileURI;
+		}
+		else {
+			_mainJSURL = PortalUtil.getStaticResourceURL(
+				getRequest(), getPathThemeJavaScript() + "/main.js");
+		}
+
+		return _mainJSURL;
 	}
 
 	public List<NavItem> getNavItems() throws PortalException {

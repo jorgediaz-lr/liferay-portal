@@ -67,7 +67,7 @@ public class PatcherFixBuildsDisplayContext {
 		return DropdownItemListBuilder.add(
 			() ->
 				Validator.isNotNull(patcherFix.getGitHash()) &&
-				JenkinsUtil.isValidJenkinsSetup() &&
+				JenkinsUtil.isValidJenkinsSetup(_themeDisplay.getCompanyId()) &&
 				JenkinsUtil.isValidSendDistJenkinsRequest(patcherBuild),
 			dropdownItem -> {
 				dropdownItem.putData("action", "submitForm");
@@ -140,13 +140,8 @@ public class PatcherFixBuildsDisplayContext {
 				String fileName = patcherBuild.getFileName();
 
 				String hotfixURL =
-					"https://releases-cdn.liferay.com/dxp/hotfix/" + fileName;
-
-				if (!fileName.contains("/liferay-dxp-")) {
-					hotfixURL =
-						_patcherConfiguration.patcherBuildDownloadURL() + "/" +
-							fileName;
-				}
+					_patcherConfiguration.patcherBuildDownloadURL() + "/" +
+						fileName;
 
 				dropdownItem.setHref(hotfixURL);
 

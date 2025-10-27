@@ -12,6 +12,7 @@
 			import {ObjectValidationRule} from './ObjectValidationRule';
 			import {ObjectView} from './ObjectView';
 			import {Status} from './Status';
+			import {WorkflowDefinitionLink} from './WorkflowDefinitionLink';
 
 /**
  * @author Javier Gamarra
@@ -30,6 +31,7 @@
 			"defaultLanguageId"?: string;
 			"enableCategorization"?: boolean;
 			"enableComments"?: boolean;
+			"enableFormContainer"?: boolean;
 			"enableFriendlyURLCustomization"?: boolean;
 			"enableIndexSearch"?: boolean;
 			"enableLocalization"?: boolean;
@@ -64,6 +66,7 @@
 			"storageType"?: string;
 			"system"?: boolean;
 			"titleObjectFieldName"?: string;
+			"workflowDefinitionLinks"?: Array<WorkflowDefinitionLink>;
 
 		static "discriminator": string | undefined = undefined;
 
@@ -125,6 +128,11 @@
 		{
 			baseName: "enableComments",
 			name: "enableComments",
+			type: "boolean",
+		},
+		{
+			baseName: "enableFormContainer",
+			name: "enableFormContainer",
 			type: "boolean",
 		},
 		{
@@ -296,6 +304,11 @@
 			baseName: "titleObjectFieldName",
 			name: "titleObjectFieldName",
 			type: "string",
+		},
+		{
+			baseName: "workflowDefinitionLinks",
+			name: "workflowDefinitionLinks",
+			type: "Array<WorkflowDefinitionLink>",
 		},
 		];
 

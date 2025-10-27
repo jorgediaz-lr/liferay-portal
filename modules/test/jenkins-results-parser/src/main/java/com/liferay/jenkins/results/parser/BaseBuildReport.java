@@ -116,7 +116,7 @@ public abstract class BaseBuildReport implements BuildReport {
 			return null;
 		}
 
-		return buildReportJSONObject.getString("result");
+		return buildReportJSONObject.optString("result");
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public abstract class BaseBuildReport implements BuildReport {
 	}
 
 	private static final Pattern _buildURLPattern = Pattern.compile(
-		"(?<jobURL>https?://(?<masterHostname>test-\\d+-\\d+)" +
+		"(?<jobURL>https?://(?<masterHostname>test-\\d+-\\d+(-aws)?)" +
 			"(\\.liferay\\.com)?/job/(?<jobName>[^/]+))" +
 				"(/AXIS_VARIABLE=(?<axisVariable>\\d+))?/(?<buildNumber>\\d+)");
 

@@ -9,6 +9,7 @@ import ClayLayout from '@clayui/layout';
 import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';
 import classNames from 'classnames';
+import {getObjectValueFromPath} from 'frontend-js-web';
 import React, {forwardRef, useContext} from 'react';
 
 import FrontendDataSetContext from '../../FrontendDataSetContext';
@@ -17,9 +18,7 @@ import ImageRenderer from '../../cell_renderers/ImageRenderer';
 import FDSDndProvider from '../../dnd/FDSDndProvider';
 import useFDSDrop from '../../dnd/useFDSDrop';
 import {getLocalizedValue} from '../../utils/getLocalizedValue';
-import getSelectedItemValue from '../../utils/getSelectedItemValue';
 import {
-	ESelectionTrigger,
 	IHeader,
 	IListSchema,
 	IListTitleRenderer,
@@ -58,11 +57,13 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 		{
 			className,
 			item,
+			items,
 			onItemSelectionChange,
 			schema,
 		}: {
 			className: string;
 			item: any;
+			items: any[];
 			onItemSelectionChange: Function;
 			schema: IListSchema;
 		},
@@ -70,7 +71,6 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 	) => {
 		const {
 			itemsActions,
-			onSelect,
 			selectable,
 			selectedItemsKey,
 			selectedItemsValue,
@@ -87,7 +87,10 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 		const SelectionInput =
 			selectionType === 'single' ? ClayRadio : ClayCheckbox;
 
-		const itemId = getSelectedItemValue({item, path: selectedItemsKey});
+		const itemId = getObjectValueFromPath({
+			object: item,
+			path: selectedItemsKey,
+		});
 
 		const props = {
 			className: classNames(className, {
@@ -98,11 +101,8 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 
 		return (
 			<ClayList.Item
-				{...{
-					...props,
-					...(activeView.setItemComponentProps?.({item, props}) ??
-						{}),
-				}}
+				{...props}
+				{...(activeView.setItemComponentProps?.({item, props}) ?? {})}
 				ref={ref}
 			>
 				{selectable && (
@@ -116,12 +116,7 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 									: false
 							}
 							onChange={() => {
-								onItemSelectionChange({
-									item,
-									trigger: ESelectionTrigger.INPUT,
-								});
-
-								onSelect?.({selectedItems: [item]});
+								onItemSelectionChange(item);
 							}}
 							value={itemId}
 						/>
@@ -153,12 +148,7 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 					expand
 					onClick={() => {
 						if (selectable) {
-							onItemSelectionChange({
-								item,
-								trigger: ESelectionTrigger.CONTAINER,
-							});
-
-							onSelect?.({selectedItems: [item]});
+							onItemSelectionChange(item, true);
 						}
 					}}
 				>
@@ -181,6 +171,7 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 							actions={itemsActions || item.actionDropdownItems}
 							itemData={item}
 							itemId={itemId}
+							items={items}
 							onItemSelectionChange={onItemSelectionChange}
 						/>
 					)}
@@ -192,10 +183,12 @@ const ListItem = forwardRef<HTMLLIElement, any>(
 
 const ListItemOptionalDropTarget = ({
 	item,
+	items,
 	onItemSelectionChange,
 	schema,
 }: {
 	item: any;
+	items: any[];
 	onItemSelectionChange: Function;
 	schema: IListSchema;
 }) => {
@@ -205,6 +198,7 @@ const ListItemOptionalDropTarget = ({
 		<ListItem
 			className={className}
 			item={item}
+			items={items}
 			onItemSelectionChange={onItemSelectionChange}
 			ref={dropRef}
 			schema={schema}
@@ -246,10 +240,11 @@ const List = ({
 					{items.map((item: any, index: number) => (
 						<ListItemOptionalDropTarget
 							item={item}
+							items={items}
 							key={
 								selectedItemsKey
-									? getSelectedItemValue({
-											item,
+									? getObjectValueFromPath({
+											object: item,
 											path: selectedItemsKey,
 										})
 									: index

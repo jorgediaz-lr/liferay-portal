@@ -232,25 +232,6 @@ public class JournalConverterImpl implements JournalConverter {
 		}
 	}
 
-	private void _addMissingFieldValues(
-		Field ddmField, String defaultLanguageId,
-		Set<String> missingLanguageIds) {
-
-		if (missingLanguageIds.isEmpty()) {
-			return;
-		}
-
-		Locale defaultLocale = LocaleUtil.fromLanguageId(defaultLanguageId);
-
-		Serializable fieldValue = ddmField.getValue(defaultLocale);
-
-		for (String missingLanguageId : missingLanguageIds) {
-			Locale missingLocale = LocaleUtil.fromLanguageId(missingLanguageId);
-
-			ddmField.setValue(missingLocale, fieldValue);
-		}
-	}
-
 	private void _addNestedDDMFields(
 			String[] availableLanguageIds, String defaultLanguageId,
 			Fields ddmFields, DDMFormField ddmFormField,
@@ -456,15 +437,6 @@ public class JournalConverterImpl implements JournalConverter {
 			ddmField.addValue(locale, serializable);
 		}
 
-		String type = ddmField.getType();
-
-		if (!StringUtil.equals(type, DDMFormFieldTypeConstants.RICH_TEXT) &&
-			!StringUtil.equals(type, DDMFormFieldTypeConstants.TEXT)) {
-
-			_addMissingFieldValues(
-				ddmField, defaultLanguageId, missingLanguageIds);
-		}
-
 		return ddmField;
 	}
 
@@ -655,6 +627,16 @@ public class JournalConverterImpl implements JournalConverter {
 						"option");
 
 					optionElement.addCDATA(jsonArray.getString(i));
+
+					Element optionReferenceElement =
+						dynamicContentElement.addElement("option-reference");
+
+					DDMFormFieldOptions ddmFormFieldOptions =
+						ddmFormField.getDDMFormFieldOptions();
+
+					optionReferenceElement.addCDATA(
+						ddmFormFieldOptions.getOptionReference(
+							jsonArray.getString(i)));
 				}
 			}
 			else {

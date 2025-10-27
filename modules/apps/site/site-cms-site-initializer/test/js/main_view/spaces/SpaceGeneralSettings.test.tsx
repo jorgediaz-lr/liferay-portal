@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 // eslint-disable-next-line
 import {checkAccessibility} from '@liferay/layout-js-components-web/test/__lib__/index';
@@ -35,6 +35,8 @@ const SPACE: Partial<Space> = {
 		logoColor: 'outline-2',
 		mimeTypeLimits: [{maximumSize: 1024, mimeType: 'application/json'}],
 		sharingEnabled: true,
+		trashEnabled: true,
+		trashEntriesMaxAge: 0,
 	},
 };
 
@@ -97,7 +99,7 @@ describe('SpaceGeneralSettings', () => {
 
 		expect(
 			screen.getByRole('checkbox', {
-				name: /enable-this-option-to-allow-users/,
+				name: /enable-sharing/,
 			})
 		).toBeChecked();
 
@@ -133,6 +135,11 @@ describe('SpaceGeneralSettings', () => {
 		await userEvent.clear(descriptionField);
 		await userEvent.type(descriptionField, 'My space description');
 
+		const ercField = screen.getByRole('textbox', {name: /erc/});
+
+		await userEvent.clear(ercField);
+		await userEvent.type(ercField, 'My New ERC');
+
 		await userEvent.click(
 			screen.getByRole('button', {
 				name: 'save',
@@ -147,7 +154,7 @@ describe('SpaceGeneralSettings', () => {
 				{
 					...space,
 					description: 'My space description',
-					externalReferenceCode,
+					externalReferenceCode: 'My New ERC',
 					name: 'My Space',
 				}
 			);

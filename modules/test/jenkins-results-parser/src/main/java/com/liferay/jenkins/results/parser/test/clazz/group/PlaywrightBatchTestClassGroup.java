@@ -13,14 +13,19 @@ import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 import com.liferay.jenkins.results.parser.test.batch.PlaywrightTestBatch;
 import com.liferay.jenkins.results.parser.test.batch.PlaywrightTestSelector;
+import com.liferay.jenkins.results.parser.test.clazz.PlaywrightJUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassFactory;
+import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import java.io.File;
 import java.io.IOException;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -99,6 +104,58 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		}
 
 		recordJobProperties(jobProperties);
+	}
+
+	public void writeTestCSVReportFile() throws Exception {
+		CSVReport csvReport = new CSVReport(
+			new CSVReport.Row(
+				"File Name", "Test Name", "Ignored", "File Path"));
+
+		for (PlaywrightJUnitTestClass playwrightJUnitTestClass :
+				TestClassFactory.getPlaywrightTestClasses()) {
+
+			File testClassFile = playwrightJUnitTestClass.getTestClassFile();
+
+			String testClassFileRelativePath =
+				JenkinsResultsParserUtil.getPathRelativeTo(
+					testClassFile,
+					portalGitWorkingDirectory.getWorkingDirectory());
+
+			List<TestClassMethod> testClassMethods =
+				playwrightJUnitTestClass.getTestClassMethods();
+
+			for (TestClassMethod testClassMethod : testClassMethods) {
+				CSVReport.Row csvReportRow = new CSVReport.Row();
+
+				csvReportRow.add(testClassFile.getName());
+				csvReportRow.add(testClassMethod.getName());
+
+				if (testClassMethod.isIgnored()) {
+					csvReportRow.add("TRUE");
+				}
+				else {
+					csvReportRow.add("");
+				}
+
+				csvReportRow.add(testClassFileRelativePath);
+
+				csvReport.addRow(csvReportRow);
+			}
+		}
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+		File csvReportFile = new File(
+			JenkinsResultsParserUtil.combine(
+				"Report_playwright_", simpleDateFormat.format(new Date()),
+				".csv"));
+
+		try {
+			JenkinsResultsParserUtil.write(csvReportFile, csvReport.toString());
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
 	}
 
 	protected PlaywrightBatchTestClassGroup(
@@ -340,43 +397,36 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 						playwrightSegmentTestClassGroup.addAxisTestClassGroup(
 							axisTestClassGroup);
 
-						synchronized (_loadedProjectNames) {
-							if (!_loadedProjectNames.contains(projectName) &&
-								(axisCount > 1)) {
+						if (axisCount > 1) {
+							StringBuilder sb = new StringBuilder();
 
-								_loadedProjectNames.add(projectName);
+							sb.append("npx playwright test --project=");
+							sb.append(projectName);
+							sb.append(" --shard=");
+							sb.append(axisIndex + 1);
+							sb.append("/");
+							sb.append(axisCount);
+							sb.append(" --list");
 
-								StringBuilder sb = new StringBuilder();
+							String result = _callNPMCommand(
+								getPlaywrightBaseDir(), sb.toString());
 
-								sb.append("npx playwright test --project=");
-								sb.append(projectName);
-								sb.append(" --shard=");
-								sb.append(axisIndex + 1);
-								sb.append("/");
-								sb.append(axisCount);
-								sb.append(" --list");
-
-								String result = _callNPMCommand(
-									getPlaywrightBaseDir(), sb.toString());
-
-								for (TestClass testClass : testClasses) {
-									if (result.contains(testClass.getName())) {
-										axisTestClassGroup.addTestClass(
-											testClass);
-									}
-								}
-							}
-							else {
-								for (TestClass testClass : testClasses) {
+							for (TestClass testClass : testClasses) {
+								if (result.contains(testClass.getName())) {
 									axisTestClassGroup.addTestClass(testClass);
 								}
 							}
-
-							addAxisTestClassGroup(axisTestClassGroup);
-
-							playwrightSegmentTestClassGroup.setSlaveLabel(
-								axisTestClassGroup.getSlaveLabel());
 						}
+						else {
+							for (TestClass testClass : testClasses) {
+								axisTestClassGroup.addTestClass(testClass);
+							}
+						}
+
+						addAxisTestClassGroup(axisTestClassGroup);
+
+						playwrightSegmentTestClassGroup.setSlaveLabel(
+							axisTestClassGroup.getSlaveLabel());
 					}
 				}
 
@@ -563,16 +613,14 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 	}
 
 	private List<TestClass> _getTestClasses(String projectName) {
-		List<TestClass> testClasses = new ArrayList<>();
-
 		JSONObject configJSONObject = _playwrightJSONObject.getJSONObject(
 			"config");
 
 		File rootDir = new File(configJSONObject.getString("rootDir"));
 
+		List<String> ignoredSpecTitles = new ArrayList<>();
 		Map<File, Set<String>> specTitlesMap = new HashMap<>();
-
-		Map<String, String> specTagsMap = new HashMap<>();
+		Map<String, String> specTitleTagsMap = new HashMap<>();
 
 		for (JSONObject specJSONObject : getSpecJSONObjects()) {
 			JSONArray testsJSONArray = specJSONObject.optJSONArray("tests");
@@ -619,12 +667,34 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 					tags.add(tagsJSONArray.optString(i));
 				}
 
-				specTagsMap.put(
+				specTitleTagsMap.put(
 					"tags", JenkinsResultsParserUtil.join(",", tags));
 			}
 
 			specTitlesMap.put(specFile, specTitles);
+
+			JSONArray annotationsJSONArray = testJSONObject.getJSONArray(
+				"annotations");
+
+			if (!annotationsJSONArray.isEmpty()) {
+				for (int i = 0; i < annotationsJSONArray.length(); i++) {
+					JSONObject annotationsJSONObject =
+						annotationsJSONArray.optJSONObject(i);
+
+					if (annotationsJSONObject == null) {
+						continue;
+					}
+
+					String testType = annotationsJSONObject.optString("type");
+
+					if (testType.equals("skip")) {
+						ignoredSpecTitles.add(title);
+					}
+				}
+			}
 		}
+
+		List<TestClass> testClasses = new ArrayList<>();
 
 		if (isRootCauseAnalysis()) {
 			String portalBatchTestSelector = System.getenv(
@@ -665,16 +735,18 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 				this, entry.getKey());
 
 			for (String specTitle : entry.getValue()) {
-				if (specTagsMap.containsKey(specTitle)) {
+				boolean ignored = ignoredSpecTitles.contains(specTitle);
+
+				if (specTitleTagsMap.containsKey(specTitle)) {
 					testClass.addTestClassMethod(
 						TestClassFactory.newTestClassMethod(
-							false, specTitle, specTagsMap.get(specTitle),
+							ignored, specTitle, specTitleTagsMap.get(specTitle),
 							testClass));
 				}
 				else {
 					testClass.addTestClassMethod(
 						TestClassFactory.newTestClassMethod(
-							false, specTitle, testClass));
+							ignored, specTitle, testClass));
 				}
 			}
 
@@ -793,20 +865,33 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 	}
 
 	private void _sendNotification(String message) {
+		String topLevelBuildURL = System.getenv("TOP_LEVEL_BUILD_URL");
+
+		if (!topLevelBuildURL.contains("(release)") ||
+			!topLevelBuildURL.contains(
+				"test-portal-acceptance-upstream-dxp(master)") ||
+			!topLevelBuildURL.contains(
+				"test-portal-testsuite-upstream(master)")) {
+
+			return;
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(message);
-		sb.append(" <@U04GTH03Q>, <@U01EV0V1Y6N>\n");
 
-		sb.append(System.getenv("TOP_LEVEL_BUILD_URL"));
+		if (topLevelBuildURL.contains("(release)")) {
+			sb.append(" <@U04HF3T8M>");
+		}
+
+		sb.append(" <@U01EV0V1Y6N>\n");
+		sb.append(topLevelBuildURL);
 
 		NotificationUtil.sendSlackNotification(
 			sb.toString(), "#ci-notifications", ":playwright:",
 			"Playwright batch creation failure", "Liferay Playwright");
 	}
 
-	private static final Set<String> _loadedProjectNames =
-		Collections.synchronizedSet(new HashSet<>());
 	private static final Pattern _playwrightFileNamePattern = Pattern.compile(
 		"tests/(?<filePath>(?<projectName>.+)/[^/]*.spec.ts)");
 	private static JSONObject _playwrightJSONObject;

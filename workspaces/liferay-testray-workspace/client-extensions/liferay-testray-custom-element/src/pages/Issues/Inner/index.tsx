@@ -13,7 +13,7 @@ import {TestrayBuild, TestrayJiraIssue} from '~/services/rest';
 import getJiraIconImage from '~/util/icons';
 
 type OutletContext = {
-	testrayBuild: TestrayBuild;
+	testrayBuild?: TestrayBuild;
 	testrayJiraIssue?: TestrayJiraIssue;
 };
 
@@ -42,7 +42,7 @@ const ChildIssues = () => {
 					display: {columns: true},
 					title: i18n.translate('jira-child-issues'),
 				}}
-				resource={`/testray-status-metrics/by-testray-jiraIssueId/${testrayJiraIssue?.id}/testray-issues-metrics?testrayBuildId=${testrayBuild.id}`}
+				resource={`/testray-status-metrics/by-testray-jiraIssueId/${testrayJiraIssue?.id}/testray-issues-metrics?testrayBuildId=${testrayBuild?.id}`}
 				tableProps={{
 					columns: [
 						{
@@ -87,56 +87,56 @@ const ChildIssues = () => {
 							value: i18n.translate('title'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'untested',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.untested,
 							value: i18n.translate('untested'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'in-progress',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.inProgress,
 							value: i18n.translate('in-progress'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'passed',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.passed,
 							value: i18n.translate('passed'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'failed',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.failed,
 							value: i18n.translate('failed'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'blocked',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.blocked,
 							value: i18n.translate('blocked'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'test-fix',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.testfix,
 							value: i18n.translate('test-fix'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'total',
 							render: (_, {testrayStatusMetric}) =>
 								testrayStatusMetric.total,
 							value: i18n.translate('total'),
 						},
 						{
-							clickable: true,
+							clickable,
 							key: 'testrayStatusMetric',
 							render: (testrayStatusMetric) => (
 								<ProgressBar

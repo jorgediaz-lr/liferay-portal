@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import {FormikHelpers, FormikTouched, useFormik} from 'formik';
 import {openToast, useId} from 'frontend-js-components-web';
 import {navigate, sub} from 'frontend-js-web';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {FieldText} from '../../common/components/forms';
 import {
@@ -49,7 +49,16 @@ export default function SpaceGeneralSettings({
 	setSpace?: React.Dispatch<React.SetStateAction<any>>;
 	space: Space;
 }) {
+	const [initialERC, setInitialERC] = useState(space.externalReferenceCode);
+
 	const id = useId();
+	const mimeTypeLimits = space.settings?.mimeTypeLimits;
+	const mimeTypeLimitsWithIds = mimeTypeLimits?.length
+		? mimeTypeLimits.map((limit) => ({
+				...limit,
+				id: limit.id ?? getRandomId(),
+			}))
+		: [getInitialMimeTypeLimit()];
 
 	const {
 		errors,
@@ -65,13 +74,15 @@ export default function SpaceGeneralSettings({
 	} = useFormik({
 		initialValues: {
 			description: space.description,
-			erc: space.externalReferenceCode,
+			erc: initialERC,
 			logoColor: space.settings?.logoColor as LogoColor,
-			mimeTypeLimits: space.settings?.mimeTypeLimits?.length
-				? space.settings?.mimeTypeLimits
-				: [getInitialMimeTypeLimit()],
+			mimeTypeLimits: mimeTypeLimitsWithIds,
 			name: space.name,
 			sharingEnabled: space.settings?.sharingEnabled ?? false,
+			trashEnabled: space.settings?.trashEnabled ?? true,
+			trashEntriesMaxAge: String(
+				space.settings?.trashEntriesMaxAge ?? ''
+			),
 		},
 		onSubmit: async (values) => {
 			const {
@@ -81,20 +92,24 @@ export default function SpaceGeneralSettings({
 				mimeTypeLimits,
 				name,
 				sharingEnabled,
+				trashEnabled,
+				trashEntriesMaxAge,
 			} = values;
 
-			const {data, error} = await SpaceService.updateSpace(erc, {
+			const {data, error} = await SpaceService.updateSpace(initialERC, {
 				description,
 				externalReferenceCode: erc,
 				name,
 				settings: {
 					logoColor,
 					mimeTypeLimits: mimeTypeLimits
-						.map(({id: _id, ...rest}) => rest)
+						?.map(({id: _id, ...rest}) => rest)
 						.filter((mimeTypeLimit) =>
 							Object.values(mimeTypeLimit).some((value) => value)
 						),
 					sharingEnabled,
+					trashEnabled,
+					trashEntriesMaxAge: Number(trashEntriesMaxAge),
 				},
 			});
 
@@ -115,8 +130,11 @@ export default function SpaceGeneralSettings({
 					type: 'success',
 				});
 
+				const updatedSpace = data as Space;
+
 				if (setSpace) {
-					setSpace(data);
+					setSpace(updatedSpace);
+					setInitialERC(updatedSpace.externalReferenceCode);
 				}
 			}
 		},
@@ -131,6 +149,9 @@ export default function SpaceGeneralSettings({
 						invalidCharacters(['*']),
 						maxLength(150),
 					],
+					trashEntriesMaxAge: values.trashEnabled
+						? [required, validNumber]
+						: [],
 				},
 				values,
 				errors
@@ -205,17 +226,22 @@ export default function SpaceGeneralSettings({
 			</SpacePanel>
 
 			<SpacePanel title={Liferay.Language.get('sharing')}>
-				<ClayForm.Group>
-					<ClayCheckbox
-						checked={values.sharingEnabled}
-						label={Liferay.Language.get(
+				<>
+					<p className="mb-4">
+						{Liferay.Language.get(
 							'enable-this-option-to-allow-users-to-share-items-with-other-users'
 						)}
-						onChange={({target: {checked}}) =>
-							setFieldValue('sharingEnabled', checked)
-						}
-					/>
-				</ClayForm.Group>
+					</p>
+					<ClayForm.Group>
+						<ClayCheckbox
+							checked={values.sharingEnabled}
+							label={Liferay.Language.get('enable-sharing')}
+							onChange={({target: {checked}}) =>
+								setFieldValue('sharingEnabled', checked)
+							}
+						/>
+					</ClayForm.Group>
+				</>
 			</SpacePanel>
 
 			<SpacePanel title={Liferay.Language.get('mime-type-limit')}>
@@ -229,6 +255,48 @@ export default function SpaceGeneralSettings({
 					setTouched={setTouched}
 					touched={touched}
 				/>
+			</SpacePanel>
+
+			<SpacePanel title={Liferay.Language.get('recycle-bin')}>
+				<>
+					<p className="mb-4">
+						{Liferay.Language.get(
+							'enable-this-option-to-allow-users-to-move-assets-into-recycle-bin'
+						)}
+					</p>
+
+					<ClayForm.Group>
+						<ClayCheckbox
+							checked={values.trashEnabled}
+							label={Liferay.Language.get('enable-recycle-bin')}
+							onChange={({target: {checked}}) =>
+								setFieldValue('trashEnabled', checked)
+							}
+						/>
+					</ClayForm.Group>
+
+					{values.trashEnabled && (
+						<FieldText
+							errorMessage={
+								touched.trashEntriesMaxAge
+									? (errors?.trashEntriesMaxAge as string)
+									: undefined
+							}
+							formGroupProps={{className: 'col-12 col-sm-6 p-0'}}
+							helpIcon={Liferay.Language.get(
+								'trash-entries-max-age-in-days-help'
+							)}
+							label={Liferay.Language.get(
+								'trash-entries-max-age'
+							)}
+							name="trashEntriesMaxAge"
+							onBlur={handleBlur}
+							onChange={handleChange}
+							type="number"
+							value={String(values.trashEntriesMaxAge ?? '')}
+						/>
+					)}
+				</>
 			</SpacePanel>
 
 			<ClayButton.Group className="mt-2" spaced>

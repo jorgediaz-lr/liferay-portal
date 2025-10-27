@@ -10,9 +10,14 @@ import ClayList from '@clayui/list';
 import {useModal} from '@clayui/modal';
 import ClaySticker from '@clayui/sticker';
 import {IFrontendDataSetProps} from '@liferay/frontend-data-set-web';
-import {ItemSelector, ItemSelectorModal} from 'frontend-js-item-selector-web';
+import {
+	ItemSelector,
+	ItemSelectorModal,
+	openItemSelectorModal,
+} from '@liferay/frontend-js-item-selector-web';
 import React, {useState} from 'react';
 
+import CMSFilesItemSelectorModal from './CMSFilesItemSelectorModal';
 import {
 	assetLibraryViews,
 	documentViews,
@@ -52,6 +57,11 @@ type Document = {
 	title: string;
 };
 
+type CMSFile = {
+	id: number;
+	title: string;
+};
+
 type Space = {
 	id: number;
 	name: string;
@@ -76,26 +86,34 @@ const FDS_DEFAULT_PROPS: Partial<IFrontendDataSetProps> = {
 
 const assetLibrariesItemSelectorConfig = {
 	apiURL: `${location.origin}/o/headless-asset-library/v1.0/asset-libraries`,
-	itemNameLocator: 'name',
-	type: Liferay.Language.get('space'),
+	itemTypeLabel: Liferay.Language.get('space'),
+	locator: {
+		id: 'id',
+		label: 'name',
+		value: 'id',
+	},
 	views: assetLibraryViews,
 };
 
 const documentsItemSelectorConfig = {
 	apiURL: `${location.origin}/o/headless-delivery/v1.0/sites/${Liferay.ThemeDisplay.getSiteGroupId()}/documents`,
-	itemNameLocator: 'fileName',
-	type: Liferay.Language.get('document'),
+	itemTypeLabel: Liferay.Language.get('documents'),
+	locator: {
+		id: 'id',
+		label: 'fileName',
+		value: 'id',
+	},
 	views: documentViews,
 };
 
 const userAccountsItemSelectorConfig = {
 	apiURL: `${location.origin}/o/headless-admin-user/v1.0/user-accounts`,
-	itemNameLocator: (item: User) =>
-		item.givenName +
-		' (' +
-		item.roleBriefs?.map((role) => role.name).join(', ') +
-		')',
-	type: Liferay.Language.get('user'),
+	itemTypeLabel: Liferay.Language.get('user'),
+	locator: {
+		id: 'id',
+		label: 'givenName',
+		value: 'id',
+	},
 	views: userViews,
 };
 
@@ -107,14 +125,24 @@ export default function ItemSelectorSamples() {
 	const [documents, setDocuments] = useState<Document[]>([]);
 	const [space, setSpace] = useState<Space>();
 
-	const [space2, setSpace2] = useState<Space | null>();
-	const [document, setDocument] = useState<Document | null>();
-	const [user, setUser] = useState<User | null>();
+	const [cmsFiles, setCMSFiles] = useState<CMSFile[]>([]);
+	const [documentsItemSelectorModal, setDocumentsItemSelectorModal] =
+		useState<Document[]>([]);
+	const [spacesItemSelectorModal, setSpacesItemSelectorModal] = useState<
+		Space[]
+	>([]);
+	const [usersItemSelectorModal, setUsersItemSelectorModal] = useState<
+		User[]
+	>([]);
+	const [user2, setUser2] = useState<User | null>();
+	const [space3, setSpace3] = useState<Space | null>();
+	const [spacesMultiSelect, setSpacesMultiSelect] = useState<Space[]>([]);
+	const [usersMultiSelect, setUsersMultiSelect] = useState<User[]>([]);
 
 	const {
-		observer: fileItemSelectorObserver,
-		onOpenChange: fileItemSelectorOpenChange,
-		open: fileItemSelectorOpen,
+		observer: documentItemSelectorObserver,
+		onOpenChange: documentItemSelectorOpenChange,
+		open: documentItemSelectorOpen,
 	} = useModal();
 	const {
 		observer: spaceItemSelectorObserver,
@@ -125,6 +153,11 @@ export default function ItemSelectorSamples() {
 		observer: userItemSelectorObserver,
 		onOpenChange: userItemSelectorOpenChange,
 		open: userItemSelectorOpen,
+	} = useModal();
+	const {
+		observer: cmsFilesItemSelectorObserver,
+		onOpenChange: cmsFilesItemSelectorOpenChange,
+		open: cmsFilesItemSelectorOpen,
 	} = useModal();
 
 	return (
@@ -163,7 +196,7 @@ export default function ItemSelectorSamples() {
 							apiURL={`${location.origin}/o/headless-asset-library/v1.0/asset-libraries`}
 							as={ClayInput}
 							items={space ? [space] : []}
-							onItemsChange={(items: Array<Space>) => {
+							onItemsChange={(items: Space[]) => {
 								if (items.length) {
 									setSpace(items[0]);
 								}
@@ -228,13 +261,147 @@ export default function ItemSelectorSamples() {
 				</ItemSelector>
 			</SampleContainer>
 
+			<SampleContainer label="Single Select (Users) - Open Modal Trigger">
+				<ItemSelector
+					apiURL={userAccountsItemSelectorConfig.apiURL}
+					itemSelectorModalProps={{
+						fdsProps: {
+							...FDS_DEFAULT_PROPS,
+							id: `itemSelectorModal-users-${getRandomId()}`,
+							views: getDefaultItemSelectorModalViews({
+								viewsConfig:
+									EItemSelectorModalViewsConfig.USER_ACCOUNTS,
+							}),
+						},
+						itemTypeLabel:
+							userAccountsItemSelectorConfig.itemTypeLabel,
+					}}
+					items={user2 ? [user2] : []}
+					locator={{
+						id: 'id',
+						label: 'name',
+						value: 'id',
+					}}
+					onItemsChange={(items: User[]) => setUser2(items[0])}
+					placeholder="Select a User"
+				>
+					{(item) => (
+						<ItemSelector.Item key={item.id} textValue={item.name}>
+							{item.name}
+						</ItemSelector.Item>
+					)}
+				</ItemSelector>
+			</SampleContainer>
+
+			<SampleContainer label="Multiple Select (Users) - Open Modal Trigger">
+				<ItemSelector
+					apiURL={userAccountsItemSelectorConfig.apiURL}
+					itemSelectorModalProps={{
+						fdsProps: {
+							...FDS_DEFAULT_PROPS,
+							id: `itemSelectorModal-documents-${getRandomId()}`,
+							views: getDefaultItemSelectorModalViews({
+								viewsConfig:
+									EItemSelectorModalViewsConfig.USER_ACCOUNTS,
+							}),
+						},
+						itemTypeLabel:
+							userAccountsItemSelectorConfig.itemTypeLabel,
+					}}
+					items={usersMultiSelect}
+					locator={{
+						id: 'id',
+						label: 'name',
+						value: 'id',
+					}}
+					multiSelect
+					onItemsChange={(items: User[]) => {
+						setUsersMultiSelect(items);
+					}}
+					placeholder="Select a User"
+				>
+					{(item) => (
+						<ItemSelector.Item key={item.id} textValue={item.name}>
+							{item.name}
+						</ItemSelector.Item>
+					)}
+				</ItemSelector>
+			</SampleContainer>
+
+			<SampleContainer label="Single Select (Spaces) - Open Modal Trigger">
+				<ItemSelector
+					apiURL={`${location.origin}/o/headless-asset-library/v1.0/asset-libraries`}
+					itemSelectorModalProps={{
+						fdsProps: {
+							...FDS_DEFAULT_PROPS,
+							id: `itemSelectorModal-spaces-${getRandomId()}`,
+							views: getDefaultItemSelectorModalViews({
+								viewsConfig:
+									EItemSelectorModalViewsConfig.ASSET_LIBRARIES,
+							}),
+						},
+						itemTypeLabel:
+							assetLibrariesItemSelectorConfig.itemTypeLabel,
+					}}
+					items={space3 ? [space3] : []}
+					locator={{
+						id: 'id',
+						label: 'name',
+						value: 'id',
+					}}
+					onItemsChange={(items: Space[]) => setSpace3(items[0])}
+					placeholder="Select a Space"
+				>
+					{(item) => (
+						<ItemSelector.Item key={item.id} textValue={item.name}>
+							{item.name}
+						</ItemSelector.Item>
+					)}
+				</ItemSelector>
+			</SampleContainer>
+
+			<SampleContainer label="Multiple Select (Spaces) - Open Modal Trigger">
+				<ItemSelector
+					apiURL={`${location.origin}/o/headless-asset-library/v1.0/asset-libraries`}
+					itemSelectorModalProps={{
+						fdsProps: {
+							...FDS_DEFAULT_PROPS,
+							id: `itemSelectorModal-spaces-${getRandomId()}`,
+							views: getDefaultItemSelectorModalViews({
+								viewsConfig:
+									EItemSelectorModalViewsConfig.ASSET_LIBRARIES,
+							}),
+						},
+						itemTypeLabel:
+							assetLibrariesItemSelectorConfig.itemTypeLabel,
+					}}
+					items={spacesMultiSelect}
+					locator={{
+						id: 'id',
+						label: 'name',
+						value: 'id',
+					}}
+					multiSelect
+					onItemsChange={(items: Space[]) => {
+						setSpacesMultiSelect(items);
+					}}
+					placeholder="Select a Space"
+				>
+					{(item) => (
+						<ItemSelector.Item key={item.id} textValue={item.name}>
+							{item.name}
+						</ItemSelector.Item>
+					)}
+				</ItemSelector>
+			</SampleContainer>
+
 			<SampleContainer label="Multiple Select (Documents) - Custom Selected Items List">
 				<ItemSelector<Document>
 					apiURL={`${location.origin}/o/headless-delivery/v1.0/sites/${Liferay.ThemeDisplay.getSiteGroupId()}/documents`}
 					displaySelectedItems={false}
 					items={documents}
 					multiSelect
-					onItemsChange={(items: Array<Document>) => {
+					onItemsChange={(items: Document[]) => {
 						setDocuments(items);
 					}}
 					placeholder="Select a Document"
@@ -296,77 +463,93 @@ export default function ItemSelectorSamples() {
 			</SampleContainer>
 
 			<SampleContainer label="Item Selector Modal">
-				<ItemSelectorModal<Document>
-					{...{
-						fdsProps: {
-							...FDS_DEFAULT_PROPS,
-							apiURL: documentsItemSelectorConfig.apiURL,
-							id: `itemSelectorModal-documents-${getRandomId()}`,
-							views: getDefaultItemSelectorModalViews({
-								viewsConfig:
-									EItemSelectorModalViewsConfig.DOCUMENTS,
-							}),
-						},
-						itemNameLocator:
-							documentsItemSelectorConfig.itemNameLocator,
-						observer: fileItemSelectorObserver,
-						onOpenChange: fileItemSelectorOpenChange,
-						onSelection: setDocument,
-						open: fileItemSelectorOpen,
-						type: documentsItemSelectorConfig.type,
+				<CMSFilesItemSelectorModal
+					items={cmsFiles}
+					multiSelect
+					observer={cmsFilesItemSelectorObserver}
+					onItemsChange={(items: any) => {
+						setCMSFiles(items);
 					}}
+					onOpenChange={cmsFilesItemSelectorOpenChange}
+					open={cmsFilesItemSelectorOpen}
+				/>
+
+				<ItemSelectorModal<Document>
+					apiURL={documentsItemSelectorConfig.apiURL}
+					createItemURL={Liferay.ThemeDisplay.getPortalURL()}
+					fdsProps={{
+						...FDS_DEFAULT_PROPS,
+						id: `itemSelectorModal-documents-${getRandomId()}`,
+						views: getDefaultItemSelectorModalViews({
+							viewsConfig:
+								EItemSelectorModalViewsConfig.DOCUMENTS,
+						}),
+					}}
+					itemTypeLabel={documentsItemSelectorConfig.itemTypeLabel}
+					items={documentsItemSelectorModal}
+					locator={documentsItemSelectorConfig.locator}
+					multiSelect
+					observer={documentItemSelectorObserver}
+					onItemsChange={(items: Document[]) => {
+						setDocumentsItemSelectorModal(items);
+					}}
+					onOpenChange={documentItemSelectorOpenChange}
+					open={documentItemSelectorOpen}
 				/>
 
 				<ItemSelectorModal<Space>
-					{...{
-						fdsProps: {
-							...FDS_DEFAULT_PROPS,
-							apiURL: assetLibrariesItemSelectorConfig.apiURL,
-							id: `itemSelectorModal-assets-${getRandomId()}`,
-							views: getDefaultItemSelectorModalViews({
-								viewsConfig:
-									EItemSelectorModalViewsConfig.ASSET_LIBRARIES,
-							}),
-						},
-						itemNameLocator:
-							assetLibrariesItemSelectorConfig.itemNameLocator,
-						observer: spaceItemSelectorObserver,
-						onOpenChange: spaceItemSelectorOpenChange,
-						onSelection: setSpace2,
-						open: spaceItemSelectorOpen,
-						type: assetLibrariesItemSelectorConfig.type,
+					apiURL={assetLibrariesItemSelectorConfig.apiURL}
+					fdsProps={{
+						...FDS_DEFAULT_PROPS,
+						id: `itemSelectorModal-assets-${getRandomId()}`,
+						views: getDefaultItemSelectorModalViews({
+							viewsConfig:
+								EItemSelectorModalViewsConfig.ASSET_LIBRARIES,
+						}),
 					}}
+					itemTypeLabel={
+						assetLibrariesItemSelectorConfig.itemTypeLabel
+					}
+					items={spacesItemSelectorModal}
+					locator={assetLibrariesItemSelectorConfig.locator}
+					observer={spaceItemSelectorObserver}
+					onItemsChange={(items: Space[]) => {
+						setSpacesItemSelectorModal(items);
+					}}
+					onOpenChange={spaceItemSelectorOpenChange}
+					open={spaceItemSelectorOpen}
 				/>
 
 				<ItemSelectorModal<User>
-					{...{
-						fdsProps: {
-							...FDS_DEFAULT_PROPS,
-							apiURL: userAccountsItemSelectorConfig.apiURL,
-							id: `itemSelectorModal-users-${getRandomId()}`,
-							views: getDefaultItemSelectorModalViews({
-								viewsConfig:
-									EItemSelectorModalViewsConfig.USER_ACCOUNTS,
-							}),
-						},
-						itemNameLocator:
-							userAccountsItemSelectorConfig.itemNameLocator,
-						observer: userItemSelectorObserver,
-						onOpenChange: userItemSelectorOpenChange,
-						onSelection: setUser,
-						open: userItemSelectorOpen,
-						type: userAccountsItemSelectorConfig.type,
+					apiURL={userAccountsItemSelectorConfig.apiURL}
+					createItemURL={Liferay.ThemeDisplay.getPortalURL()}
+					fdsProps={{
+						...FDS_DEFAULT_PROPS,
+						id: `itemSelectorModal-users-${getRandomId()}`,
+						views: getDefaultItemSelectorModalViews({
+							viewsConfig:
+								EItemSelectorModalViewsConfig.USER_ACCOUNTS,
+						}),
 					}}
+					itemTypeLabel={userAccountsItemSelectorConfig.itemTypeLabel}
+					items={usersItemSelectorModal}
+					locator={userAccountsItemSelectorConfig.locator}
+					observer={userItemSelectorObserver}
+					onItemsChange={(items: User[]) => {
+						setUsersItemSelectorModal(items);
+					}}
+					onOpenChange={userItemSelectorOpenChange}
+					open={userItemSelectorOpen}
 				/>
 
 				<ClayButton.Group className="mb-3" spaced>
 					<ClayButton
 						displayType="primary"
 						onClick={() => {
-							fileItemSelectorOpenChange(true);
+							documentItemSelectorOpenChange(true);
 						}}
 					>
-						Select Document
+						Select Documents
 					</ClayButton>
 
 					<ClayButton
@@ -386,29 +569,76 @@ export default function ItemSelectorSamples() {
 					>
 						Select User
 					</ClayButton>
+
+					<ClayButton
+						displayType="primary"
+						onClick={() => {
+							cmsFilesItemSelectorOpenChange(true);
+						}}
+					>
+						Select CMS Files
+					</ClayButton>
+
+					<ClayButton
+						displayType="primary"
+						onClick={() => {
+							openItemSelectorModal({
+								apiURL: userAccountsItemSelectorConfig.apiURL,
+								fdsProps: {
+									...FDS_DEFAULT_PROPS,
+									id: `itemSelectorModal-users-${getRandomId()}`,
+									views: getDefaultItemSelectorModalViews({
+										viewsConfig:
+											EItemSelectorModalViewsConfig.USER_ACCOUNTS,
+									}),
+								},
+								itemTypeLabel:
+									userAccountsItemSelectorConfig.itemTypeLabel,
+								items: usersItemSelectorModal,
+								locator: userAccountsItemSelectorConfig.locator,
+								onItemsChange: (items: User[]) => {
+									setUsersItemSelectorModal(items);
+								},
+							});
+						}}
+					>
+						Open Modal With JS Utility
+					</ClayButton>
 				</ClayButton.Group>
 
-				{space2 && (
+				{!!cmsFiles.length &&
+					cmsFiles.map((cmsFile: any) => (
+						<ClayAlert
+							displayType="info"
+							key={cmsFile.title}
+							symbol="document"
+							title={cmsFile.title}
+						/>
+					))}
+
+				{!!documentsItemSelectorModal.length &&
+					documentsItemSelectorModal.map((document) => (
+						<ClayAlert
+							displayType="info"
+							key={document.id}
+							symbol="document"
+							title={document.fileName}
+						/>
+					))}
+
+				{!!spacesItemSelectorModal.length && (
 					<ClayAlert
 						displayType="info"
 						symbol="nodes"
-						title={space2.name}
+						title={spacesItemSelectorModal[0].name}
 					/>
 				)}
 
-				{document && (
-					<ClayAlert
-						displayType="info"
-						symbol="document"
-						title={document.fileName}
-					/>
-				)}
-
-				{user && (
+				{!!usersItemSelectorModal.length && (
 					<ClayAlert
 						displayType="info"
 						symbol="user"
-						title={user.name}
+						title={usersItemSelectorModal[0].name}
 					/>
 				)}
 			</SampleContainer>

@@ -79,13 +79,13 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 	}
 
 	@Override
-	public String getConfiguration(
+	public JSONObject getConfigurationJSONObject(
 		FragmentRendererContext fragmentRendererContext) {
 
 		FragmentEntryLink fragmentEntryLink =
 			fragmentRendererContext.getFragmentEntryLink();
 
-		return fragmentEntryLink.getConfiguration();
+		return fragmentEntryLink.getConfigurationJSONObject(true);
 	}
 
 	@Override
@@ -146,8 +146,15 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 			fragmentEntryLink.setCss(fragmentEntry.getCss());
 			fragmentEntryLink.setHtml(fragmentEntry.getHtml());
 			fragmentEntryLink.setJs(fragmentEntry.getJs());
-			fragmentEntryLink.setConfiguration(
-				fragmentEntry.getConfiguration());
+
+			if (!Objects.equals(
+					fragmentEntryLink.getConfiguration(),
+					fragmentEntry.getConfiguration())) {
+
+				fragmentEntryLink.setConfiguration(
+					fragmentEntry.getConfiguration());
+			}
+
 			fragmentEntryLink.setType(fragmentEntry.getType());
 		}
 
@@ -263,7 +270,7 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 		FragmentRendererContext fragmentRendererContext, String html,
 		HttpServletRequest httpServletRequest, String nonce) {
 
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("<div id=\"");
 
@@ -350,7 +357,9 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 		sb.append(configuration);
 		sb.append("; const fragmentElement = document.querySelector('#");
 		sb.append(fragmentRendererContext.getFragmentElementId());
-		sb.append("'); const fragmentEntryLinkNamespace = '");
+		sb.append("'); const fragmentElementId = '");
+		sb.append(fragmentRendererContext.getFragmentElementId());
+		sb.append("'; const fragmentEntryLinkNamespace = '");
 		sb.append(fragmentEntryLink.getNamespace());
 		sb.append("'; const fragmentNamespace = '");
 		sb.append(fragmentEntryLink.getNamespace());
@@ -426,6 +435,8 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 			fragmentRendererContext.getAttributes());
 		defaultFragmentEntryProcessorContext.setContextInfoItemReference(
 			fragmentRendererContext.getContextInfoItemReference());
+		defaultFragmentEntryProcessorContext.setDisablePortletRender(
+			fragmentRendererContext.isDisablePortletRender());
 		defaultFragmentEntryProcessorContext.setFragmentElementId(
 			fragmentRendererContext.getFragmentElementId());
 		defaultFragmentEntryProcessorContext.setInfoForm(
@@ -509,8 +520,8 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 
 		JSONObject jsonObject =
 			_fragmentEntryConfigurationParser.getConfigurationJSONObject(
-				fragmentEntryLink.getConfiguration(),
-				fragmentEntryLink.getEditableValues(),
+				fragmentEntryLink.getConfigurationJSONObject(),
+				fragmentEntryLink.getEditableValuesJSONObject(),
 				fragmentRendererContext.getLocale());
 
 		entry = new AbstractMap.SimpleImmutableEntry<>(

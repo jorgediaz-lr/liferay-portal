@@ -46,6 +46,26 @@ public class BatchTestEntitySerDes {
 
 		sb.append("{");
 
+		if (batchTestEntity.getCustomFields() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"customFields\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < batchTestEntity.getCustomFields().length; i++) {
+				sb.append(batchTestEntity.getCustomFields()[i]);
+
+				if ((i + 1) < batchTestEntity.getCustomFields().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
 		if (batchTestEntity.getExternalReferenceCode() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -98,6 +118,17 @@ public class BatchTestEntitySerDes {
 			sb.append("\"");
 		}
 
+		if (batchTestEntity.getRelatedCompanyTestEntity() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"relatedCompanyTestEntity\": ");
+
+			sb.append(
+				String.valueOf(batchTestEntity.getRelatedCompanyTestEntity()));
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -116,6 +147,15 @@ public class BatchTestEntitySerDes {
 		}
 
 		Map<String, String> map = new TreeMap<>();
+
+		if (batchTestEntity.getCustomFields() == null) {
+			map.put("customFields", null);
+		}
+		else {
+			map.put(
+				"customFields",
+				String.valueOf(batchTestEntity.getCustomFields()));
+		}
 
 		if (batchTestEntity.getExternalReferenceCode() == null) {
 			map.put("externalReferenceCode", null);
@@ -149,6 +189,15 @@ public class BatchTestEntitySerDes {
 				String.valueOf(batchTestEntity.getNestedField()));
 		}
 
+		if (batchTestEntity.getRelatedCompanyTestEntity() == null) {
+			map.put("relatedCompanyTestEntity", null);
+		}
+		else {
+			map.put(
+				"relatedCompanyTestEntity",
+				String.valueOf(batchTestEntity.getRelatedCompanyTestEntity()));
+		}
+
 		return map;
 	}
 
@@ -167,7 +216,12 @@ public class BatchTestEntitySerDes {
 
 		@Override
 		protected boolean parseMaps(String jsonParserFieldName) {
-			if (Objects.equals(jsonParserFieldName, "externalReferenceCode")) {
+			if (Objects.equals(jsonParserFieldName, "customFields")) {
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "externalReferenceCode")) {
+
 				return false;
 			}
 			else if (Objects.equals(jsonParserFieldName, "id")) {
@@ -179,6 +233,11 @@ public class BatchTestEntitySerDes {
 			else if (Objects.equals(jsonParserFieldName, "nestedField")) {
 				return false;
 			}
+			else if (Objects.equals(
+						jsonParserFieldName, "relatedCompanyTestEntity")) {
+
+				return false;
+			}
 
 			return false;
 		}
@@ -188,7 +247,30 @@ public class BatchTestEntitySerDes {
 			BatchTestEntity batchTestEntity, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "externalReferenceCode")) {
+			if (Objects.equals(jsonParserFieldName, "customFields")) {
+				if (jsonParserFieldValue != null) {
+					Object[] jsonParserFieldValues =
+						(Object[])jsonParserFieldValue;
+
+					com.liferay.portal.tools.rest.builder.test.client.custom.
+						field.CustomField[] customFieldsArray = new
+						com.liferay.portal.tools.rest.builder.test.client.
+							custom.field.CustomField
+							[jsonParserFieldValues.length];
+
+					for (int i = 0; i < customFieldsArray.length; i++) {
+						customFieldsArray[i] =
+							com.liferay.portal.tools.rest.builder.test.client.
+								custom.field.CustomField.toDTO(
+									(String)jsonParserFieldValues[i]);
+					}
+
+					batchTestEntity.setCustomFields(customFieldsArray);
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "externalReferenceCode")) {
+
 				if (jsonParserFieldValue != null) {
 					batchTestEntity.setExternalReferenceCode(
 						(String)jsonParserFieldValue);
@@ -209,6 +291,15 @@ public class BatchTestEntitySerDes {
 				if (jsonParserFieldValue != null) {
 					batchTestEntity.setNestedField(
 						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "relatedCompanyTestEntity")) {
+
+				if (jsonParserFieldValue != null) {
+					batchTestEntity.setRelatedCompanyTestEntity(
+						CompanyTestEntitySerDes.toDTO(
+							(String)jsonParserFieldValue));
 				}
 			}
 		}

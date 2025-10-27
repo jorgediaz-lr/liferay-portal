@@ -3,100 +3,153 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import {act, render, screen, waitFor, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import SpaceService from '../../../../src/main/resources/META-INF/resources/js/common/services/SpaceService';
-import {Space} from '../../../../src/main/resources/META-INF/resources/js/common/types/Space';
 import {
 	UserAccount,
 	UserGroup,
 } from '../../../../src/main/resources/META-INF/resources/js/common/types/UserAccount';
 import {SelectOptions} from '../../../../src/main/resources/META-INF/resources/js/main_view/spaces/SpaceMembersInputWithSelect';
+import {SPACE_MEMBER_ROLE_NAME} from '../../../../src/main/resources/META-INF/resources/js/main_view/spaces/SpaceMembersPermissionSelect';
 import {
 	SpaceMembersWithList,
 	SpaceMembersWithListProps,
 } from '../../../../src/main/resources/META-INF/resources/js/main_view/spaces/SpaceMembersWithList';
+import {useSpaceMembers} from '../../../../src/main/resources/META-INF/resources/js/main_view/spaces/hooks/useSpaceMembers';
+import {createMockFetchMembersImplementation} from '../../__mocks__/createMockFetchMembersImplementation';
 import {mockFetch} from '../../__mocks__/frontend-js-web';
 
+jest.mock(
+	'../../../../src/main/resources/META-INF/resources/js/main_view/spaces/hooks/useSpaceMembers'
+);
+
 jest.mock('frontend-js-web', () => ({
-	...((jest.requireActual('frontend-js-web') ?? {}) as any),
+	...(jest.requireActual('frontend-js-web') as any),
 	sub: (str: string, arg: string) => str.replace('x', arg),
+}));
+
+jest.mock('frontend-js-components-web', () => ({
+	openToast: jest.fn(),
 }));
 
 describe('SpaceMembersWithList', () => {
 	const testSpace = {
+		externalReferenceCode: 'ERC',
 		id: '123',
 		name: 'Test Space',
 	};
 
+	const mockRoles = [
+		{
+			externalReferenceCode: '1',
+			id: 100,
+			name: SPACE_MEMBER_ROLE_NAME,
+			name_i18n: {'en-US': 'Space Member'},
+		},
+		{
+			externalReferenceCode: '2',
+			id: 101,
+			name: 'Role 1',
+			name_i18n: {'en-US': 'Role 1'},
+		},
+	];
+
 	const testUsers = [
 		{
 			emailAddress: 'john.doe@example.com',
+			externalReferenceCode: 'ERC_1',
 			id: '1',
 			image: '/image/user_portrait',
+			imageId: '1',
 			name: 'John Doe',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
 		},
 		{
 			emailAddress: 'jane.smith@example.com',
+			externalReferenceCode: 'ERC_2',
 			id: '2',
 			image: '/image/user_portrait',
+			imageId: '1',
 			name: 'Jane Smith',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
 		},
 	] as UserAccount[];
 
-	const testUsersResponse = {
-		items: testUsers,
-		lastPage: 1,
-		page: 1,
-		totalCount: testUsers.length,
-	};
-
 	const testUserGroups = [
 		{
+			externalReferenceCode: 'ERC_1',
 			id: '1',
 			name: 'Group 1',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
 		},
 		{
+			externalReferenceCode: 'ERC_2',
 			id: '2',
 			name: 'Group 2',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
 		},
 	] as UserGroup[];
 
-	const testUserGroupsResponse = {
-		items: testUserGroups,
-		lastPage: 1,
-		page: 1,
-		totalCount: testUserGroups.length,
-	};
+	const allAvailableUsers = [
+		...testUsers,
+		{
+			emailAddress: 'new@user.com',
+			externalReferenceCode: 'ERC_3',
+			id: '3',
+			image: '/image/profile.jpg',
+			imageId: '3.image.profile',
+			name: 'New User',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
+		},
+	] as UserAccount[];
+
+	const allAvailableGrups = [
+		...testUserGroups,
+		{
+			externalReferenceCode: 'ERC_3',
+			id: '3',
+			name: 'New Group',
+			roles: [{id: 100, name: SPACE_MEMBER_ROLE_NAME}],
+		},
+	] as UserGroup[];
 
 	const props: SpaceMembersWithListProps = {
 		assetLibraryCreatorUserId: testUsers[0].id,
-		assetLibraryId: testSpace.id,
+		externalReferenceCode: testSpace.externalReferenceCode,
+		hasAssignMembersPermission: true,
 	};
+
+	const mockUseSpaceMembers = useSpaceMembers as jest.Mock;
+	const mockAddMember = jest.fn();
+	const mockLoadMore = jest.fn();
+	const mockRemoveMember = jest.fn();
+	const mockUpdateMemberRoles = jest.fn();
 
 	const {ResizeObserver: ResizeObserverOriginal} = window;
 
-	let consoleErrorSpy: jest.SpyInstance;
-	let getSpaceSpy: jest.SpyInstance;
-	let getSpaceUserGroupsSpy: jest.SpyInstance;
-	let getSpaceUsersSpy: jest.SpyInstance;
 	let intersectionObserverMock: jest.Mock;
 
 	beforeEach(() => {
-		getSpaceSpy = jest
-			.spyOn(SpaceService, 'getSpace')
-			.mockResolvedValue(testSpace as unknown as Space);
-		getSpaceUsersSpy = jest
-			.spyOn(SpaceService, 'getSpaceUsers')
-			.mockResolvedValue(testUsersResponse);
-		getSpaceUserGroupsSpy = jest
-			.spyOn(SpaceService, 'getSpaceUserGroups')
-			.mockResolvedValue(testUserGroupsResponse);
-
-		consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+		mockFetch.mockClear();
+		createMockFetchMembersImplementation({
+			groups: allAvailableGrups,
+			users: allAvailableUsers,
+		});
+		mockUseSpaceMembers.mockReturnValue({
+			addMember: mockAddMember,
+			loadMore: mockLoadMore,
+			removeMember: mockRemoveMember,
+			state: {
+				groups: {items: testUserGroups, lastPage: 1},
+				isFetching: false,
+				roles: mockRoles,
+				users: {items: testUsers, lastPage: 1},
+			},
+			updateMemberRoles: mockUpdateMemberRoles,
+		});
 
 		intersectionObserverMock = jest.fn((callback) => {
 			(intersectionObserverMock as any).mockCallback = callback;
@@ -107,6 +160,7 @@ describe('SpaceMembersWithList', () => {
 				unobserve: jest.fn(),
 			};
 		});
+
 		global.IntersectionObserver = intersectionObserverMock;
 	});
 
@@ -119,12 +173,8 @@ describe('SpaceMembersWithList', () => {
 	});
 
 	afterEach(() => {
-		getSpaceSpy.mockClear();
-		getSpaceUsersSpy.mockClear();
-		getSpaceUserGroupsSpy.mockClear();
-		consoleErrorSpy.mockRestore();
-
-		jest.clearAllMocks();
+		jest.restoreAllMocks();
+		mockFetch.mockClear();
 
 		const alerts = document.body.querySelectorAll('[role="alert"]');
 		alerts.forEach((alert) => alert.remove());
@@ -133,16 +183,13 @@ describe('SpaceMembersWithList', () => {
 	afterAll(() => {
 		window.ResizeObserver = ResizeObserverOriginal;
 		delete (global as any).IntersectionObserver;
-		jest.restoreAllMocks();
 	});
 
 	it('lists users from a space', async () => {
 		render(<SpaceMembersWithList {...props} />);
 
-		const usersList = screen.getByLabelText('who-has-access');
-		expect(usersList).toBeInTheDocument();
-
 		await waitFor(() => {
+			const usersList = screen.getByLabelText('who-has-access');
 			const usersListItems = within(usersList).getAllByRole('listitem');
 			expect(usersListItems).toHaveLength(testUsers.length);
 
@@ -175,37 +222,7 @@ describe('SpaceMembersWithList', () => {
 	});
 
 	it('loads more users when scrolling down', async () => {
-		jest.useFakeTimers();
-
-		const moreUsers = [
-			{
-				emailAddress: 'user3@example.com',
-				id: '3',
-				name: 'User Three',
-			},
-		];
-		const moreUsersResponse = {
-			items: moreUsers,
-			lastPage: 2,
-			page: 2,
-			totalCount: 1,
-		};
-
-		getSpaceUsersSpy.mockImplementation(
-			jest
-				.fn()
-				.mockResolvedValueOnce({
-					...testUsersResponse,
-					lastPage: 2,
-				})
-				.mockResolvedValueOnce(moreUsersResponse)
-		);
-
 		render(<SpaceMembersWithList {...props} />);
-
-		await act(async () => {
-			jest.runAllTimers();
-		});
 
 		await waitFor(() => {
 			expect(
@@ -215,59 +232,6 @@ describe('SpaceMembersWithList', () => {
 			).toHaveLength(testUsers.length);
 		});
 
-		await act(async () => {
-			(intersectionObserverMock as any).mockCallback([
-				{isIntersecting: true},
-			]);
-			jest.runAllTimers();
-		});
-
-		await waitFor(() => {
-			expect(getSpaceUsersSpy).toHaveBeenCalledTimes(2);
-			expect(getSpaceUsersSpy).toHaveBeenLastCalledWith(
-				expect.objectContaining({page: 2})
-			);
-		});
-
-		await waitFor(() => {
-			expect(
-				within(screen.getByLabelText('who-has-access')).getAllByRole(
-					'listitem'
-				)
-			).toHaveLength(testUsers.length + moreUsers.length);
-		});
-
-		expect(screen.queryByRole('status')).not.toBeInTheDocument();
-
-		jest.useRealTimers();
-	});
-
-	it('loads more user groups when scrolling down', async () => {
-		const moreGroups = [{id: '3', name: 'Group Three'}];
-		const moreGroupsResponse = {
-			items: moreGroups,
-			lastPage: 2,
-			page: 2,
-			totalCount: 1,
-		};
-
-		getSpaceUserGroupsSpy.mockImplementation(
-			jest
-				.fn()
-				.mockResolvedValueOnce({
-					...testUserGroupsResponse,
-					lastPage: 2,
-				})
-				.mockResolvedValueOnce(moreGroupsResponse)
-		);
-
-		render(<SpaceMembersWithList {...props} />);
-
-		await userEvent.selectOptions(
-			screen.getByRole('combobox', {name: 'add-people-to-collaborate'}),
-			'groups'
-		);
-
 		act(() => {
 			(intersectionObserverMock as any).mockCallback([
 				{isIntersecting: true},
@@ -275,53 +239,26 @@ describe('SpaceMembersWithList', () => {
 		});
 
 		await waitFor(() => {
-			expect(getSpaceUserGroupsSpy).toHaveBeenCalledTimes(2);
-			expect(getSpaceUserGroupsSpy).toHaveBeenLastCalledWith(
-				expect.objectContaining({page: 2})
-			);
+			expect(mockLoadMore).toHaveBeenCalledWith(SelectOptions.USERS);
 		});
-
-		await waitFor(() => {
-			expect(
-				within(screen.getByLabelText('who-has-access')).getAllByRole(
-					'listitem'
-				)
-			).toHaveLength(testUserGroups.length + moreGroups.length);
-		});
-	});
-
-	it('handles failure when loading initial members', async () => {
-		getSpaceUsersSpy.mockRejectedValueOnce(new Error('Fetch failed'));
-
-		render(<SpaceMembersWithList {...props} />);
-
-		await waitFor(() => {
-			expect(consoleErrorSpy).toHaveBeenCalledWith(
-				new Error('Fetch failed')
-			);
-		});
-
-		expect(
-			screen.getByText('this-space-has-no-user-yet')
-		).toBeInTheDocument();
 	});
 
 	it('shows a "no members" message when the space is empty', async () => {
-		getSpaceUsersSpy.mockResolvedValueOnce({
-			...testUsersResponse,
-			items: [],
-		});
-		getSpaceUserGroupsSpy.mockResolvedValueOnce({
-			...testUserGroupsResponse,
-			items: [],
+		mockUseSpaceMembers.mockReturnValue({
+			...mockUseSpaceMembers(),
+			state: {
+				...mockUseSpaceMembers().state,
+				groups: {items: []},
+				users: {items: []},
+			},
 		});
 
-		await act(async () => {
-			render(<SpaceMembersWithList {...props} />);
-		});
+		render(<SpaceMembersWithList {...props} />);
+
+		await screen.findByText('no-members-yet');
 
 		expect(
-			screen.getByText('this-space-has-no-user-yet')
+			screen.getByText('add-members-to-this-space')
 		).toBeInTheDocument();
 
 		await userEvent.selectOptions(
@@ -329,133 +266,105 @@ describe('SpaceMembersWithList', () => {
 			SelectOptions.GROUPS
 		);
 
+		expect(screen.getByText('no-members-yet')).toBeInTheDocument();
 		expect(
-			screen.getByText('this-space-has-no-group-yet')
+			screen.getByText('add-members-to-this-space')
 		).toBeInTheDocument();
 	});
 
-	describe('When linking to a space', () => {
-		it('adds a new user to the list and shows a success toast', async () => {
-			const newUser = {
-				emailAddress: 'new@user.com',
-				id: '3',
-				name: 'New User',
-			};
-			mockFetch.mockResolvedValue({
-				json: async () => ({items: [newUser]}),
-			} as Response);
-			const linkSpy = jest
-				.spyOn(SpaceService, 'linkUserToSpace')
-				.mockResolvedValue({data: null, error: null});
+	it('excludes added user members from the autocomplete list', async () => {
+		render(<SpaceMembersWithList {...props} />);
 
+		const input = screen.getByPlaceholderText('enter-name-or-email');
+
+		await userEvent.click(input);
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledWith(
+				expect.stringContaining(`id+ne+%271%27+and+id+ne+%272%27`)
+			);
+		});
+
+		await waitFor(() => {
+			expect(
+				screen.queryByRole('option', {name: /John Doe/})
+			).not.toBeInTheDocument();
+			expect(
+				screen.queryByRole('option', {name: /Jane Smith/})
+			).not.toBeInTheDocument();
+			expect(
+				screen.getByRole('option', {name: /New User/})
+			).toBeInTheDocument();
+		});
+	});
+
+	it('excludes added group members from the autocomplete list', async () => {
+		render(<SpaceMembersWithList {...props} />);
+
+		await userEvent.selectOptions(
+			screen.getByRole('combobox', {
+				name: 'add-people-to-collaborate',
+			}),
+			SelectOptions.GROUPS
+		);
+
+		const input = screen.getByPlaceholderText('enter-name-or-email');
+
+		await userEvent.click(input);
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledWith(
+				expect.stringContaining(
+					`userGroupId+ne+%271%27+and+userGroupId+ne+%272%27`
+				)
+			);
+		});
+
+		await waitFor(() => {
+			expect(
+				screen.queryByRole('option', {name: /Group 1/})
+			).not.toBeInTheDocument();
+			expect(
+				screen.queryByRole('option', {name: /Group 2/})
+			).not.toBeInTheDocument();
+			expect(
+				screen.getByRole('option', {name: /New Group/})
+			).toBeInTheDocument();
+		});
+	});
+
+	describe('Interactions', () => {
+		it('calls addMember when an item is selected from autocomplete', async () => {
 			render(<SpaceMembersWithList {...props} />);
 
 			const input = screen.getByPlaceholderText('enter-name-or-email');
 
 			await userEvent.type(input, 'New');
 
-			await userEvent.click(
-				await screen.findByRole('option', {name: /New User/})
-			);
-
 			await waitFor(() => {
-				expect(linkSpy).toHaveBeenCalledWith({
-					spaceId: testSpace.id,
-					userId: newUser.id,
-				});
-
 				expect(
-					within(screen.getByLabelText('who-has-access')).getByText(
-						'New User'
-					)
+					screen.getByRole('option', {name: /New User/})
 				).toBeInTheDocument();
-
-				const alert = screen.getByRole('alert');
-				expect(alert).toHaveTextContent(
-					`user-${newUser.name}-successfully-added-to-space`
-				);
 			});
-		});
-
-		it('shows an error toast when linking a user fails', async () => {
-			const newUser = {
-				emailAddress: 'fail@user.com',
-				id: '3',
-				name: 'Fail User',
-			};
-
-			mockFetch.mockResolvedValue({
-				json: async () => ({items: [newUser]}),
-			} as Response);
-
-			const linkSpy = jest
-				.spyOn(SpaceService, 'linkUserToSpace')
-				.mockResolvedValue({data: null, error: 'Link failed'});
-
-			render(<SpaceMembersWithList {...props} />);
 
 			await userEvent.click(
-				screen.getByPlaceholderText('enter-name-or-email')
-			);
-
-			await userEvent.click(
-				await screen.findByRole('option', {name: /Fail User/})
+				screen.getByRole('option', {name: /New User/})
 			);
 
 			await waitFor(() => {
-				expect(linkSpy).toHaveBeenCalled();
+				const {_key, ...expectedValue} =
+					allAvailableUsers[2] as (typeof allAvailableUsers)[2] & {
+						_key: string;
+					};
 
-				const alert = screen.getByRole('alert');
-				expect(alert).toHaveTextContent(
-					`failed-to-add-user-${newUser.name}-to-space`
-				);
-			});
-		});
-	});
-
-	describe('When unlinking from a space', () => {
-		it('removes a user from the list and shows a success toast', async () => {
-			getSpaceUsersSpy.mockResolvedValueOnce({
-				...testUsersResponse,
-				items: testUsers,
-			});
-			const unlinkSpy = jest
-				.spyOn(SpaceService, 'unlinkUserFromSpace')
-				.mockResolvedValue({data: null, error: null});
-
-			render(<SpaceMembersWithList {...props} />);
-
-			const userItem = await screen.findByText(testUsers[1].name);
-
-			const removeButton = within(userItem.closest('li')!).getByRole(
-				'button',
-				{name: /remove-user/}
-			);
-			await userEvent.click(removeButton);
-
-			await waitFor(() => {
-				expect(unlinkSpy).toHaveBeenCalledWith({
-					spaceId: testSpace.id,
-					userId: testUsers[1].id,
-				});
-				expect(removeButton).not.toBeInTheDocument();
-
-				const alert = screen.getByRole('alert');
-				expect(alert).toHaveTextContent(
-					`user-${testUsers[1].name}-successfully-removed-from-space`
+				expect(mockAddMember).toHaveBeenCalledWith(
+					{...expectedValue, roles: []},
+					SelectOptions.USERS
 				);
 			});
 		});
 
-		it('shows an error toast when unlinking a user fails', async () => {
-			getSpaceUsersSpy.mockResolvedValueOnce({
-				...testUsersResponse,
-				items: testUsers,
-			});
-			const unlinkSpy = jest
-				.spyOn(SpaceService, 'unlinkUserFromSpace')
-				.mockResolvedValue({data: null, error: 'Unlink failed'});
-
+		it('calls removeMember when the remove button is clicked', async () => {
 			render(<SpaceMembersWithList {...props} />);
 
 			const userItem = await screen.findByText(testUsers[1].name);
@@ -465,26 +374,38 @@ describe('SpaceMembersWithList', () => {
 			);
 			await userEvent.click(removeButton);
 
-			await waitFor(() => {
-				expect(unlinkSpy).toHaveBeenCalled();
+			expect(mockRemoveMember).toHaveBeenCalledWith(
+				testUsers[1],
+				SelectOptions.USERS
+			);
+		});
 
-				const alert = screen.getByRole('alert');
-				expect(alert).toHaveTextContent(
-					`unable-to-remove-user-${testUsers[1].name}-from-space`
+		it('calls updateMemberRoles when a role for user is changed', async () => {
+			render(<SpaceMembersWithList {...props} />);
+
+			const userItem = await screen.findByText(testUsers[1].name);
+			const permissionSelect = within(userItem.closest('li')!).getByRole(
+				'button',
+				{
+					name: 'Space Member',
+				}
+			);
+
+			await userEvent.click(permissionSelect);
+
+			const roleCheckbox = await screen.findByLabelText('Role 1');
+			await userEvent.click(roleCheckbox);
+
+			await waitFor(() => {
+				expect(mockUpdateMemberRoles).toHaveBeenCalledWith(
+					testUsers[1],
+					[SPACE_MEMBER_ROLE_NAME, 'Role 1'],
+					SelectOptions.USERS
 				);
 			});
 		});
 
-		it('shows an error toast when unlinking a group fails', async () => {
-			getSpaceUserGroupsSpy.mockResolvedValueOnce({
-				...testUserGroupsResponse,
-				items: [testUserGroups[0]],
-			});
-
-			const unlinkSpy = jest
-				.spyOn(SpaceService, 'unlinkUserGroupFromSpace')
-				.mockResolvedValue({data: null, error: 'Unlink failed'});
-
+		it('calls updateMemberRoles when a role for user group is changed', async () => {
 			render(<SpaceMembersWithList {...props} />);
 
 			await userEvent.selectOptions(
@@ -495,57 +416,66 @@ describe('SpaceMembersWithList', () => {
 			);
 
 			const groupItem = await screen.findByText(testUserGroups[0].name);
-			const removeButton = within(groupItem.closest('li')!).getByRole(
+			const permissionSelect = within(groupItem.closest('li')!).getByRole(
 				'button',
-				{name: /remove-group/}
+				{
+					name: 'Space Member',
+				}
 			);
-			await userEvent.click(removeButton);
+
+			await userEvent.click(permissionSelect);
+
+			const menu = await screen.findByRole('menu');
+			const roleCheckbox = await within(menu).findByLabelText('Role 1');
+			await userEvent.click(roleCheckbox);
 
 			await waitFor(() => {
-				expect(unlinkSpy).toHaveBeenCalled();
-
-				const alert = screen.getByRole('alert');
-				expect(alert).toHaveTextContent(
-					`unable-to-remove-group-${testUserGroups[0].name}-from-space-x`
+				expect(mockUpdateMemberRoles).toHaveBeenCalledWith(
+					testUserGroups[0],
+					[SPACE_MEMBER_ROLE_NAME, 'Role 1'],
+					SelectOptions.GROUPS
 				);
 			});
 		});
 	});
 
-	it('prevents adding a user that is already in the list', async () => {
-		const newUser = {
-			emailAddress: 'new@user.com',
-			id: '3',
-			name: 'New User',
-		};
+	describe('When hasAssignMembersPermission is false', () => {
+		it('renders the add members input as disabled', async () => {
+			await act(async () => {
+				render(
+					<SpaceMembersWithList
+						{...props}
+						hasAssignMembersPermission={false}
+					/>
+				);
+			});
 
-		mockFetch.mockResolvedValue({
-			json: async () => ({items: [newUser]}),
-		} as Response);
+			expect(
+				screen.getByRole('combobox', {
+					name: 'add-people-to-collaborate',
+				})
+			).toBeInTheDocument();
 
-		const linkSpy = jest
-			.spyOn(SpaceService, 'linkUserToSpace')
-			.mockResolvedValue({data: null, error: null});
-
-		render(<SpaceMembersWithList {...props} />);
-
-		const input = screen.getByPlaceholderText('enter-name-or-email');
-
-		await userEvent.type(input, 'New');
-
-		await userEvent.click(
-			await screen.findByRole('option', {name: /New User/})
-		);
-
-		await waitFor(() => {
-			expect(linkSpy).toHaveBeenCalledTimes(1);
+			expect(
+				screen.getByPlaceholderText('enter-name-or-email')
+			).toBeDisabled();
 		});
 
-		await userEvent.type(input, 'New');
-		await userEvent.click(
-			await screen.findByRole('option', {name: /New User/})
-		);
+		it('does not render the remove button for members', async () => {
+			render(
+				<SpaceMembersWithList
+					{...props}
+					hasAssignMembersPermission={false}
+				/>
+			);
 
-		expect(linkSpy).toHaveBeenCalledTimes(1);
+			await waitFor(() => {
+				expect(screen.getByText(testUsers[1].name)).toBeInTheDocument();
+			});
+
+			expect(
+				screen.queryByRole('button', {name: /remove/i})
+			).not.toBeInTheDocument();
+		});
 	});
 });

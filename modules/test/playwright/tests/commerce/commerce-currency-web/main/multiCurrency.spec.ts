@@ -21,6 +21,7 @@ export const test = mergeTests(
 	dataApiHelpersTest,
 	featureFlagsTest({
 		'LPD-20379': {enabled: true},
+		'LPD-58472': {enabled: true},
 	}),
 	loginTest()
 );
@@ -37,7 +38,7 @@ test(
 		commerceThemeMiniumCatalogPage,
 		page,
 	}) => {
-		test.setTimeout(180000);
+		test.setTimeout(90000);
 
 		const {channel, site} = await classicCommerceSetUp(apiHelpers);
 
@@ -229,7 +230,7 @@ test(
 		commerceThemeMiniumCatalogPage,
 		page,
 	}) => {
-		test.setTimeout(180000);
+		test.setTimeout(90000);
 
 		const {channel, site} = await classicCommerceSetUp(apiHelpers);
 
@@ -418,11 +419,10 @@ test(
 		commerceMiniCartPage,
 		commerceThemeClassicCatalogPage,
 		commerceThemeClassicOrdersPage,
-		commerceThemeMiniumCatalogPage,
 		page,
 		productDetailsPage,
 	}) => {
-		test.setTimeout(180000);
+		test.setTimeout(90000);
 
 		const {catalog, channel, site} = await classicCommerceSetUp(apiHelpers);
 
@@ -479,7 +479,7 @@ test(
 		const product = (
 			await apiHelpers.headlessCommerceAdminCatalog.getProducts(
 				new URLSearchParams({
-					filter: `name eq 'U-Joint'`,
+					filter: `name eq 'Wear Sensors'`,
 					nestedFields: `skus`,
 				})
 			)
@@ -613,10 +613,12 @@ test(
 			await page.goto(`/web/${site.name}`);
 
 			expect(
-				await commerceThemeMiniumCatalogPage.firstCardItem.innerText()
+				await commerceThemeClassicCatalogPage
+					.productCard(product.name['en_US'])
+					.innerText()
 			).toContain(`${currency3.symbol}`);
 			await expect(
-				commerceThemeMiniumCatalogPage.productCardPrice(
+				commerceThemeClassicCatalogPage.productCardPrice(
 					product.name['en_US'],
 					priceEntry.priceFormatted
 				)
@@ -632,6 +634,11 @@ test(
 			).toBeVisible();
 
 			await productDetailsPage.addToCartButton.click();
+
+			await expect(commerceMiniCartPage.miniCartButton).toHaveClass(
+				'has-badge mini-cart-opener'
+			);
+
 			await commerceMiniCartPage.miniCartButton.click();
 
 			await expect(

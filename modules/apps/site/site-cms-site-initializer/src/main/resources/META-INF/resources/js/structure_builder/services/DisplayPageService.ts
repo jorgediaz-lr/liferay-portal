@@ -9,10 +9,10 @@ import ApiHelper from '../../common/services/ApiHelper';
 import {config} from '../config';
 import {Structure} from '../types/Structure';
 
-async function resetDisplayPage({erc}: {erc: Structure['erc']}) {
+async function resetDisplayPage({id}: {id: Structure['id']}) {
 	const resetStructureDisplayPageURL = addParams(
 		{
-			objectDefinitionExternalReferenceCode: erc,
+			objectDefinitionId: id,
 		},
 		config.resetStructureDisplayPageURL
 	);
@@ -20,6 +20,18 @@ async function resetDisplayPage({erc}: {erc: Structure['erc']}) {
 	return await ApiHelper.post(resetStructureDisplayPageURL);
 }
 
+async function resetTranslationDisplayPage({id}: {id: Structure['id']}) {
+	const resetStructureDisplayPageURL = addParams(
+		{
+			objectDefinitionId: id,
+		},
+		config.resetTranslationDisplayPageURL
+	);
+
+	return await ApiHelper.post(resetStructureDisplayPageURL);
+}
+
 export default {
 	resetDisplayPage,
+	resetTranslationDisplayPage,
 };

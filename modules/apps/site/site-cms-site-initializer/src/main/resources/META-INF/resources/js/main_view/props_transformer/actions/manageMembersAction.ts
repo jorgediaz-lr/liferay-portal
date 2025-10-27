@@ -9,7 +9,8 @@ import SpaceMembersModal from '../../spaces/SpaceMembersModal';
 
 export interface ManageMembersData {
 	assetLibraryCreatorUserId: string;
-	assetLibraryId: string;
+	externalReferenceCode: string;
+	hasAssignMembersPermission: boolean;
 	title: string;
 }
 
@@ -17,14 +18,20 @@ export default function manageMembersAction(
 	data: ManageMembersData,
 	loadData?: () => void
 ) {
-	const {assetLibraryCreatorUserId, assetLibraryId, title} = data;
+	const {
+		assetLibraryCreatorUserId,
+		externalReferenceCode,
+		hasAssignMembersPermission,
+		title,
+	} = data;
 
 	openModal({
 		center: true,
 		contentComponent: () =>
 			SpaceMembersModal({
 				assetLibraryCreatorUserId,
-				assetLibraryId,
+				externalReferenceCode,
+				hasAssignMembersPermission,
 			}),
 		onClose: loadData,
 		size: 'md',

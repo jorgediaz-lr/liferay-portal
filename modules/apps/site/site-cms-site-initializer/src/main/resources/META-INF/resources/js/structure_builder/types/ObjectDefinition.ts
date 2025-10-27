@@ -18,7 +18,7 @@ export type ObjectField = {
 	name: string;
 	objectFieldSettings?: {name: string; value: boolean | string | number}[];
 	required: boolean;
-	system?: boolean;
+	system: boolean;
 };
 
 export type ObjectRelationship = {
@@ -31,10 +31,13 @@ export type ObjectRelationship = {
 };
 
 export type ObjectDefinition = {
+	enableComments: boolean;
 	enableFriendlyURLCustomization: boolean;
 	enableIndexSearch: boolean;
 	enableLocalization: boolean;
 	enableObjectEntryDraft: boolean;
+	enableObjectEntryHistory: boolean;
+	enableObjectEntrySchedule: boolean;
 	enableObjectEntryVersioning: boolean;
 	externalReferenceCode: string;
 	id?: number;
@@ -55,6 +58,11 @@ export type ObjectDefinition = {
 	status?: {
 		code: number;
 	};
+	titleObjectFieldName?: string;
+	workflowDefinitionLinks?: {
+		groupExternalReferenceCode: string;
+		workflowDefinitionName: string;
+	}[];
 };
 
 export type ObjectDefinitions = Record<

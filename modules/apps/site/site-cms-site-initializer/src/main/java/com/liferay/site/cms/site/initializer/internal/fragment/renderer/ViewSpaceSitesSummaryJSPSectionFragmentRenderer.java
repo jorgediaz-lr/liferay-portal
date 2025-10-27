@@ -8,8 +8,12 @@ package com.liferay.site.cms.site.initializer.internal.fragment.renderer;
 import com.liferay.depot.service.DepotEntryGroupRelLocalService;
 import com.liferay.depot.service.DepotEntryService;
 import com.liferay.fragment.renderer.FragmentRenderer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.site.cms.site.initializer.internal.display.context.ViewSpaceSitesSummarySectionDisplayContext;
 import com.liferay.site.cms.site.initializer.internal.util.InfoItemUtil;
 
@@ -31,11 +35,17 @@ public class ViewSpaceSitesSummaryJSPSectionFragmentRenderer
 	}
 
 	@Override
-	protected Object getDisplayContext(HttpServletRequest httpServletRequest) {
+	protected Object getDisplayContext(HttpServletRequest httpServletRequest)
+		throws PortalException {
+
+		long groupId = InfoItemUtil.getGroupId(httpServletRequest);
+
+		Group group = _groupService.getGroup(groupId);
+
 		return new ViewSpaceSitesSummarySectionDisplayContext(
 			_depotEntryService, _depotEntryGroupRelLocalService,
-			InfoItemUtil.getGroupId(httpServletRequest), httpServletRequest,
-			_language, _portal);
+			group.getExternalReferenceCode(), groupId, httpServletRequest,
+			_language, _userModelResourcePermission);
 	}
 
 	@Override
@@ -55,9 +65,14 @@ public class ViewSpaceSitesSummaryJSPSectionFragmentRenderer
 	private DepotEntryService _depotEntryService;
 
 	@Reference
-	private Language _language;
+	private GroupService _groupService;
 
 	@Reference
-	private Portal _portal;
+	private Language _language;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.portal.kernel.model.User)"
+	)
+	private ModelResourcePermission<User> _userModelResourcePermission;
 
 }

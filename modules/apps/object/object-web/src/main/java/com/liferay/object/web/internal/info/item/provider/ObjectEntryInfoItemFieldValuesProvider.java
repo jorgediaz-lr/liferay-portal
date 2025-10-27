@@ -18,6 +18,7 @@ import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.type.WebImage;
 import com.liferay.layout.page.template.info.item.provider.DisplayPageInfoItemFieldSetProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.info.field.converter.ObjectFieldInfoFieldConverter;
 import com.liferay.object.info.item.ObjectEntryInfoItemFields;
 import com.liferay.object.info.item.provider.util.ObjectEntryInfoItemValuesProviderUtil;
@@ -33,6 +34,7 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.web.internal.model.ProxyObjectEntry;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCache;
@@ -47,8 +49,12 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.template.info.item.provider.TemplateInfoItemFieldSetProvider;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,6 +113,11 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				ObjectEntryInfoItemFieldValuesProvider.class.getName());
 
 		String key = String.valueOf(objectEntry.getObjectEntryId());
+
+		if (objectEntry.getVersion() > 0) {
+			key = StringBundler.concat(
+				key, StringPool.POUND, objectEntry.getVersion());
+		}
 
 		InfoItemFieldValues infoItemFieldValues = threadLocalCache.get(key);
 
@@ -173,6 +184,16 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				objectEntry.getCreateDate()));
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.getDisplayDateInfoField(
+					_objectDefinition),
+				_getLocalDateTime(objectEntry.getDisplayDate())));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.getExpirationDateInfoField(
+					_objectDefinition),
+				_getLocalDateTime(objectEntry.getExpirationDate())));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.externalReferenceCodeInfoField,
 				objectEntry.getExternalReferenceCode()));
 		objectEntryFieldValues.add(
@@ -187,6 +208,11 @@ public class ObjectEntryInfoItemFieldValuesProvider
 			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.publishDateInfoField,
 				objectEntry.getLastPublishDate()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.getReviewDateInfoField(
+					_objectDefinition),
+				_getLocalDateTime(objectEntry.getReviewDate())));
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.statusInfoField,
@@ -261,12 +287,20 @@ public class ObjectEntryInfoItemFieldValuesProvider
 				objectEntry.getDateCreated()));
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.expirationDateInfoField,
+				objectEntry.getExpirationDate()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.modifiedDateInfoField,
 				objectEntry.getDateModified()));
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.publishDateInfoField,
 				objectEntry.getDateModified()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.reviewDateInfoField,
+				objectEntry.getReviewDate()));
 		objectEntryFieldValues.addAll(
 			ObjectEntryInfoItemValuesProviderUtil.getInfoFieldValues(
 				_dlAppLocalService, _dlURLHelper, _friendlyURLEntryLocalService,
@@ -292,6 +326,17 @@ public class ObjectEntryInfoItemFieldValuesProvider
 		return new InfoItemReference(
 			_objectDefinition.getClassName(),
 			new ERCInfoItemIdentifier(objectEntry.getExternalReferenceCode()));
+	}
+
+	private LocalDateTime _getLocalDateTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return LocalDateTime.parse(
+			date.toString(),
+			DateTimeFormatter.ofPattern(
+				ObjectFieldUtil.getDateTimePattern(date.toString())));
 	}
 
 	private com.liferay.object.rest.dto.v1_0.ObjectEntry _getObjectEntry(

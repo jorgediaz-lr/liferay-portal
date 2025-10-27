@@ -4,8 +4,6 @@
  */
 
 import '@testing-library/jest-dom';
-
-import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
@@ -34,6 +32,7 @@ const FIELD: Field = {
 		es_ES: 'Campo de Prueba',
 	},
 	localized: false,
+	locked: false,
 	name: 'TextField',
 	parent: getUuid(),
 	required: false,
@@ -43,8 +42,7 @@ const FIELD: Field = {
 };
 
 const DEFAULT_STATE: State = {
-	error: null,
-	history: {deletedChildren: false},
+	history: {deletedChildren: false, modifiedNames: new Set()},
 	invalids: new Map(),
 	publishedChildren: new Set(),
 	selection: [],
@@ -56,6 +54,7 @@ const DEFAULT_STATE: State = {
 		spaces: [],
 		status: 'new',
 		uuid: getUuid(),
+		workflows: {},
 	},
 	unsavedChanges: false,
 };

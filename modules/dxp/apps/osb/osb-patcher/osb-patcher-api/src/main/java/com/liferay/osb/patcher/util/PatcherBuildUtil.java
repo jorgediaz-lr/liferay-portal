@@ -37,13 +37,10 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -55,8 +52,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -145,8 +140,8 @@ public class PatcherBuildUtil {
 
 		if (patcherAccount == null) {
 			addPatcherAccountPatcherBuild(
-				themeDisplay.getUserId(), patcherBuild.getPatcherBuildId(),
-				accountEntryCode);
+				themeDisplay.getUserId(), patcherBuild.getCompanyId(),
+				patcherBuild.getPatcherBuildId(), accountEntryCode);
 
 			patcherAccount = PatcherAccountLocalServiceUtil.getPatcherAccount(
 				accountEntryCode);
@@ -614,11 +609,6 @@ public class PatcherBuildUtil {
 		return WorkflowConstants.getStatusLabel(patcherBuild.getQaStatus());
 	}
 
-	public static String getQuarterReleaseBuildPath(String path) {
-		return com.liferay.petra.string.StringUtil.replace(
-			path, "fix-packs", "portal/hotfix");
-	}
-
 	public static List<PatcherBuild> getRelatedPatcherBuilds(
 		PatcherBuild patcherBuild) {
 
@@ -659,12 +649,13 @@ public class PatcherBuildUtil {
 		return relatedPatcherBuildFixIds;
 	}
 
-	public static String getSupportTicketURL(String supportTicket)
+	public static String getSupportTicketURL(
+			long companyId, String supportTicket)
 		throws Exception {
 
 		PatcherConfiguration patcherConfiguration =
 			ConfigurationProviderUtil.getCompanyConfiguration(
-				PatcherConfiguration.class, CompanyThreadLocal.getCompanyId());
+				PatcherConfiguration.class, companyId);
 
 		if (Validator.isNumber(supportTicket)) {
 			return patcherConfiguration.helpCenterURL() +
@@ -734,7 +725,7 @@ public class PatcherBuildUtil {
 
 		PatcherConfiguration patcherConfiguration =
 			ConfigurationProviderUtil.getCompanyConfiguration(
-				PatcherConfiguration.class, CompanyThreadLocal.getCompanyId());
+				PatcherConfiguration.class, patcherBuild.getCompanyId());
 
 		if (patcherConfiguration.patcherScanningEnabled()) {
 			return patcherBuild.isLatestSupportTicketBuild();
@@ -1202,28 +1193,7 @@ public class PatcherBuildUtil {
 		String hotfixFileName = getLiferayHotfixFileName(
 			patcherBuild.getFileName());
 
-		PatcherConfiguration patcherConfiguration =
-			ConfigurationProviderUtil.getCompanyConfiguration(
-				PatcherConfiguration.class, patcherBuild.getCompanyId());
-
-		String path =
-			patcherConfiguration.hotfixMountPath() + StringPool.FORWARD_SLASH +
-				patcherBuild.getFileName();
-
-		String quarterReleasePath = getQuarterReleaseBuildPath(path);
-
-		try {
-			HelpCenterUtil.addAttachmentComment(
-				hotfixFileName, patcherBuild, quarterReleasePath);
-		}
-		catch (FileNotFoundException fileNotFoundException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(fileNotFoundException);
-			}
-
-			HelpCenterUtil.addAttachmentComment(
-				hotfixFileName, patcherBuild, path);
-		}
+		HelpCenterUtil.addAttachmentComment(hotfixFileName, patcherBuild);
 	}
 
 	public static void removePreviousMainFixVersionsFromBuildsFixes(
@@ -1326,8 +1296,8 @@ public class PatcherBuildUtil {
 
 		if (parentPatcherBuild.isNew()) {
 			addPatcherAccountPatcherBuild(
-				userId, parentPatcherBuild.getPatcherBuildId(),
-				accountEntryCode);
+				userId, parentPatcherBuild.getCompanyId(),
+				parentPatcherBuild.getPatcherBuildId(), accountEntryCode);
 
 			PatcherAccount patcherAccount =
 				PatcherAccountLocalServiceUtil.getPatcherAccount(
@@ -1868,7 +1838,8 @@ public class PatcherBuildUtil {
 	}
 
 	protected static void addPatcherAccountPatcherBuild(
-			long userId, long patcherBuildId, String accountEntryCode)
+			long userId, long companyId, long patcherBuildId,
+			String accountEntryCode)
 		throws Exception {
 
 		PatcherAccount patcherAccount =
@@ -1883,7 +1854,8 @@ public class PatcherBuildUtil {
 		}
 
 		patcherAccount = PatcherAccountLocalServiceUtil.addPatcherAccount(
-			userId, HelpCenterUtil.fetchAccountEntryId(accountEntryCode),
+			userId,
+			HelpCenterUtil.fetchAccountEntryId(accountEntryCode, companyId),
 			accountEntryCode);
 
 		PatcherBuildLocalServiceUtil.addPatcherAccountPatcherBuild(
@@ -2264,8 +2236,5 @@ public class PatcherBuildUtil {
 			throw new Exception("the-status-is-not-valid");
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PatcherBuildUtil.class);
 
 }

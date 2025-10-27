@@ -164,6 +164,14 @@ public class CTCollectionLocalServiceImpl
 
 		ctCollection = ctCollectionPersistence.update(ctCollection);
 
+		CTScore ctScore = _ctScorePersistence.create(
+			counterLocalService.increment(CTScore.class.getName()));
+
+		ctScore.setCompanyId(companyId);
+		ctScore.setCtCollectionId(ctCollectionId);
+
+		_ctScorePersistence.update(ctScore);
+
 		_resourceLocalService.addResources(
 			ctCollection.getCompanyId(), 0, ctCollection.getUserId(),
 			CTCollection.class.getName(), ctCollection.getCtCollectionId(),
@@ -853,20 +861,22 @@ public class CTCollectionLocalServiceImpl
 						StringBundler.concat(
 							"select count(*) from ",
 							ctPersistence.getTableName(),
-							" where ctCollectionId = ", ctCollectionId,
-							" and status not in (",
+							" where ctCollectionId = ? and status not in (",
 							StringUtil.merge(
 								_getStatuses(
 									ctCollectionId, ctPersistence, entry),
 								StringPool.COMMA),
-							")"));
-				ResultSet resultSet = preparedStatement.executeQuery()) {
+							")"))) {
 
-				if (resultSet.next()) {
-					int count = resultSet.getInt(1);
+				preparedStatement.setLong(1, ctCollectionId);
 
-					if (count > 0) {
-						return true;
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					if (resultSet.next()) {
+						int count = resultSet.getInt(1);
+
+						if (count > 0) {
+							return true;
+						}
 					}
 				}
 			}

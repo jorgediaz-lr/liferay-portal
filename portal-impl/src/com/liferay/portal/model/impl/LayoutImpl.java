@@ -66,6 +66,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -75,7 +76,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.LayoutClone;
 import com.liferay.portal.util.LayoutCloneFactory;
 import com.liferay.portal.util.LayoutTypeControllerTracker;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.sites.kernel.util.Sites;
 
 import jakarta.portlet.PortletException;
@@ -882,19 +882,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 	}
 
 	@Override
-	public String getSourcePrototypeLayoutUuid() {
-		if (Validator.isNull(_sourcePrototypeLayoutUuid)) {
-			Layout layout = getLayoutSetPrototypeLayout();
-
-			if (layout != null) {
-				_sourcePrototypeLayoutUuid = layout.getUuid();
-			}
-		}
-
-		return _sourcePrototypeLayoutUuid;
-	}
-
-	@Override
 	public String getTarget() {
 		return PortalUtil.getLayoutTarget(this);
 	}
@@ -1212,7 +1199,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 	@Override
 	public boolean isLayoutDeleteable() {
 		try {
-			if (Validator.isNull(getSourcePrototypeLayoutUuid())) {
+			if (Validator.isNull(getLayoutSetPrototypeLayoutERC())) {
 				return true;
 			}
 
@@ -1222,10 +1209,9 @@ public class LayoutImpl extends LayoutBaseImpl {
 				return true;
 			}
 
-			if (LayoutLocalServiceUtil.hasLayoutSetPrototypeLayout(
-					layoutSet.getLayoutSetPrototypeUuid(), getCompanyId(),
-					getSourcePrototypeLayoutUuid())) {
+			Layout layoutSetPrototypeLayout = getLayoutSetPrototypeLayout();
 
+			if (layoutSetPrototypeLayout != null) {
 				return false;
 			}
 		}
@@ -1266,7 +1252,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 	public boolean isLayoutUpdateable() {
 		try {
 			if (Validator.isNull(getLayoutPrototypeUuid()) &&
-				Validator.isNull(getSourcePrototypeLayoutUuid())) {
+				Validator.isNull(getLayoutSetPrototypeLayoutERC())) {
 
 				return true;
 			}
@@ -1488,6 +1474,11 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isTypeEmpty() {
+		return Objects.equals(getType(), LayoutConstants.TYPE_EMPTY);
 	}
 
 	@Override
@@ -1916,7 +1907,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;
 	private Layout _masterLayout;
-	private String _sourcePrototypeLayoutUuid;
 	private Theme _theme;
 	private UnicodeProperties _typeSettingsUnicodeProperties;
 

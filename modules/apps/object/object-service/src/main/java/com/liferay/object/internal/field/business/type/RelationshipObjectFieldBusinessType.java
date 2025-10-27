@@ -18,11 +18,11 @@ import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.system.SystemObjectDefinitionManager;
 import com.liferay.object.system.SystemObjectDefinitionManagerRegistry;
+import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -137,11 +138,11 @@ public class RelationshipObjectFieldBusinessType
 			try {
 				if (objectDefinition.isUnmodifiableSystemObject()) {
 					return _getPrimaryKeyObj(
-						externalReferenceCode, objectDefinition, 0L);
+						externalReferenceCode, objectDefinition, 0L, userId);
 				}
 
 				ObjectEntry objectEntry = _objectEntryService.getObjectEntry(
-					externalReferenceCode,
+					externalReferenceCode, groupId,
 					objectDefinition.getObjectDefinitionId());
 
 				if (!Objects.equals(
@@ -183,7 +184,8 @@ public class RelationshipObjectFieldBusinessType
 
 			try {
 				if (objectDefinition.isUnmodifiableSystemObject()) {
-					return _getPrimaryKeyObj(null, objectDefinition, valueLong);
+					return _getPrimaryKeyObj(
+						null, objectDefinition, valueLong, userId);
 				}
 
 				ObjectEntry objectEntry = _objectEntryService.getObjectEntry(
@@ -239,7 +241,7 @@ public class RelationshipObjectFieldBusinessType
 
 			if (objectDefinition1.isUnmodifiableSystemObject()) {
 				return _getPrimaryKeyObj(
-					externalReferenceCode, objectDefinition1, 0L);
+					externalReferenceCode, objectDefinition1, 0L, userId);
 			}
 
 			long objectDefinition1GroupId = 0;
@@ -259,8 +261,8 @@ public class RelationshipObjectFieldBusinessType
 			}
 
 			ObjectEntry objectEntry =
-				_objectEntryLocalService.getOrAddIncompleteObjectEntry(
-					externalReferenceCode, objectDefinition1GroupId, userId,
+				_objectEntryService.getOrAddEmptyObjectEntry(
+					externalReferenceCode, objectDefinition1GroupId,
 					objectDefinition1.getObjectDefinitionId());
 
 			return objectEntry.getObjectEntryId();
@@ -292,7 +294,7 @@ public class RelationshipObjectFieldBusinessType
 
 	private Object _getPrimaryKeyObj(
 			String externalReferenceCode, ObjectDefinition objectDefinition,
-			Long primaryKey)
+			Long primaryKey, long userId)
 		throws PortalException {
 
 		SystemObjectDefinitionManager systemObjectDefinitionManager =
@@ -306,10 +308,15 @@ public class RelationshipObjectFieldBusinessType
 		}
 
 		BaseModel<?> baseModel =
-			systemObjectDefinitionManager.getBaseModelByExternalReferenceCode(
-				externalReferenceCode, objectDefinition.getCompanyId());
+			systemObjectDefinitionManager.getOrAddEmptyBaseModel(
+				externalReferenceCode, _userLocalService.getUserById(userId));
 
-		return baseModel.getPrimaryKeyObj();
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		Column<?, Long> primaryKeyColumn =
+			systemObjectDefinitionManager.getPrimaryKeyColumn();
+
+		return modelAttributes.get(primaryKeyColumn.getName());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -322,9 +329,6 @@ public class RelationshipObjectFieldBusinessType
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private ObjectEntryLocalService _objectEntryLocalService;
-
-	@Reference
 	private ObjectEntryService _objectEntryService;
 
 	@Reference
@@ -333,5 +337,8 @@ public class RelationshipObjectFieldBusinessType
 	@Reference
 	private SystemObjectDefinitionManagerRegistry
 		_systemObjectDefinitionManagerRegistry;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

@@ -7,10 +7,12 @@ import {ObjectField} from '@liferay/object-admin-rest-client-js';
 import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 import path from 'path';
 
+import {getFDSDateFormat} from '../../../tests/object-web/main/utils/dateFormat';
 import {PORTLET_URLS} from '../../../utils/portletUrls';
 
+import type {SupportedBusinessType} from '../../../tests/object-web/main/utils/generateObjectEntry';
+
 export class ViewObjectEntriesPage {
-	readonly addObjectEntryButton: Locator;
 	readonly backButton: Locator;
 	readonly cancelObjectEntryButton: Locator;
 	readonly dateTimeInput: Locator;
@@ -20,8 +22,10 @@ export class ViewObjectEntriesPage {
 	readonly editObjectEntryForm: Locator;
 	readonly expirationDateInput: Locator;
 	readonly frameSelect: FrameLocator;
+	readonly friendlyUrlInput: Locator;
 	readonly frontendDatasetActions: Locator;
 	readonly frontendDatasetDeleteAction: Locator;
+	readonly frontendDatasetItems: Locator;
 	readonly frontendDatasetViewAction: Locator;
 	readonly neverExpire: Locator;
 	readonly neverReview: Locator;
@@ -48,9 +52,6 @@ export class ViewObjectEntriesPage {
 	readonly successMessageArabic: Locator;
 
 	constructor(page: Page) {
-		this.addObjectEntryButton = page
-			.getByTestId('fdsCreationActionButton')
-			.first();
 		this.backButton = page.getByTitle('Back');
 		this.cancelObjectEntryButton = page.getByRole('button', {
 			name: 'Cancel',
@@ -73,12 +74,14 @@ export class ViewObjectEntriesPage {
 		this.frameSelect = page
 			.locator('iframe[title="Select"]')
 			.contentFrame();
+		this.friendlyUrlInput = page.locator('[name$="friendlyURL"]');
 		this.frontendDatasetActions = page.getByRole('button', {
 			name: 'Actions',
 		});
 		this.frontendDatasetDeleteAction = page.getByRole('menuitem', {
 			name: 'Delete',
 		});
+		this.frontendDatasetItems = page.getByRole('cell').getByRole('link');
 		this.frontendDatasetViewAction = page.getByRole('menuitem', {
 			name: 'View',
 		});
@@ -100,7 +103,7 @@ export class ViewObjectEntriesPage {
 		this.schedulePublicationButton = page
 			.getByLabel('Schedule Publication')
 			.getByRole('button', {name: 'Schedule'});
-		this.schedulePublicationCloseButton = page.getByLabel('close');
+		this.schedulePublicationCloseButton = page.getByLabel('Close');
 		this.schedulePublicationOption = page.getByRole('menuitem', {
 			name: 'Schedule Publication',
 		});
@@ -147,10 +150,11 @@ export class ViewObjectEntriesPage {
 		}
 	}
 
-	async clickAddObjectEntry(objectName?: string) {
-		objectName
-			? await this.page.getByLabel('Add ' + objectName).click()
-			: await this.addObjectEntryButton.click();
+	async clickAddObjectEntry(objectDefinitionLabel: string) {
+		await this.page
+			.getByLabel('Add ' + objectDefinitionLabel)
+			.first()
+			.click();
 
 		await this.editObjectEntryForm.waitFor({state: 'visible'});
 	}
@@ -173,6 +177,8 @@ export class ViewObjectEntriesPage {
 				})
 				.frameLocator('iframe')
 				.getByRole('textbox');
+
+			await richTextInput.clear();
 
 			await richTextInput.fill(objectFieldValue);
 
@@ -221,7 +227,7 @@ export class ViewObjectEntriesPage {
 		await this.page
 			.locator('div')
 			.filter({hasText: new RegExp(`^${fieldLabel}$`)})
-			.getByLabel('Choose date')
+			.getByLabel('Select date')
 			.click();
 
 		await this.page
@@ -304,5 +310,134 @@ export class ViewObjectEntriesPage {
 			`File size is larger than the allowed overall maximum upload request size ${maximumFileSizeAllowed} MB.`,
 			{exact: true}
 		);
+	}
+
+	async fillObjectFields({
+		attachmentFileName = '',
+		objectEntry,
+		objectFields,
+	}) {
+		const objectEntries: {
+			businessType: SupportedBusinessType;
+			entry: string;
+			name: string;
+		}[] = [];
+
+		for (const objectField of objectFields) {
+			switch (objectField.businessType) {
+				case 'Assignee': {
+					await this.selectDropdownItem(
+						objectField.label['en_US'],
+						objectEntry[objectField.name]
+					);
+
+					objectEntries.push({
+						businessType: objectField.businessType,
+						entry: objectEntry[objectField.name],
+						name: objectField.name,
+					});
+
+					break;
+				}
+				case 'Attachment': {
+					await this.selectFileButton.click();
+
+					await this.selectFileFromDocumentsAndMedia(
+						attachmentFileName
+							? attachmentFileName
+							: 'astronaut.png'
+					);
+
+					objectEntries.push({
+						businessType: objectField.businessType,
+						entry: attachmentFileName,
+						name: objectField.name,
+					});
+
+					break;
+				}
+				case 'Boolean': {
+					objectEntry[objectField.name]
+						? await this.page
+								.getByLabel(objectField.label['en_US'])
+								.check()
+						: await this.page
+								.getByLabel(objectField.label['en_US'])
+								.uncheck();
+
+					objectEntries.push({
+						businessType: objectField.businessType,
+						entry: objectEntry[objectField.name] ? 'Yes' : 'No',
+						name: objectField.name,
+					});
+
+					break;
+				}
+
+				case 'Picklist': {
+					await this.selectDropdownItem(
+						objectField.label['en_US'],
+						objectEntry[objectField.name].key.toString()
+					);
+
+					objectEntries.push({
+						businessType: objectField.businessType,
+						entry: objectEntry[objectField.name].key.toString(),
+						name: objectField.name,
+					});
+
+					break;
+				}
+				case 'RichText': {
+					await this.fillObjectEntry({
+						objectFieldBusinessType: objectField.businessType,
+						objectFieldLabel: objectField.label['en_US'],
+						objectFieldValue: objectEntry[objectField.name]
+							.toString()
+							.substring(0, 35),
+					});
+
+					objectEntries.push({
+						businessType: objectField.businessType,
+						entry: objectEntry[objectField.name]
+							.toString()
+							.substring(0, 34),
+						name: objectField.name,
+					});
+
+					break;
+				}
+				default: {
+					await this.fillObjectEntry({
+						objectFieldBusinessType: objectField.businessType,
+						objectFieldLabel: objectField.label['en_US'],
+						objectFieldValue:
+							objectEntry[objectField.name].toString(),
+					});
+
+					if (
+						objectField.businessType === 'Date' ||
+						objectField.businessType === 'DateTime'
+					) {
+						objectEntries.push({
+							businessType: objectField.businessType,
+							entry: getFDSDateFormat(
+								new Date(objectEntry[objectField.name])
+							),
+							name: objectField.name,
+						});
+					}
+					else {
+						objectEntries.push({
+							businessType: objectField.businessType,
+							entry: objectEntry[objectField.name].toString(),
+							name: objectField.name,
+						});
+					}
+				}
+			}
+		}
+
+		return objectEntries;
 	}
 }

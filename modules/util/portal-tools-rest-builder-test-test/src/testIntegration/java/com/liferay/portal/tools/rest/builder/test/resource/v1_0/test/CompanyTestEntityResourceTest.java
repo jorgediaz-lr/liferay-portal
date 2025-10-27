@@ -20,13 +20,13 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.tools.rest.builder.test.client.dto.v1_0.CompanyTestEntity;
 import com.liferay.portal.tools.rest.builder.test.client.permission.Permission;
 import com.liferay.portal.tools.rest.builder.test.client.resource.v1_0.CompanyTestEntityResource;
-import com.liferay.portal.util.PropsValues;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,6 +62,24 @@ public class CompanyTestEntityResourceTest
 
 	@Override
 	protected CompanyTestEntity
+			testBatchEngineDeleteImportTask_addCompanyTestEntity()
+		throws Exception {
+
+		return companyTestEntityResource.postCompanyTestEntity(
+			randomCompanyTestEntity());
+	}
+
+	@Override
+	protected CompanyTestEntity
+			testDeleteCompanyTestEntityByExternalReferenceCode_addCompanyTestEntity()
+		throws Exception {
+
+		return companyTestEntityResource.postCompanyTestEntity(
+			randomCompanyTestEntity());
+	}
+
+	@Override
+	protected CompanyTestEntity
 			testGetCompanyTestEntitiesPage_addCompanyTestEntity(
 				CompanyTestEntity companyTestEntity)
 		throws Exception {
@@ -90,15 +108,6 @@ public class CompanyTestEntityResourceTest
 	@Override
 	protected CompanyTestEntity
 			testGetCompanyTestEntityPermissionsPage_addCompanyTestEntity()
-		throws Exception {
-
-		return companyTestEntityResource.postCompanyTestEntity(
-			randomCompanyTestEntity());
-	}
-
-	@Override
-	protected CompanyTestEntity
-			testGraphQLCompanyTestEntity_addCompanyTestEntity()
 		throws Exception {
 
 		return companyTestEntityResource.postCompanyTestEntity(
@@ -245,8 +254,8 @@ public class CompanyTestEntityResourceTest
 		CompanyTestEntity randomCompanyTestEntity = randomCompanyTestEntity();
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.batch.engine.internal.strategy." +
-					"OnErrorContinueBatchEngineImportStrategy",
+				"com.liferay.batch.engine.internal." +
+					"BatchEngineImportTaskExecutorImpl",
 				LoggerTestUtil.ERROR)) {
 
 			CompanyTestEntityResource companyTestEntityResource =

@@ -198,6 +198,7 @@ interface ObjectDefinition {
 	defaultLanguageId: Liferay.Language.Locale;
 	enableCategorization: boolean;
 	enableComments: boolean;
+	enableFormContainer: boolean;
 	enableFriendlyURLCustomization: boolean;
 	enableIndexSearch: boolean;
 	enableLocalization: boolean;
@@ -212,6 +213,7 @@ interface ObjectDefinition {
 	modifiable?: boolean;
 	name: string;
 	objectActions: [];
+	objectDefinitionSettings?: NameValueObject[];
 	objectFields: ObjectField[];
 	objectFolderExternalReferenceCode: string;
 	objectLayouts: [];
@@ -295,7 +297,9 @@ interface ObjectField {
 	listTypeDefinitionId?: number;
 	localized: boolean;
 	name: string;
+	objectDefinitionExternalReferenceCode1: string;
 	objectFieldSettings?: ObjectFieldSetting[];
+	objectRelationshipExternalReferenceCode?: string;
 	readOnly: ReadOnlyFieldValue;
 	readOnlyConditionExpression: string;
 	relationshipId?: number;
@@ -306,6 +310,7 @@ interface ObjectField {
 }
 
 type ObjectFieldBusinessTypeName =
+	| 'Assignee'
 	| 'Aggregation'
 	| 'Attachment'
 	| 'AutoIncrement'

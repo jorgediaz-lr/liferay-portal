@@ -33,11 +33,13 @@ import {config as commerceChannelWebConfig} from './tests/commerce/commerce-chan
 import {config as commerceCheckoutWebConfig} from './tests/commerce/commerce-checkout-web/main/config';
 import {config as commerceCurrencyWebConfig} from './tests/commerce/commerce-currency-web/main/config';
 import {config as commerceDiscountContentWebConfig} from './tests/commerce/commerce-discount-content-web/main/config';
+import {config as commerceFragmentImplConfig} from './tests/commerce/commerce-fragment-impl/main/config';
 import {config as commerceInitializerUtilConfig} from './tests/commerce/commerce-initializer-util/main/config';
 import {config as commerceInventoryWebConfig} from './tests/commerce/commerce-inventory-web/main/config';
 import {config as commerceOrderContentWebConfig} from './tests/commerce/commerce-order-content-web/main/config';
 import {config as commerceOrderWebConfig} from './tests/commerce/commerce-order-web/main/config';
 import {config as commercePaymentsWebConfig} from './tests/commerce/commerce-payment-web/main/config';
+import {config as commerceProductAssetCategoriesWebConfig} from './tests/commerce/commerce-product-asset-categories-web/main/config';
 import {config as commerceProductContentSearchWebConfig} from './tests/commerce/commerce-product-content-search-web/main/config';
 import {config as commerceProductContentWebConfig} from './tests/commerce/commerce-product-content-web/main/config';
 import {config as commerceProductDefinitionsWebConfig} from './tests/commerce/commerce-product-definitions-web/main/config';
@@ -59,9 +61,12 @@ import {config as exportImportWebConfig} from './tests/export-import-web/main/co
 import {config as featureFlagWebConfig} from './tests/feature-flag-web/main/config';
 import {config as fragmentWebConfig} from './tests/fragment-web/main/config';
 import {config as friendlyURLConfig} from './tests/friendly-url-web/main/config';
+import {config as frontendCssCadminWebConfig} from './tests/frontend-css-cadmin-web/main/config';
 import {config as frontendDataSetAdminWebConfig} from './tests/frontend-data-set-admin-web/main/config';
 import {config as frontendDataSetWebConfig} from './tests/frontend-data-set-web/main/config';
+import {config as frontendEditorAlloyEditorWebConfig} from './tests/frontend-editor-alloyeditor-web/main/config';
 import {config as frontendEditorCKEditorWebConfig} from './tests/frontend-editor-ckeditor-web/main/config';
+import {config as frontendJsAuiWebConfig} from './tests/frontend-js-aui-web/main/config';
 import {config as frontendJsBootstrapSupportWebConfig} from './tests/frontend-js-bootstrap-support-web/main/config';
 import {config as frontendJsComponentsWebConfig} from './tests/frontend-js-components-web/main/config';
 import {config as frontendJsItemSelectorWebConfig} from './tests/frontend-js-item-selector-web/main/config';
@@ -79,6 +84,8 @@ import {config as itemSelectorTaglibConfig} from './tests/item-selector-taglib/m
 import {config as journalWebConfig} from './tests/journal-web/main/config';
 import {config as knowledgeBaseWebConfig} from './tests/knowledge-base-web/main/config';
 import {config as layoutAdminWebConfig} from './tests/layout-admin-web/main/config';
+import {config as layoutContentPageEditorWebFormContainerConfig} from './tests/layout-content-page-editor-web/form-container/config';
+import {config as layoutContentPageEditorWebFragmentsConfig} from './tests/layout-content-page-editor-web/fragments/config';
 import {config as layoutContentPageEditorWebConfig} from './tests/layout-content-page-editor-web/main/config';
 import {config as layoutLockedLayoutsWebConfig} from './tests/layout-locked-layouts-web/main/config';
 import {config as layoutPageTemplateAdminWebConfig} from './tests/layout-page-template-admin-web/main/config';
@@ -86,6 +93,7 @@ import {config as layoutSetPrototypeWebConfig} from './tests/layout-set-prototyp
 import {config as lockedItemsWebConfig} from './tests/locked-items-web/main/config';
 import {config as loginWebConfig} from './tests/login-web/main/config';
 import {config as loginWebSetupAdminConfig} from './tests/login-web/setup-admin/config';
+import {config as marketplaceAppManagerWebConfig} from './tests/marketplace-app-manager-web/main/config';
 import {config as messageBoardsWebConfig} from './tests/message-boards-web/main/config';
 import {config as multifactorAuthenticationConfig} from './tests/multi-factor-authentication-timebased-otp-web/main/config';
 import {config as multifactorAuthenticationWebConfig} from './tests/multi-factor-authentication-web/main/config';
@@ -116,6 +124,7 @@ import {config as portalWorkflowKaleoFormsWebConfig} from './tests/portal-workfl
 import {config as portalWorkflowMetricsWebConfig} from './tests/portal-workflow-metrics-web/main/config';
 import {config as portalWorkflowTaskWebConfig} from './tests/portal-workflow-task-web/main/config';
 import {config as portletConfigurationCssWebConfig} from './tests/portlet-configuration-css-web/main/config';
+import {config as productAnalyticsWebConfig} from './tests/product-analytics-web/main/config';
 import {config as productNavigationControlMenuWeb} from './tests/product-navigation-control-menu-web/main/config';
 import {config as productNavigationProductMenuWeb} from './tests/product-navigation-product-menu-web/main/config';
 import {config as productNavigationUserPersonalBarWebConfig} from './tests/product-navigation-user-personal-bar-web/main/config';
@@ -133,6 +142,9 @@ import {config as pageManagementSiteConfig} from './tests/setup/page-management-
 import {config as pageManagementSiteTeardownConfig} from './tests/setup/page-management-site/teardown/config';
 import {config as siteAdminWebConfig} from './tests/site-admin-web/main/config';
 import {config as siteCmsSiteInitializerConfig} from './tests/site-cms-site-initializer/main/config';
+import {config as siteCmsSiteInitializerPermissionsConfig} from './tests/site-cms-site-initializer/permissions/config';
+import {config as siteCmsSiteInitializerStructureBuilderConfig} from './tests/site-cms-site-initializer/structure-builder/config';
+import {config as siteMySitesWebConfig} from './tests/site-my-sites-web/main/config';
 import {config as siteNavigationAdminWebConfig} from './tests/site-navigation-admin-web/main/config';
 import {config as siteNavigationBreadcrumbWebConfig} from './tests/site-navigation-breadcrumb-web/main/config';
 import {config as siteNavigationDirectoryWebConfig} from './tests/site-navigation-directory-web/main/config';
@@ -146,6 +158,7 @@ import {config as templateWebConfig} from './tests/template-web/main/config';
 import {config as usersAdminWebEmailConfig} from './tests/users-admin-web/email/config';
 import {config as usersAdminWebConfig} from './tests/users-admin-web/main/config';
 import {config as usersAdminWebPermissionsConfig} from './tests/users-admin-web/permissions/config';
+import {config as utilTaglibConfig} from './tests/util-taglib/main/config';
 import {config as wikiWebConfig} from './tests/wiki-web/main/config';
 import {config as customerConfig} from './tests/workspaces/liferay-customer-workspace/main/config';
 import {config as commerceWorkspaceConfig} from './tests/workspaces/liferay-workspace-commerce/main/config';
@@ -192,11 +205,13 @@ export default defineConfig({
 		commerceCheckoutWebConfig,
 		commerceCurrencyWebConfig,
 		commerceDiscountContentWebConfig,
+		commerceFragmentImplConfig,
 		commerceInitializerUtilConfig,
 		commerceInventoryWebConfig,
 		commerceOrderWebConfig,
 		commerceOrderContentWebConfig,
 		commercePaymentsWebConfig,
+		commerceProductAssetCategoriesWebConfig,
 		commerceProductContentSearchWebConfig,
 		commerceProductContentWebConfig,
 		commerceProductDefinitionsWebConfig,
@@ -220,9 +235,12 @@ export default defineConfig({
 		featureFlagWebConfig,
 		fragmentWebConfig,
 		friendlyURLConfig,
+		frontendCssCadminWebConfig,
 		frontendDataSetAdminWebConfig,
 		frontendDataSetWebConfig,
+		frontendEditorAlloyEditorWebConfig,
 		frontendEditorCKEditorWebConfig,
+		frontendJsAuiWebConfig,
 		frontendJsBootstrapSupportWebConfig,
 		frontendJsComponentsWebConfig,
 		frontendJsItemSelectorWebConfig,
@@ -242,12 +260,15 @@ export default defineConfig({
 		knowledgeBaseWebConfig,
 		layoutAdminWebConfig,
 		layoutContentPageEditorWebConfig,
+		layoutContentPageEditorWebFormContainerConfig,
+		layoutContentPageEditorWebFragmentsConfig,
 		layoutLockedLayoutsWebConfig,
 		layoutPageTemplateAdminWebConfig,
 		layoutSetPrototypeWebConfig,
 		lockedItemsWebConfig,
 		loginWebConfig,
 		loginWebSetupAdminConfig,
+		marketplaceAppManagerWebConfig,
 		marketplaceConfig,
 		messageBoardsWebConfig,
 		multifactorAuthenticationConfig,
@@ -279,6 +300,7 @@ export default defineConfig({
 		portalWorkflowMetricsWebConfig,
 		portalWorkflowTaskWebConfig,
 		portletConfigurationCssWebConfig,
+		productAnalyticsWebConfig,
 		productNavigationControlMenuWeb,
 		productNavigationProductMenuWeb,
 		productNavigationUserPersonalBarWebConfig,
@@ -294,6 +316,9 @@ export default defineConfig({
 		segmentsWebConfig,
 		siteAdminWebConfig,
 		siteCmsSiteInitializerConfig,
+		siteCmsSiteInitializerPermissionsConfig,
+		siteCmsSiteInitializerStructureBuilderConfig,
+		siteMySitesWebConfig,
 		siteNavigationAdminWebConfig,
 		siteNavigationBreadcrumbWebConfig,
 		siteNavigationDirectoryWebConfig,
@@ -307,6 +332,7 @@ export default defineConfig({
 		usersAdminWebConfig,
 		usersAdminWebEmailConfig,
 		usersAdminWebPermissionsConfig,
+		utilTaglibConfig,
 		wikiWebConfig,
 		...setupProjects,
 	],

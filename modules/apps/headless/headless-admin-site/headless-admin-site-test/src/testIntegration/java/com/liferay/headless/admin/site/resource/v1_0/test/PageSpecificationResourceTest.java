@@ -6,8 +6,8 @@
 package com.liferay.headless.admin.site.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.headless.admin.site.client.dto.v1_0.ContainerPageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.ContentPageSpecification;
+import com.liferay.headless.admin.site.client.dto.v1_0.FavIcon;
 import com.liferay.headless.admin.site.client.dto.v1_0.PageElement;
 import com.liferay.headless.admin.site.client.dto.v1_0.PageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.PageExperience;
@@ -18,6 +18,7 @@ import com.liferay.headless.admin.site.client.pagination.Page;
 import com.liferay.headless.admin.site.client.problem.Problem;
 import com.liferay.headless.admin.site.resource.v1_0.test.util.LayoutPageTemplateEntryTestUtil;
 import com.liferay.headless.admin.site.resource.v1_0.test.util.LayoutUtilityPageEntryTestUtil;
+import com.liferay.headless.admin.site.resource.v1_0.test.util.PageExperiencesTestUtil;
 import com.liferay.headless.admin.site.resource.v1_0.test.util.PageSpecificationsTestUtil;
 import com.liferay.headless.admin.site.resource.v1_0.test.util.SettingsTestUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
@@ -26,7 +27,6 @@ import com.liferay.layout.test.util.ContentLayoutTestUtil;
 import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.UnsafeSupplier;
-import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -76,11 +76,16 @@ public class PageSpecificationResourceTest
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 
+	@Ignore
 	@Override
 	@Test
-	public void testDeleteSiteSiteByExternalReferenceCodePageSpecification()
-		throws Exception {
+	public void testBatchEngineDeleteImportTask() throws Exception {
+		super.testBatchEngineDeleteImportTask();
+	}
 
+	@Override
+	@Test
+	public void testDeleteSitePageSpecification() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
@@ -90,28 +95,26 @@ public class PageSpecificationResourceTest
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode()));
 
-		_testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+		_testDeleteSitePageSpecification(
 			_addLayout(LayoutConstants.TYPE_CONTENT, serviceContext),
 			serviceContext);
-		_testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+		_testDeleteSitePageSpecification(
 			LayoutPageTemplateEntryTestUtil.
 				getBasicLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+		_testDeleteSitePageSpecification(
 			LayoutPageTemplateEntryTestUtil.
 				getDisplayPageLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+		_testDeleteSitePageSpecification(
 			LayoutUtilityPageEntryTestUtil.getLayoutUtilityPageEntryLayout(
 				serviceContext),
 			serviceContext);
-		_testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+		_testDeleteSitePageSpecification(
 			LayoutPageTemplateEntryTestUtil.
 				getMasterLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
@@ -125,25 +128,20 @@ public class PageSpecificationResourceTest
 
 		_assertProblemException(
 			"NOT_FOUND",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layoutPageTemplateEntryLayout.
-							getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layoutPageTemplateEntryLayout.getExternalReferenceCode()));
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layoutPageTemplateEntry.getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layoutPageTemplateEntry.getExternalReferenceCode()));
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodeDisplayPageTemplatePageSpecificationsPage()
+	public void testGetSiteDisplayPageTemplatePageSpecificationsPage()
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -159,16 +157,14 @@ public class PageSpecificationResourceTest
 			serviceContext,
 			() ->
 				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodeDisplayPageTemplatePageSpecificationsPage(
+					getSiteDisplayPageTemplatePageSpecificationsPage(
 						testGroup.getExternalReferenceCode(),
 						layoutPageTemplateEntry.getExternalReferenceCode()));
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodeMasterPagePageSpecificationsPage()
-		throws Exception {
-
+	public void testGetSiteMasterPagePageSpecificationsPage() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
@@ -182,43 +178,41 @@ public class PageSpecificationResourceTest
 			serviceContext,
 			() ->
 				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodeMasterPagePageSpecificationsPage(
+					getSiteMasterPagePageSpecificationsPage(
 						testGroup.getExternalReferenceCode(),
 						layoutPageTemplateEntry.getExternalReferenceCode()));
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodePageSpecification()
-		throws Exception {
-
+	public void testGetSitePageSpecification() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testGetSitePageSpecificationWithLayoutWithDraftLayout(
 			_addLayout(LayoutConstants.TYPE_CONTENT, serviceContext),
 			serviceContext);
 
 		Layout layout = _addLayout(
 			LayoutConstants.TYPE_PORTLET, serviceContext);
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			layout, layout.getExternalReferenceCode());
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testGetSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getBasicLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testGetSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getDisplayPageLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testGetSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutUtilityPageEntryTestUtil.getLayoutUtilityPageEntryLayout(
 				serviceContext),
 			serviceContext);
-		_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testGetSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getMasterLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
@@ -227,14 +221,14 @@ public class PageSpecificationResourceTest
 			LayoutPageTemplateEntryTestUtil.
 				getWidgetPageLayoutPageTemplateEntry(serviceContext);
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			_layoutLocalService.getLayout(layoutPageTemplateEntry.getPlid()),
 			layoutPageTemplateEntry.getExternalReferenceCode());
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodePageTemplatePageSpecificationsPage()
+	public void testGetSitePageTemplatePageSpecificationsPage()
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -250,16 +244,14 @@ public class PageSpecificationResourceTest
 			serviceContext,
 			() ->
 				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodePageTemplatePageSpecificationsPage(
+					getSitePageTemplatePageSpecificationsPage(
 						testGroup.getExternalReferenceCode(),
 						layoutPageTemplateEntry.getExternalReferenceCode()));
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodeSitePagePageSpecificationsPage()
-		throws Exception {
-
+	public void testGetSiteSitePagePageSpecificationsPage() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
@@ -270,15 +262,14 @@ public class PageSpecificationResourceTest
 		_testPageSpecificationsPage(
 			layout, serviceContext,
 			() ->
-				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodeSitePagePageSpecificationsPage(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode()));
+				pageSpecificationResource.getSiteSitePagePageSpecificationsPage(
+					testGroup.getExternalReferenceCode(),
+					layout.getExternalReferenceCode()));
 	}
 
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodeUtilityPagePageSpecificationsPage()
+	public void testGetSiteUtilityPagePageSpecificationsPage()
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -294,48 +285,37 @@ public class PageSpecificationResourceTest
 			serviceContext,
 			() ->
 				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodeUtilityPagePageSpecificationsPage(
+					getSiteUtilityPagePageSpecificationsPage(
 						testGroup.getExternalReferenceCode(),
 						layoutUtilityPageEntry.getExternalReferenceCode()));
 	}
 
-	@Ignore
 	@Override
 	@Test
-	public void testGraphQLGetSiteSiteByExternalReferenceCodePageSpecification()
-		throws Exception {
-
-		super.testGraphQLGetSiteSiteByExternalReferenceCodePageSpecification();
-	}
-
-	@Override
-	@Test
-	public void testPatchSiteSiteByExternalReferenceCodePageSpecification()
-		throws Exception {
-
+	public void testPatchSitePageSpecification() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
 
-		_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPatchSitePageSpecificationWithLayoutWithDraftLayout(
 			_addLayout(LayoutConstants.TYPE_CONTENT, serviceContext),
 			serviceContext);
-		_testPatchSiteSiteByExternalReferenceCodePageSpecification(
+		_testPatchSitePageSpecification(
 			_addLayout(LayoutConstants.TYPE_PORTLET, serviceContext),
 			serviceContext);
-		_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPatchSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getBasicLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPatchSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getDisplayPageLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPatchSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutUtilityPageEntryTestUtil.getLayoutUtilityPageEntryLayout(
 				serviceContext),
 			serviceContext);
-		_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPatchSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getMasterLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
@@ -344,44 +324,40 @@ public class PageSpecificationResourceTest
 	@Ignore
 	@Override
 	@Test
-	public void testPostSiteSiteByExternalReferenceCodePageSpecificationPublish()
-		throws Exception {
-
-		super.testPostSiteSiteByExternalReferenceCodePageSpecificationPublish();
+	public void testPostSitePageSpecificationPublish() throws Exception {
+		super.testPostSitePageSpecificationPublish();
 	}
 
 	@Override
 	@Test
-	public void testPutSiteSiteByExternalReferenceCodePageSpecification()
-		throws Exception {
-
+	public void testPutSitePageSpecification() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				testGroup.getGroupId(), TestPropsValues.getUserId());
 
-		_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPutSitePageSpecificationWithLayoutWithDraftLayout(
 			_addLayout(LayoutConstants.TYPE_CONTENT, serviceContext),
 			serviceContext);
 
 		Layout layout = _addLayout(
 			LayoutConstants.TYPE_PORTLET, serviceContext);
 
-		_testPutSiteSiteByExternalReferenceCodePageSpecification(
+		_testPutSitePageSpecification(
 			layout, layout.getExternalReferenceCode(), serviceContext);
 
-		_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPutSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getBasicLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPutSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getDisplayPageLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
-		_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPutSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutUtilityPageEntryTestUtil.getLayoutUtilityPageEntryLayout(
 				serviceContext),
 			serviceContext);
-		_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
+		_testPutSitePageSpecificationWithLayoutWithDraftLayout(
 			LayoutPageTemplateEntryTestUtil.
 				getMasterLayoutPageTemplateEntryLayout(serviceContext),
 			serviceContext);
@@ -390,7 +366,7 @@ public class PageSpecificationResourceTest
 			LayoutPageTemplateEntryTestUtil.
 				getWidgetPageLayoutPageTemplateEntry(serviceContext);
 
-		_testPutSiteSiteByExternalReferenceCodePageSpecification(
+		_testPutSitePageSpecification(
 			_layoutLocalService.getLayout(layoutPageTemplateEntry.getPlid()),
 			layoutPageTemplateEntry.getExternalReferenceCode(), serviceContext);
 	}
@@ -556,18 +532,16 @@ public class PageSpecificationResourceTest
 			pageExperiences.length);
 	}
 
-	private void _assertDeleteSiteSiteByExternalReferenceCodePageSpecification(
-			Layout draftLayout)
+	private void _assertDeleteSitePageSpecification(Layout draftLayout)
 		throws Exception {
 
 		Layout layout = _layoutLocalService.getLayout(draftLayout.getClassPK());
 
 		boolean published = layout.isPublished();
 
-		pageSpecificationResource.
-			deleteSiteSiteByExternalReferenceCodePageSpecification(
-				testGroup.getExternalReferenceCode(),
-				draftLayout.getExternalReferenceCode());
+		pageSpecificationResource.deleteSitePageSpecification(
+			testGroup.getExternalReferenceCode(),
+			draftLayout.getExternalReferenceCode());
 
 		draftLayout = _layoutLocalService.getLayout(draftLayout.getPlid());
 
@@ -664,31 +638,28 @@ public class PageSpecificationResourceTest
 		}
 	}
 
-	private void
-			_assertPutSiteSiteByExternalReferenceCodeContentPageSpecification(
-				Layout layout, ServiceContext serviceContext)
+	private void _assertPutSiteContentPageSpecification(
+			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
 		ContentPageSpecification contentPageSpecification =
 			(ContentPageSpecification)
-				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode());
+				pageSpecificationResource.getSitePageSpecification(
+					testGroup.getExternalReferenceCode(),
+					layout.getExternalReferenceCode());
 
-		_modifyPageExperiences(contentPageSpecification.getPageExperiences());
+		PageExperiencesTestUtil.modifyPageExperiences(
+			contentPageSpecification.getPageExperiences());
 
-		SettingsTestUtil.modifySettings(
-			serviceContext, contentPageSpecification.getSettings());
+		_modifySettings(
+			contentPageSpecification, serviceContext, layout.isTypeUtility());
 
 		contentPageSpecification.setStatus(PageSpecification.Status.DRAFT);
 
 		PageSpecification putPageSpecification =
-			pageSpecificationResource.
-				putSiteSiteByExternalReferenceCodePageSpecification(
-					testGroup.getExternalReferenceCode(),
-					layout.getExternalReferenceCode(),
-					contentPageSpecification);
+			pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode(), contentPageSpecification);
 
 		assertEquals(contentPageSpecification, putPageSpecification);
 	}
@@ -700,7 +671,9 @@ public class PageSpecificationResourceTest
 			PageSpecification.Type.WIDGET_PAGE_SPECIFICATION,
 			widgetPageSpecification.getType());
 
-		Assert.assertNull(widgetPageSpecification.getWidgetPageSections());
+		Assert.assertTrue(
+			ArrayUtil.isNotEmpty(
+				widgetPageSpecification.getWidgetPageSections()));
 	}
 
 	private ContentPageSpecification _getContentPageSpecification(
@@ -749,46 +722,6 @@ public class PageSpecificationResourceTest
 		return null;
 	}
 
-	private PageElement[] _getPageElements(
-		int count, String parentExternalReferenceCode) {
-
-		PageElement[] pageElements = new PageElement[count];
-
-		for (int i = 0; i < count; i++) {
-			String externalReferenceCode = RandomTestUtil.randomString();
-
-			int curPosition = i;
-
-			PageElement pageElement = new PageElement() {
-				{
-					setPageElementDefinition(
-						() -> new ContainerPageElementDefinition() {
-							{
-								setIndexed(() -> Boolean.FALSE);
-								setType(() -> Type.CONTAINER);
-							}
-						});
-					setPosition(() -> curPosition);
-				}
-			};
-
-			pageElement.setExternalReferenceCode(externalReferenceCode);
-
-			if (RandomTestUtil.randomBoolean()) {
-				pageElement.setPageElements(
-					_getPageElements(
-						RandomTestUtil.randomInt(1, 2), externalReferenceCode));
-			}
-
-			pageElement.setParentExternalReferenceCode(
-				parentExternalReferenceCode);
-
-			pageElements[i] = pageElement;
-		}
-
-		return pageElements;
-	}
-
 	private PageExperience _getPageExperience(
 		String pageExperienceExternalReferenceCode,
 		PageExperience[] pageExperiences) {
@@ -807,16 +740,16 @@ public class PageSpecificationResourceTest
 		return null;
 	}
 
-	private long _getStyleBookEntryId(ServiceContext serviceContext)
+	private String _getStyleBookEntryERC(ServiceContext serviceContext)
 		throws Exception {
 
 		if (RandomTestUtil.randomBoolean()) {
-			return 0;
+			return null;
 		}
 
 		StyleBookEntry styleBookEntry = _addStyleBookEntry(serviceContext);
 
-		return styleBookEntry.getStyleBookEntryId();
+		return styleBookEntry.getExternalReferenceCode();
 	}
 
 	private String _getTypeSettings() throws Exception {
@@ -840,99 +773,77 @@ public class PageSpecificationResourceTest
 			draftLayout.getTypeSettingsProperty("published"));
 	}
 
-	private void _modifyPageExperiences(PageExperience[] pageExperiences) {
-		for (PageExperience pageExperience : pageExperiences) {
-			List<PageElement> dropZonePageElements =
-				TransformUtil.transformToList(
-					pageExperience.getPageElements(),
-					pageElement -> {
-						PageElementDefinition pageElementDefinition =
-							pageElement.getPageElementDefinition();
+	private void _modifySettings(
+			PageSpecification pageSpecification, ServiceContext serviceContext,
+			boolean typeUtility)
+		throws Exception {
 
-						if (Objects.equals(
-								pageElementDefinition.getType(),
-								PageElementDefinition.Type.DROP_ZONE)) {
+		if (!typeUtility) {
+			SettingsTestUtil.modifySettings(
+				FavIcon.FavIconType.CLIENT_EXTENSION, serviceContext,
+				pageSpecification.getSettings());
 
-							return pageElement;
-						}
-
-						return null;
-					});
-
-			pageExperience.setPageElements(
-				() -> {
-					PageElement[] pageElements = _getPageElements(
-						RandomTestUtil.randomInt(1, 3), StringPool.BLANK);
-
-					if (ListUtil.isEmpty(dropZonePageElements)) {
-						return pageElements;
-					}
-
-					for (int i = 0; i < dropZonePageElements.size(); i++) {
-						PageElement pageElement = dropZonePageElements.get(i);
-
-						pageElement.setPosition(pageElements.length + i);
-					}
-
-					return ArrayUtil.append(
-						pageElements,
-						dropZonePageElements.toArray(new PageElement[0]));
-				});
+			return;
 		}
+
+		pageSpecification.setSettings(
+			() -> new Settings() {
+				{
+					setMasterPageItemExternalReference(
+						() ->
+							SettingsTestUtil.getMasterPageItemExternalReference(
+								serviceContext));
+					setStyleBookItemExternalReference(
+						() ->
+							SettingsTestUtil.getStyleBookItemExternalReference(
+								serviceContext));
+				}
+			});
 	}
 
-	private void _testDeleteSiteSiteByExternalReferenceCodePageSpecification(
+	private void _testDeleteSitePageSpecification(
 			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode()));
 
 		Layout draftLayout = layout.fetchDraftLayout();
 
-		_assertDeleteSiteSiteByExternalReferenceCodePageSpecification(
-			draftLayout);
+		_assertDeleteSitePageSpecification(draftLayout);
 
 		ContentLayoutTestUtil.publishLayout(draftLayout, layout);
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode()));
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					deleteSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode()));
+			() -> pageSpecificationResource.deleteSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode()));
 
 		_layoutLocalService.updateStatus(
 			TestPropsValues.getUserId(), draftLayout.getPlid(),
 			WorkflowConstants.STATUS_DRAFT, serviceContext);
 
-		_assertDeleteSiteSiteByExternalReferenceCodePageSpecification(
-			draftLayout);
+		_assertDeleteSitePageSpecification(draftLayout);
 	}
 
-	private void _testGetSiteSiteByExternalReferenceCodePageSpecification(
+	private void _testGetSitePageSpecification(
 			Layout layout, String pageSpecificationExternalReferenceCode)
 		throws Exception {
 
 		PageSpecification pageSpecification =
-			pageSpecificationResource.
-				getSiteSiteByExternalReferenceCodePageSpecification(
-					testGroup.getExternalReferenceCode(),
-					pageSpecificationExternalReferenceCode);
+			pageSpecificationResource.getSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				pageSpecificationExternalReferenceCode);
 
 		Assert.assertEquals(
 			pageSpecificationExternalReferenceCode,
@@ -973,47 +884,46 @@ public class PageSpecificationResourceTest
 		}
 	}
 
-	private void
-			_testGetSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
-				Layout layout, ServiceContext serviceContext)
+	private void _testGetSitePageSpecificationWithLayoutWithDraftLayout(
+			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			layout, layout.getExternalReferenceCode());
 
 		Layout draftLayout = layout.fetchDraftLayout();
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			draftLayout, draftLayout.getExternalReferenceCode());
 
 		draftLayout = _layoutLocalService.updateStatus(
 			TestPropsValues.getUserId(), draftLayout.getPlid(),
 			WorkflowConstants.STATUS_DRAFT, serviceContext);
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			layout, layout.getExternalReferenceCode());
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			draftLayout, draftLayout.getExternalReferenceCode());
 
 		ContentLayoutTestUtil.publishLayout(draftLayout, layout);
 
 		layout = _layoutLocalService.getLayout(layout.getPlid());
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			layout, layout.getExternalReferenceCode());
 
 		draftLayout = layout.fetchDraftLayout();
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			draftLayout, draftLayout.getExternalReferenceCode());
 
 		draftLayout = _layoutLocalService.updateStatus(
 			TestPropsValues.getUserId(), draftLayout.getPlid(),
 			WorkflowConstants.STATUS_DRAFT, serviceContext);
 
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			layout, layout.getExternalReferenceCode());
-		_testGetSiteSiteByExternalReferenceCodePageSpecification(
+		_testGetSitePageSpecification(
 			draftLayout, draftLayout.getExternalReferenceCode());
 	}
 
@@ -1043,36 +953,36 @@ public class PageSpecificationResourceTest
 		_assertPageSpecificationsPage(layout, unsafeSupplier.get());
 	}
 
-	private void _testPatchSiteSiteByExternalReferenceCodePageSpecification(
+	private void _testPatchSitePageSpecification(
 			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
-		PageSpecification pageSpecification =
-			pageSpecificationResource.
-				getSiteSiteByExternalReferenceCodePageSpecification(
+		WidgetPageSpecification widgetPageSpecification =
+			(WidgetPageSpecification)
+				pageSpecificationResource.getSitePageSpecification(
 					testGroup.getExternalReferenceCode(),
 					layout.getExternalReferenceCode());
 
 		SettingsTestUtil.modifySettings(
-			serviceContext, pageSpecification.getSettings());
+			FavIcon.FavIconType.ITEM_EXTERNAL_REFERENCE, serviceContext,
+			widgetPageSpecification.getSettings());
 
-		_testPatchSiteSiteByExternalReferenceCodePageSpecification(
-			pageSpecification,
+		_testPatchSitePageSpecification(
+			widgetPageSpecification,
 			() -> PageSpecificationsTestUtil.getWidgetPageSpecification(
-				null, pageSpecification.getSettings(), null));
+				null, null, widgetPageSpecification.getSettings(), null,
+				widgetPageSpecification.getWidgetPageSections()));
 
-		pageSpecification.setStatus(PageSpecification.Status.DRAFT);
+		widgetPageSpecification.setStatus(PageSpecification.Status.DRAFT);
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					patchSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode(), pageSpecification));
+			() -> pageSpecificationResource.patchSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode(), widgetPageSpecification));
 	}
 
-	private void _testPatchSiteSiteByExternalReferenceCodePageSpecification(
+	private void _testPatchSitePageSpecification(
 			PageSpecification pageSpecification,
 			UnsafeSupplier<PageSpecification, Exception> unsafeSupplier)
 		throws Exception {
@@ -1080,16 +990,14 @@ public class PageSpecificationResourceTest
 		Assert.assertTrue(
 			equals(
 				pageSpecification,
-				pageSpecificationResource.
-					patchSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						pageSpecification.getExternalReferenceCode(),
-						unsafeSupplier.get())));
+				pageSpecificationResource.patchSitePageSpecification(
+					testGroup.getExternalReferenceCode(),
+					pageSpecification.getExternalReferenceCode(),
+					unsafeSupplier.get())));
 	}
 
-	private void
-			_testPatchSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
-				Layout layout, ServiceContext serviceContext)
+	private void _testPatchSitePageSpecificationWithLayoutWithDraftLayout(
+			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
 		Layout draftLayout = _updateLayout(
@@ -1097,16 +1005,16 @@ public class PageSpecificationResourceTest
 
 		ContentPageSpecification contentPageSpecification =
 			(ContentPageSpecification)
-				pageSpecificationResource.
-					getSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode());
+				pageSpecificationResource.getSitePageSpecification(
+					testGroup.getExternalReferenceCode(),
+					draftLayout.getExternalReferenceCode());
 
-		_modifyPageExperiences(contentPageSpecification.getPageExperiences());
+		PageExperiencesTestUtil.modifyPageExperiences(
+			contentPageSpecification.getPageExperiences());
 
 		contentPageSpecification.setStatus(PageSpecification.Status.DRAFT);
 
-		_testPatchSiteSiteByExternalReferenceCodePageSpecification(
+		_testPatchSitePageSpecification(
 			contentPageSpecification,
 			() -> new ContentPageSpecification() {
 				{
@@ -1119,26 +1027,23 @@ public class PageSpecificationResourceTest
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					patchSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode(),
-						new ContentPageSpecification() {
-							{
-								setPageExperiences(
-									() -> ArrayUtil.append(
-										contentPageSpecification.
-											getPageExperiences(),
-										new PageExperience()));
-								setType(() -> Type.CONTENT_PAGE_SPECIFICATION);
-							}
-						}));
+			() -> pageSpecificationResource.patchSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode(),
+				new ContentPageSpecification() {
+					{
+						setPageExperiences(
+							() -> ArrayUtil.append(
+								contentPageSpecification.getPageExperiences(),
+								new PageExperience()));
+						setType(() -> Type.CONTENT_PAGE_SPECIFICATION);
+					}
+				}));
 
-		SettingsTestUtil.modifySettings(
-			serviceContext, contentPageSpecification.getSettings());
+		_modifySettings(
+			contentPageSpecification, serviceContext, layout.isTypeUtility());
 
-		_testPatchSiteSiteByExternalReferenceCodePageSpecification(
+		_testPatchSitePageSpecification(
 			contentPageSpecification,
 			() -> _getContentPageSpecification(
 				contentPageSpecification.getSettings()));
@@ -1147,15 +1052,13 @@ public class PageSpecificationResourceTest
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					patchSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode(),
-						contentPageSpecification));
+			() -> pageSpecificationResource.patchSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode(),
+				contentPageSpecification));
 	}
 
-	private void _testPutSiteSiteByExternalReferenceCodePageSpecification(
+	private void _testPutSitePageSpecification(
 			Layout layout, String pageSpecificationExternalReferenceCode,
 			ServiceContext serviceContext)
 		throws Exception {
@@ -1163,69 +1066,57 @@ public class PageSpecificationResourceTest
 		_updateLayout(layout, serviceContext);
 
 		PageSpecification pageSpecification =
-			pageSpecificationResource.
-				getSiteSiteByExternalReferenceCodePageSpecification(
-					testGroup.getExternalReferenceCode(),
-					pageSpecificationExternalReferenceCode);
+			pageSpecificationResource.getSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				pageSpecificationExternalReferenceCode);
 
-		SettingsTestUtil.modifySettings(
-			serviceContext, pageSpecification.getSettings());
+		_modifySettings(
+			pageSpecification, serviceContext, layout.isTypeUtility());
 
 		pageSpecification.setStatus(PageSpecification.Status.APPROVED);
 
 		PageSpecification putPageSpecification =
-			pageSpecificationResource.
-				putSiteSiteByExternalReferenceCodePageSpecification(
-					testGroup.getExternalReferenceCode(),
-					pageSpecificationExternalReferenceCode, pageSpecification);
+			pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				pageSpecificationExternalReferenceCode, pageSpecification);
 
 		assertEquals(pageSpecification, putPageSpecification);
 	}
 
-	private void
-			_testPutSiteSiteByExternalReferenceCodePageSpecificationWithLayoutWithDraftLayout(
-				Layout layout, ServiceContext serviceContext)
+	private void _testPutSitePageSpecificationWithLayoutWithDraftLayout(
+			Layout layout, ServiceContext serviceContext)
 		throws Exception {
 
 		Layout draftLayout = _updateLayout(
 			layout.fetchDraftLayout(), serviceContext);
 
 		PageSpecification pageSpecification =
-			pageSpecificationResource.
-				getSiteSiteByExternalReferenceCodePageSpecification(
-					testGroup.getExternalReferenceCode(),
-					draftLayout.getExternalReferenceCode());
+			pageSpecificationResource.getSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode());
 
 		pageSpecification.setStatus(PageSpecification.Status.APPROVED);
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					putSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode(),
-						pageSpecification));
+			() -> pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode(), pageSpecification));
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					putSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode(), pageSpecification));
+			() -> pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode(), pageSpecification));
 
 		pageSpecification.setStatus(PageSpecification.Status.DRAFT);
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					putSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						layout.getExternalReferenceCode(), pageSpecification));
+			() -> pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				layout.getExternalReferenceCode(), pageSpecification));
 
-		_assertPutSiteSiteByExternalReferenceCodeContentPageSpecification(
-			draftLayout, serviceContext);
+		_assertPutSiteContentPageSpecification(draftLayout, serviceContext);
 
 		ContentLayoutTestUtil.publishLayout(draftLayout, layout);
 
@@ -1233,19 +1124,15 @@ public class PageSpecificationResourceTest
 
 		_assertProblemException(
 			"BAD_REQUEST",
-			() ->
-				pageSpecificationResource.
-					putSiteSiteByExternalReferenceCodePageSpecification(
-						testGroup.getExternalReferenceCode(),
-						draftLayout.getExternalReferenceCode(),
-						pageSpecification));
+			() -> pageSpecificationResource.putSitePageSpecification(
+				testGroup.getExternalReferenceCode(),
+				draftLayout.getExternalReferenceCode(), pageSpecification));
 
 		_layoutLocalService.updateStatus(
 			TestPropsValues.getUserId(), draftLayout.getPlid(),
 			WorkflowConstants.STATUS_DRAFT, serviceContext);
 
-		_assertPutSiteSiteByExternalReferenceCodeContentPageSpecification(
-			draftLayout, serviceContext);
+		_assertPutSiteContentPageSpecification(draftLayout, serviceContext);
 	}
 
 	private Layout _updateLayout(Layout layout, ServiceContext serviceContext)
@@ -1264,7 +1151,7 @@ public class PageSpecificationResourceTest
 			layout.getTitleMap(), layout.getDescriptionMap(),
 			layout.getKeywordsMap(), layout.getRobotsMap(), layout.getType(),
 			layout.isHidden(), layout.getFriendlyURLMap(),
-			layout.getIconImage(), null, _getStyleBookEntryId(serviceContext),
+			layout.getIconImage(), null, _getStyleBookEntryERC(serviceContext),
 			0, layout.getMasterLayoutPlid(), serviceContext);
 	}
 

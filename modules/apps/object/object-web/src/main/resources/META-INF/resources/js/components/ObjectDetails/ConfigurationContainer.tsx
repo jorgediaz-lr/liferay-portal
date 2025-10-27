@@ -12,7 +12,6 @@ interface ConfigurationContainerProps {
 	hasUpdateObjectDefinitionPermission: boolean;
 	isEnableObjectEntrySchedule: boolean;
 	isLinkedObjectDefinition?: boolean;
-	isRootDescendantNode: boolean;
 	onSubmit?: (editedObjectDefinition?: Partial<ObjectDefinition>) => void;
 	setValues: (values: Partial<ObjectDefinition>) => void;
 	values: Partial<ObjectDefinition>;
@@ -22,7 +21,6 @@ export function ConfigurationContainer({
 	hasUpdateObjectDefinitionPermission,
 	isEnableObjectEntrySchedule,
 	isLinkedObjectDefinition,
-	isRootDescendantNode,
 	onSubmit,
 	setValues,
 	values,
@@ -38,7 +36,7 @@ export function ConfigurationContainer({
 		<div className="lfr-objects__object-definition-details-configuration">
 			<ClayForm.Group>
 				<Toggle
-					disabled={disabled || isRootDescendantNode}
+					disabled={disabled}
 					label={sub(
 						Liferay.Language.get('show-widget-in-x'),
 						Liferay.Language.get('page-builder')
@@ -178,32 +176,61 @@ export function ConfigurationContainer({
 			</ClayForm.Group>
 
 			{Liferay.FeatureFlags['LPD-17564'] && (
-				<ClayForm.Group>
-					<Toggle
-						disabled={
-							disabled ||
-							(isEnableObjectEntrySchedule && values.active)
-						}
-						label={Liferay.Language.get(
-							'allow-users-to-schedule-a-display-expiration-and-review-date-for-entries'
-						)}
-						name="enableObjectEntrySchedule"
-						onBlur={(event) => {
-							event.stopPropagation();
-
-							if (onSubmit) {
-								onSubmit();
+				<>
+					<ClayForm.Group>
+						<Toggle
+							disabled={
+								disabled ||
+								(isEnableObjectEntrySchedule && values.active)
 							}
-						}}
-						onToggle={() => {
-							setValues({
-								enableObjectEntrySchedule:
-									!values.enableObjectEntrySchedule,
-							});
-						}}
-						toggled={values.enableObjectEntrySchedule}
-					/>
-				</ClayForm.Group>
+							label={Liferay.Language.get(
+								'allow-users-to-schedule-a-display-expiration-and-review-date-for-entries'
+							)}
+							name="enableObjectEntrySchedule"
+							onBlur={(event) => {
+								event.stopPropagation();
+
+								if (onSubmit) {
+									onSubmit();
+								}
+							}}
+							onToggle={() => {
+								setValues({
+									enableObjectEntrySchedule:
+										!values.enableObjectEntrySchedule,
+								});
+							}}
+							toggled={values.enableObjectEntrySchedule}
+						/>
+					</ClayForm.Group>
+
+					<ClayForm.Group>
+						<Toggle
+							disabled={disabled}
+							label={sub(
+								Liferay.Language.get('enable-x'),
+								Liferay.Language.get(
+									'mapping-in-form-container'
+								)
+							)}
+							name="enableFormContainer"
+							onBlur={(event) => {
+								event.stopPropagation();
+
+								if (onSubmit) {
+									onSubmit();
+								}
+							}}
+							onToggle={() => {
+								setValues({
+									enableFormContainer:
+										!values.enableFormContainer,
+								});
+							}}
+							toggled={values.enableFormContainer}
+						/>
+					</ClayForm.Group>
+				</>
 			)}
 		</div>
 	);

@@ -7,9 +7,16 @@ window.addEventListener('load', () => {
 	const dynamicOutline = fragmentElement.querySelector(
 		`#dynamicOutline${fragmentNamespace}`
 	);
+
+	const dynamicOutlineUl = dynamicOutline.querySelector('ul');
 	const headers = document.querySelectorAll(
 		`.${configuration.targetWrapper} h1, .${configuration.targetWrapper} h2, .${configuration.targetWrapper} h3`
 	);
+
+	if (!headers.length) {
+		return;
+	}
+
 	const outlineMap = new Map();
 
 	const scrollToHeader = (header) => {
@@ -26,9 +33,17 @@ window.addEventListener('load', () => {
 		}
 	};
 
-	headers.forEach((header, index) => {
+	for (let i = 0; i < headers.length; i++) {
+		const header = headers[i];
+
+		const trimmedHeader = header.textContent.trim();
+
+		if (!trimmedHeader.length) {
+			continue;
+		}
+
 		if (!header.id) {
-			header.id = 'section-' + index;
+			header.id = 'section-' + i;
 		}
 
 		header.style.scrollMarginTop = '200px';
@@ -48,10 +63,12 @@ window.addEventListener('load', () => {
 
 		li.appendChild(a);
 
-		dynamicOutline.appendChild(li);
+		dynamicOutlineUl.appendChild(li);
 
 		outlineMap.set(header.id, a);
-	});
+	}
+
+	dynamicOutline.classList.remove('d-none');
 
 	const intersectingHeaders = new Set();
 

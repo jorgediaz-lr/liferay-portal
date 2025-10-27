@@ -9,7 +9,7 @@ import ClayIcon from '@clayui/icon';
 import React, {useContext} from 'react';
 
 import FrontendDataSetContext from '../../FrontendDataSetContext';
-import persistActiveView from '../../thunks/persistActiveView';
+import {saveViewSettings} from '../../utils/saveViewSettings';
 import ViewsContext from '../../views/ViewsContext';
 
 const ActiveViewSelectorTrigger = React.forwardRef(
@@ -27,24 +27,35 @@ const ActiveViewSelectorTrigger = React.forwardRef(
 );
 
 function ActiveViewSelector({views}) {
-	const {appURL, id, portletId} = useContext(FrontendDataSetContext);
+	const {appURL, id, portletId, updateView} = useContext(
+		FrontendDataSetContext
+	);
 	const [{activeView}, viewsDispatch] = useContext(ViewsContext);
 
 	const handleSelectionChange = (value) => {
-		viewsDispatch(
-			persistActiveView({
-				activeViewName: value,
-				appURL,
-				id,
-				portletId,
-			})
-		);
+		viewsDispatch(updateView(value));
+
+		saveViewSettings({
+			appURL,
+			id,
+			portletId,
+			settings: {name: value},
+		});
 	};
 
 	return (
 		<Picker
 			as={ActiveViewSelectorTrigger}
 			items={views}
+			messages={{
+				itemDescribedby: Liferay.Language.get(
+					'you-are-currently-on-a-text-element,-inside-of-a-list-box'
+				),
+				itemSelected: Liferay.Language.get('x-selected'),
+				scrollToBottomAriaLabel:
+					Liferay.Language.get('scroll-to-bottom'),
+				scrollToTopAriaLabel: Liferay.Language.get('scroll-to-top'),
+			}}
 			onSelectionChange={handleSelectionChange}
 			selectedKey={activeView.name}
 			symbol={activeView.thumbnail}

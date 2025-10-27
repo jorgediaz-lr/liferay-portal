@@ -9,34 +9,82 @@ import '../../../css/content_editor/ContentEditorSidePanel.scss';
 
 import {Button, VerticalBar} from '@clayui/core';
 import ClayIcon from '@clayui/icon';
+import {datetimeUtils} from '@liferay/object-js-components-web';
 import {LiferayEditorConfig} from 'frontend-editor-ckeditor-web';
 import {openToast} from 'frontend-js-components-web';
 import {fetch, objectToFormData} from 'frontend-js-web';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
+import focusInvalidElement from '../../common/utils/focusInvalidElement';
+import {Comment} from '../services/CommentService';
+import {EVENT_VALIDATE_FORM} from './ContentEditorToolbar';
+import {dateConfig, toMomentDate, toServerISOFormat} from './ScheduleField';
+import CategorizationPanel from './panels/CategorizationPanel';
 import CommentsPanel from './panels/CommentsPanel';
 import GeneralPanel from './panels/GeneralPanel';
-import {Comment} from './services/CommentService';
+import SchedulePanel from './panels/SchedulePanel';
 
 type Props = {
 	addCommentURL: string;
 	comments: Comment[];
+	contentAPIURL: string;
 	deleteCommentURL: string;
 	editCommentURL: string;
 	editorConfig: LiferayEditorConfig;
+	entryClassName: string;
+	expirationDate: string;
+	getCommentsURL: string;
+	groupId: string;
 	id: string;
 	isSubscribed: boolean;
+	reviewDate: string;
 	subscribeURL: string;
 	type: string;
 	version: string;
 };
 
+type SidePanelProps = Props & {
+	dateConfig: datetimeUtils.DateConfig;
+	onUpdateCategorization: (props: UpdateCategorizationProps) => void;
+	onUpdateSchedule: (props: UpdateScheduleProps) => void;
+	scheduleFields: ScheduleFields;
+};
+
 type Item = {
-	component: React.ComponentType<Props>;
+	component: React.ComponentType<SidePanelProps>;
 	divider?: boolean;
 	icon: string;
 	id: string;
 	title: string;
+};
+
+type BaseScheduleData = {
+	error: string;
+	neverExpire: boolean;
+	value: string;
+};
+
+export type CategorizationFields = {
+	assetCategoryIds: string;
+	assetTagNames: string;
+};
+
+type ScheduleFieldData = BaseScheduleData & {
+	serverValue: string;
+};
+
+export type ScheduleFields = {
+	expirationDate: ScheduleFieldData;
+	reviewDate: ScheduleFieldData;
+};
+
+export type UpdateCategorizationProps = {
+	name: keyof CategorizationFields;
+	value: string;
+};
+
+export type UpdateScheduleProps = BaseScheduleData & {
+	name: keyof ScheduleFields;
 };
 
 const items: Item[] = [
@@ -47,6 +95,18 @@ const items: Item[] = [
 		title: Liferay.Language.get('general'),
 	},
 	{
+		component: SchedulePanel,
+		icon: 'date-time',
+		id: 'schedule',
+		title: Liferay.Language.get('schedule'),
+	},
+	{
+		component: CategorizationPanel,
+		icon: 'categories',
+		id: 'categorization',
+		title: Liferay.Language.get('categorization'),
+	},
+	{
 		component: CommentsPanel,
 		icon: 'comments',
 		id: 'comments',
@@ -55,13 +115,143 @@ const items: Item[] = [
 ];
 
 export default function ContentEditorSidePanel(props: Props) {
+	const [formId, setFormId] = useState<string | undefined>();
+	const [scheduleFields, setScheduleFields] = useState<ScheduleFields>({
+		expirationDate: {
+			error: '',
+			neverExpire: Boolean(props.expirationDate),
+			serverValue: props.expirationDate,
+			value: toMomentDate(props.expirationDate),
+		},
+		reviewDate: {
+			error: '',
+			neverExpire: Boolean(props.reviewDate),
+			serverValue: props.reviewDate,
+			value: toMomentDate(props.reviewDate),
+		},
+	});
+	const [categorizationFields, setCategorizationFields] =
+		useState<CategorizationFields>({
+			assetCategoryIds: '',
+			assetTagNames: '',
+		});
+
+	const onUpdateCategorization = useCallback(
+		({name, value}: UpdateCategorizationProps) => {
+			setCategorizationFields((fields) => ({
+				...fields,
+				[name]: value,
+			}));
+		},
+		[]
+	);
+
+	const onUpdateSchedule = ({
+		error,
+		name,
+		neverExpire,
+		value,
+	}: UpdateScheduleProps) => {
+		const values = neverExpire
+			? {serverValue: ''}
+			: {
+					serverValue: toServerISOFormat(value),
+					value,
+				};
+
+		setScheduleFields((fields) => ({
+			...fields,
+			[name]: {
+				...fields[name],
+				...values,
+				error,
+			},
+		}));
+	};
+
+	useEffect(() => {
+		let form = document.querySelector('.lfr-main-form-container');
+
+		if (!form) {
+			form = document.querySelector('.lfr-layout-structure-item-form');
+		}
+
+		if (form) {
+			setFormId(form.id);
+		}
+	}, []);
+
+	return (
+		<>
+			<SidePanel
+				{...props}
+				dateConfig={dateConfig}
+				onUpdateCategorization={onUpdateCategorization}
+				onUpdateSchedule={onUpdateSchedule}
+				scheduleFields={scheduleFields}
+			/>
+			{Object.entries(scheduleFields).map(([name, {serverValue}]) => (
+				<input
+					form={formId}
+					key={name}
+					name={`ObjectEntry_${name}`}
+					type="hidden"
+					value={serverValue}
+				/>
+			))}
+
+			{Object.entries(categorizationFields).map(([name, value]) => (
+				<input
+					form={formId}
+					key={name}
+					name={name}
+					type="hidden"
+					value={value}
+				/>
+			))}
+		</>
+	);
+}
+
+function SidePanel(props: SidePanelProps) {
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	const [hasError, setHasError] = useState<boolean>(false);
 	const [panel, setPanel] = useState<React.Key | null>(null);
+
+	useEffect(() => {
+		const validateScheduleFields = ({event}: {event: MouseEvent}) => {
+			const hasError = Object.values(props.scheduleFields).some(
+				(field) => field.error && field.serverValue
+			);
+
+			if (hasError) {
+				event.preventDefault();
+
+				setPanel(Liferay.Language.get('schedule'));
+				setHasError(true);
+			}
+		};
+
+		Liferay.on(EVENT_VALIDATE_FORM, validateScheduleFields);
+
+		return () => {
+			Liferay.detach(EVENT_VALIDATE_FORM, validateScheduleFields);
+		};
+	}, [props.scheduleFields]);
+
+	useEffect(() => {
+		if (hasError) {
+			focusInvalidElement();
+			setHasError(false);
+		}
+	}, [hasError]);
 
 	return (
 		<VerticalBar
 			active={panel}
 			className="content-editor__side-panel"
 			onActiveChange={setPanel}
+			panelWidth={280}
 		>
 			<VerticalBar.Content items={items}>
 				{(item) => {
@@ -69,7 +259,7 @@ export default function ContentEditorSidePanel(props: Props) {
 
 					return (
 						<VerticalBar.Panel key={item.title}>
-							<div className="align-items-center border-0 d-flex justify-content-between sidebar-header">
+							<div className="align-items-center d-flex justify-content-between pl-3 sidebar-header">
 								<div className="component-title">
 									{item.title}
 								</div>
@@ -89,7 +279,11 @@ export default function ContentEditorSidePanel(props: Props) {
 										borderless
 										displayType="secondary"
 										monospaced
-										onClick={() => setPanel(null)}
+										onClick={() => {
+											setPanel(null);
+
+											buttonRef.current?.focus();
+										}}
 										size="sm"
 										symbol="times"
 										title={Liferay.Language.get('close')}
@@ -106,7 +300,13 @@ export default function ContentEditorSidePanel(props: Props) {
 			<VerticalBar.Bar displayType="light" items={items}>
 				{(item) => (
 					<VerticalBar.Item divider={item.divider} key={item.title}>
-						<Button aria-label={item.title} displayType={null}>
+						<Button
+							aria-label={item.title}
+							data-tooltip-align="left"
+							displayType={null}
+							ref={panel === item.title ? buttonRef : null}
+							title={item.title}
+						>
 							<ClayIcon symbol={item.icon} />
 						</Button>
 					</VerticalBar.Item>
@@ -127,8 +327,8 @@ function SubscribeButton({
 	const [subscribed, setSubscribed] = useState<boolean>(isSubscribed);
 
 	const title = subscribed
-		? Liferay.Language.get('subscribe')
-		: Liferay.Language.get('unsubscribe');
+		? Liferay.Language.get('unsubscribe')
+		: Liferay.Language.get('subscribe');
 
 	return (
 		<ClayButtonWithIcon
@@ -177,7 +377,7 @@ function SubscribeButton({
 				}
 			}}
 			size="sm"
-			symbol={subscribed ? 'bell-on' : 'bell-off'}
+			symbol={subscribed ? 'bell-off' : 'bell-on'}
 			title={title}
 		/>
 	);

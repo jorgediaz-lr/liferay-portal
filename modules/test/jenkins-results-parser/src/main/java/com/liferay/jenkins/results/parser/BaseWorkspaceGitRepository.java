@@ -231,6 +231,25 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	public boolean isSnapshot() {
+		String jobName = System.getenv("JOB_NAME");
+
+		if (jobName.equals("forward-pullrequest") ||
+			jobName.equals("publish-testray-report") ||
+			jobName.equals("test-portal-source-format") ||
+			jobName.contains("validation")) {
+
+			return false;
+		}
+
+		String jobVariant = System.getenv("JOB_VARIANT");
+
+		if (jobName.contains("master") &&
+			!JenkinsResultsParserUtil.isNullOrEmpty(jobVariant) &&
+			jobVariant.contains("modules-unit")) {
+
+			return false;
+		}
+
 		return getBoolean("snapshot");
 	}
 
@@ -776,8 +795,9 @@ public abstract class BaseWorkspaceGitRepository
 			CloudBucketUtil.downloadS3File(
 				archiveFile,
 				JenkinsResultsParserUtil.combine(
-					CloudBucketUtil.S3_BUCKET_PATH_FILE_PROPAGATOR,
-					"/git-shallow-clone-archives/", fileName));
+					JenkinsResultsParserUtil.getBuildProperty(
+						"cloud.ci.s3.bucket.git.shallow.clone.archives.path"),
+					"/", fileName));
 
 			File directory = getDirectory();
 

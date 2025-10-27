@@ -15,9 +15,9 @@ import {
 } from 'frontend-editor-ckeditor-web';
 import {openToast} from 'frontend-js-components-web';
 import {Ratings} from 'ratings-taglib';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import CommentService, {Comment} from '../services/CommentService';
+import CommentService, {Comment} from '../../services/CommentService';
 
 type Status = 'default' | 'edit' | 'reply';
 
@@ -27,14 +27,29 @@ export default function CommentsPanel({
 	deleteCommentURL,
 	editCommentURL,
 	editorConfig,
+	getCommentsURL,
 }: {
 	addCommentURL: string;
 	comments: Comment[];
 	deleteCommentURL: string;
 	editCommentURL: string;
 	editorConfig: LiferayEditorConfig;
+	getCommentsURL: string;
 }) {
-	const [comments, setComments] = useState<Comment[]>(initialComments);
+	const [comments, setComments] = useState<Comment[]>([]);
+
+	useEffect(() => {
+		if (!initialComments) {
+			CommentService.getComments({
+				url: getCommentsURL,
+			}).then(({data: comments}) => {
+				setComments(comments ?? []);
+			});
+		}
+		else {
+			setComments(initialComments);
+		}
+	}, [initialComments, getCommentsURL]);
 
 	const deleteComment = async (
 		commentId: string,
@@ -73,10 +88,13 @@ export default function CommentsPanel({
 					(comment) => comment.commentId === commentId
 				)!;
 
-				return [
-					...filterComments(comments),
-					...deletedComment.children,
-				];
+				let promotedChildren = deletedComment?.children ?? [];
+
+				promotedChildren = promotedChildren.map(
+					(children: Comment) => ({...children, rootComment: true})
+				);
+
+				return [...filterComments(comments), ...promotedChildren];
 			}
 		});
 

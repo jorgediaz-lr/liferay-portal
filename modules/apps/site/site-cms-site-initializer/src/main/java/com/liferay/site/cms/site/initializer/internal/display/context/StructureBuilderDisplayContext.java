@@ -130,6 +130,11 @@ public class StructureBuilderDisplayContext {
 					_themeDisplay.getPortalURL(), _themeDisplay.getPathMain(),
 					"/cms/reset_structure_display_page")
 			).put(
+				"resetTranslationDisplayPageURL",
+				() -> StringBundler.concat(
+					_themeDisplay.getPortalURL(), _themeDisplay.getPathMain(),
+					"/cms/reset_translation_display_page")
+			).put(
 				"structureBuilderURL",
 				() -> PortalUtil.getLayoutFullURL(
 					LayoutLocalServiceUtil.getLayoutByFriendlyURL(
@@ -153,10 +158,10 @@ public class StructureBuilderDisplayContext {
 			return _objectDefinition;
 		}
 
-		String objectDefinitionExternalReferenceCode = ParamUtil.getString(
-			_httpServletRequest, "objectDefinitionExternalReferenceCode");
+		Long objectDefinitionId = ParamUtil.getLong(
+			_httpServletRequest, "objectDefinitionId");
 
-		if (Validator.isNull(objectDefinitionExternalReferenceCode)) {
+		if (Validator.isNull(objectDefinitionId)) {
 			return null;
 		}
 
@@ -167,9 +172,8 @@ public class StructureBuilderDisplayContext {
 			_themeDisplay.getUser()
 		).build();
 
-		_objectDefinition =
-			objectDefinitionResource.getObjectDefinitionByExternalReferenceCode(
-				objectDefinitionExternalReferenceCode);
+		_objectDefinition = objectDefinitionResource.getObjectDefinition(
+			objectDefinitionId);
 
 		return _objectDefinition;
 	}

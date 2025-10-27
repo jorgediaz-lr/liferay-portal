@@ -367,6 +367,69 @@ public class ObjectEntryFolder implements Cloneable, Serializable {
 	protected com.liferay.headless.object.client.permission.Permission[]
 		permissions;
 
+	public Creator getRemovedBy() {
+		return removedBy;
+	}
+
+	public void setRemovedBy(Creator removedBy) {
+		this.removedBy = removedBy;
+	}
+
+	public void setRemovedBy(
+		UnsafeSupplier<Creator, Exception> removedByUnsafeSupplier) {
+
+		try {
+			removedBy = removedByUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Creator removedBy;
+
+	public Date getRemovedDate() {
+		return removedDate;
+	}
+
+	public void setRemovedDate(Date removedDate) {
+		this.removedDate = removedDate;
+	}
+
+	public void setRemovedDate(
+		UnsafeSupplier<Date, Exception> removedDateUnsafeSupplier) {
+
+		try {
+			removedDate = removedDateUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Date removedDate;
+
+	public Long getScopeId() {
+		return scopeId;
+	}
+
+	public void setScopeId(Long scopeId) {
+		this.scopeId = scopeId;
+	}
+
+	public void setScopeId(
+		UnsafeSupplier<Long, Exception> scopeIdUnsafeSupplier) {
+
+		try {
+			scopeId = scopeIdUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Long scopeId;
+
 	public String getScopeKey() {
 		return scopeKey;
 	}
@@ -387,6 +450,27 @@ public class ObjectEntryFolder implements Cloneable, Serializable {
 	}
 
 	protected String scopeKey;
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void setStatus(
+		UnsafeSupplier<Status, Exception> statusUnsafeSupplier) {
+
+		try {
+			status = statusUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Status status;
 
 	public String getTitle() {
 		return title;

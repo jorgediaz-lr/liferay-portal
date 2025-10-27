@@ -6,17 +6,17 @@
 package com.liferay.portal.upgrade.data.cleanup.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.data.cleanup.TableOrphanReferencesDataCleanupPreupgradeProcess;
+import com.liferay.portal.kernel.upgrade.data.cleanup.util.OrphanReferencesDataCleanupUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -54,31 +54,32 @@ public class TableOrphanReferencesDataCleanupPreupgradeProcessTest
 	}
 
 	@Override
-	protected UnsafeConsumer<LogCapture, Exception>
-		getLogAssertionUnsafeConsumer() {
+	protected UnsafeBiConsumer<LogCapture, LogCapture, Exception>
+		getLogAssertionUnsafeBiConsumer() {
 
-		return logCapture -> {
-			List<LogEntry> logEntries = logCapture.getLogEntries();
+		return (logCapture1, logCapture2) -> {
+			List<LogEntry> logEntries = logCapture1.getLogEntries();
 
 			Assert.assertEquals(logEntries.toString(), 2, logEntries.size());
 
-			List<String> logMessages = new ArrayList<>();
-
-			for (LogEntry logEntry : logEntries) {
-				logMessages.add(logEntry.getMessage());
-			}
+			List<String> messages = logCapture1.getMessages();
 
 			Assert.assertTrue(
-				logMessages.contains(
+				messages.contains(
 					getExpectedMessage(
-						1, "PortletPreferences", "companyId", "Company",
-						_companyId1)));
+						1, "ownerId", "PortletPreferences",
+						new String[] {"companyId"}, "Company", _companyId1)));
 			Assert.assertTrue(
-				logMessages.contains(
+				messages.contains(
 					getExpectedMessage(
-						1, "PortletPreferences", "companyId", "Company",
-						_companyId2)));
+						1, "ownerId", "PortletPreferences",
+						new String[] {"companyId"}, "Company", _companyId2)));
 		};
+	}
+
+	@Override
+	protected String getLoggerClassName() {
+		return OrphanReferencesDataCleanupUtil.class.getName();
 	}
 
 	@Override

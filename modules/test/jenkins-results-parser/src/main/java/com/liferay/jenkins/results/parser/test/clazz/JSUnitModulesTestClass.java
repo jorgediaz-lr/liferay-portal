@@ -14,7 +14,6 @@ import java.io.File;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -23,6 +22,7 @@ import org.json.JSONObject;
  */
 public class JSUnitModulesTestClass extends ModulesTestClass {
 
+	@Override
 	public DownstreamBuildReport getCachedDownstreamBuildReport() {
 		if (!_cachedTestClassReportSearched) {
 			getCachedTestClassReport();
@@ -31,33 +31,20 @@ public class JSUnitModulesTestClass extends ModulesTestClass {
 		return _cachedDownstreamBuildReport;
 	}
 
+	@Override
 	public TestClassReport getCachedTestClassReport() {
-		if (!JenkinsResultsParserUtil.isBuildCachingEnabled() ||
-			_cachedTestClassReportSearched) {
-
+		if (!isBuildCachingEnabled() || _cachedTestClassReportSearched) {
 			return _cachedTestClassReport;
 		}
 
 		BatchTestClassGroup batchTestClassGroup = getBatchTestClassGroup();
 
-		for (DownstreamBuildReport cachedDownstreamBuildReport :
-				batchTestClassGroup.getCachedDownstreamBuildReports()) {
+		_cachedTestClassReport = batchTestClassGroup.getCachedTestClassReport(
+			getName());
 
-			for (TestClassReport testClassResult :
-					cachedDownstreamBuildReport.getTestClassReports()) {
-
-				if (!Objects.equals(
-						getName(), testClassResult.getTestClassName())) {
-
-					continue;
-				}
-
-				_cachedDownstreamBuildReport = cachedDownstreamBuildReport;
-				_cachedTestClassReport = testClassResult;
-				_cachedTestClassReportSearched = true;
-
-				return _cachedTestClassReport;
-			}
+		if (_cachedTestClassReport != null) {
+			_cachedDownstreamBuildReport =
+				_cachedTestClassReport.getDownstreamBuildReport();
 		}
 
 		_cachedTestClassReportSearched = true;
@@ -66,29 +53,11 @@ public class JSUnitModulesTestClass extends ModulesTestClass {
 	}
 
 	@Override
-	public JSONObject getJSONObject() {
-		JSONObject jsonObject = super.getJSONObject();
-
-		if (_testPropertiesFile != null) {
-			jsonObject.put(
-				"test_properties_file", String.valueOf(_testPropertiesFile));
-		}
-
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(
-				_testrayMainComponentName)) {
-
-			jsonObject.put(
-				"testray_main_component_name", _testrayMainComponentName);
-		}
-
-		return jsonObject;
-	}
-
-	@Override
 	public String getName() {
 		return getTestTaskName();
 	}
 
+	@Override
 	public String getTestrayMainComponentName() {
 		return _testrayMainComponentName;
 	}
@@ -169,6 +138,10 @@ public class JSUnitModulesTestClass extends ModulesTestClass {
 	@Override
 	protected List<File> getModulesProjectDirs() {
 		return Collections.singletonList(getModuleBaseDir());
+	}
+
+	protected File getTestPropertiesFile() {
+		return _testPropertiesFile;
 	}
 
 	private File _getAppBaseDir() {

@@ -17,32 +17,29 @@ import {useIsMounted} from '@liferay/frontend-js-react-web';
 import {FDSTableCellHTMLElementBuilderArgs} from '@liferay/js-api/data-set';
 import classNames from 'classnames';
 import {ClientExtension} from 'frontend-js-components-web';
-import {throttle} from 'frontend-js-web';
+import {getObjectValueFromPath, throttle} from 'frontend-js-web';
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 
 import FrontendDataSetContext, {
 	IFrontendDataSetContext,
-	TRenderer,
 } from '../../FrontendDataSetContext';
 import Actions from '../../actions/Actions';
 import {getInternalCellRenderer} from '../../cell_renderers/getInternalCellRenderer';
 import FDSDndProvider from '../../dnd/FDSDndProvider';
 import useFDSDrop from '../../dnd/useFDSDrop';
-import persistVisibleFieldNames, {
-	VisibleFieldNames,
-} from '../../thunks/persistVisibleFieldNames';
 import {
 	ILocalizedItemDetails,
 	getLocalizedValue,
 } from '../../utils/getLocalizedValue';
-import getSelectedItemValue from '../../utils/getSelectedItemValue';
 import {getInputRendererById} from '../../utils/renderer';
+import {saveViewSettings} from '../../utils/saveViewSettings';
 import {
-	ESelectionTrigger,
 	IItemsActions,
 	ITableSchema,
 	IView,
+	TRenderer,
 	TSort,
+	VisibleFieldNames,
 } from '../../utils/types';
 import ViewsContext, {
 	IViewsContext,
@@ -52,7 +49,7 @@ import getCellColumnClassName from '../utils/getCellColumnClassName';
 
 // @ts-ignore
 
-import {VIEWS_ACTION_TYPES} from '../viewsReducer';
+import {EViewsActionTypes} from '../viewsReducer';
 import TableContext from './TableContext';
 import TableContextProvider from './TableContextProvider';
 
@@ -104,7 +101,7 @@ const Head = ({
 }: {
 	fields: Array<Field>;
 	items: Array<any>;
-	selectionType?: string;
+	selectionType?: 'single' | 'multiple';
 }) => {
 	const {selectable} = useContext(FrontendDataSetContext);
 
@@ -122,7 +119,9 @@ const Head = ({
 								textValue="select-item"
 								width="51px"
 							>
-								{null}
+								<span className="sr-only">
+									{Liferay.Language.get('item-selection')}
+								</span>
 							</ClayTableCell>
 						);
 					}
@@ -133,10 +132,16 @@ const Head = ({
 						className={getCellColumnClassName(field.fieldName)}
 						columnName={field.fieldName}
 						key={field.fieldName}
-						sortable={(field as any).sortable}
-						textValue="select"
+						sortable={field.sortable}
+						textValue={field.fieldName}
 					>
-						{(field as any).label}
+						{field.label || (
+							<span className="sr-only">
+								{field.fieldName === 'select'
+									? Liferay.Language.get('item-selection')
+									: field.fieldName}
+							</span>
+						)}
 					</HeadCellResizer>
 				);
 			}}
@@ -149,6 +154,7 @@ const Row = ({
 	columns,
 	item,
 	itemInlineChanges,
+	items,
 	itemsActions,
 	onItemSelectionChange,
 	selectionType,
@@ -158,9 +164,10 @@ const Row = ({
 	columns: Array<Field>;
 	item: any;
 	itemInlineChanges?: {[key: string]: any};
+	items: any[];
 	itemsActions: Array<IItemsActions>;
 	onItemSelectionChange: Function;
-	selectionType?: string;
+	selectionType?: 'single' | 'multiple';
 }) => {
 	const {itemsChanges, selectedItemsKey, updateItem} = useContext(
 		FrontendDataSetContext
@@ -169,7 +176,7 @@ const Row = ({
 	const SelectionComponent =
 		selectionType === 'multiple' ? ClayCheckbox : ClayRadio;
 
-	const id = getSelectedItemValue({item, path: selectedItemsKey});
+	const id = getObjectValueFromPath({object: item, path: selectedItemsKey});
 
 	return (
 		<ClayTableRowOptionalDropTarget
@@ -203,6 +210,7 @@ const Row = ({
 											}
 											itemData={item}
 											itemId={id}
+											items={items}
 											onItemSelectionChange={
 												onItemSelectionChange
 											}
@@ -223,11 +231,7 @@ const Row = ({
 									<SelectionComponent
 										checked={active}
 										onChange={() =>
-											onItemSelectionChange({
-												item,
-												trigger:
-													ESelectionTrigger.INPUT,
-											})
+											onItemSelectionChange(item)
 										}
 										title={Liferay.Language.get(
 											'select-item'
@@ -339,7 +343,7 @@ const Body = ({
 	items: Array<any>;
 	itemsActions: Array<IItemsActions>;
 	onItemSelectionChange: Function;
-	selectionType?: string;
+	selectionType?: 'single' | 'multiple';
 }) => {
 	const {
 		allItemsSelectedActive,
@@ -370,8 +374,8 @@ const Body = ({
 									(element: any) =>
 										String(element) ===
 										String(
-											getSelectedItemValue({
-												item,
+											getObjectValueFromPath({
+												object: item,
 												path: selectedItemsKey,
 											})
 										)
@@ -380,6 +384,7 @@ const Body = ({
 							columns={columns}
 							item={item}
 							itemInlineChanges={itemInlineChanges}
+							items={items}
 							itemsActions={itemsActions}
 							onItemSelectionChange={onItemSelectionChange}
 							selectionType={selectionType}
@@ -403,7 +408,7 @@ function ClayTableRowOptionalDropTarget({
 	onItemSelectionChange: Function;
 }) {
 	const [viewsContext] = useContext(ViewsContext);
-	const {onSelect, selectable} = useContext(FrontendDataSetContext);
+	const {selectable} = useContext(FrontendDataSetContext);
 
 	const {className: dropClassName, dropRef} = useFDSDrop({item});
 
@@ -415,12 +420,7 @@ function ClayTableRowOptionalDropTarget({
 		items,
 		onClick: selectable
 			? () => {
-					onItemSelectionChange({
-						item,
-						trigger: ESelectionTrigger.CONTAINER,
-					});
-
-					onSelect?.({selectedItems: [item]});
+					onItemSelectionChange(item, true);
 				}
 			: undefined,
 		ref: dropRef,
@@ -428,10 +428,8 @@ function ClayTableRowOptionalDropTarget({
 
 	return (
 		<ClayTableRow
-			{...{
-				...props,
-				...(activeView.setItemComponentProps?.({item, props}) ?? {}),
-			}}
+			{...props}
+			{...(activeView.setItemComponentProps?.({item, props}) ?? {})}
 		>
 			{children}
 		</ClayTableRow>
@@ -470,7 +468,7 @@ function HeadCellResizer({
 			const boundingClientRect = cellRef.current.getBoundingClientRect();
 
 			viewsDispatch({
-				type: VIEWS_ACTION_TYPES.UPDATE_FIELD,
+				type: EViewsActionTypes.UPDATE_FIELD,
 				value: {
 					name: columnName,
 					resizable: true,
@@ -740,6 +738,8 @@ const Table = ({
 		portletId,
 		selectable,
 		selectionType,
+		updateActiveSorts,
+		updateVisibleFields,
 	} = useContext(FrontendDataSetContext);
 
 	const [{sorts, visibleFieldNames}, viewsDispatch] =
@@ -812,10 +812,7 @@ const Table = ({
 			});
 		}
 
-		viewsDispatch({
-			type: VIEWS_ACTION_TYPES.UPDATE_SORTING,
-			value: updatedSorts,
-		});
+		viewsDispatch(updateActiveSorts(updatedSorts));
 	};
 
 	return (
@@ -829,6 +826,9 @@ const Table = ({
 					columnsVisibility: Liferay.Language.get(
 						'manage-columns-visibility'
 					),
+					columnsVisibilityCell: itemsActions?.length
+						? Liferay.Language.get('item-actions')
+						: undefined,
 					columnsVisibilityDescription: Liferay.Language.get(
 						'at-least-one-column-must-remain-visible'
 					),
@@ -846,23 +846,21 @@ const Table = ({
 					const visibleFieldNames: VisibleFieldNames = {};
 
 					schema.fields.forEach(({fieldName}) => {
-						if (typeof fieldName === 'string') {
-							visibleFieldNames[fieldName] = false;
-						}
+						visibleFieldNames[String(fieldName)] = false;
 					});
 
 					visibleColumns.forEach((value: any, key: any) => {
 						visibleFieldNames[key] = true;
 					});
 
-					viewsDispatch(
-						persistVisibleFieldNames({
-							appURL,
-							id,
-							portletId,
-							visibleFieldNames,
-						})
-					);
+					viewsDispatch(updateVisibleFields(visibleFieldNames));
+
+					saveViewSettings({
+						appURL,
+						id,
+						portletId,
+						settings: {visibleFieldNames},
+					});
 
 					setVisibleColumns(visibleColumns);
 				}}

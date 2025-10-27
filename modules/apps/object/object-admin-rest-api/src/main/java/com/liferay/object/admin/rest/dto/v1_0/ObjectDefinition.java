@@ -515,6 +515,47 @@ public class ObjectDefinition implements Serializable {
 	private Supplier<Boolean> _enableCommentsSupplier;
 
 	@io.swagger.v3.oas.annotations.media.Schema
+	public Boolean getEnableFormContainer() {
+		if (_enableFormContainerSupplier != null) {
+			enableFormContainer = _enableFormContainerSupplier.get();
+
+			_enableFormContainerSupplier = null;
+		}
+
+		return enableFormContainer;
+	}
+
+	public void setEnableFormContainer(Boolean enableFormContainer) {
+		this.enableFormContainer = enableFormContainer;
+
+		_enableFormContainerSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setEnableFormContainer(
+		UnsafeSupplier<Boolean, Exception> enableFormContainerUnsafeSupplier) {
+
+		_enableFormContainerSupplier = () -> {
+			try {
+				return enableFormContainerUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Boolean enableFormContainer;
+
+	@JsonIgnore
+	private Supplier<Boolean> _enableFormContainerSupplier;
+
+	@io.swagger.v3.oas.annotations.media.Schema
 	public Boolean getEnableFriendlyURLCustomization() {
 		if (_enableFriendlyURLCustomizationSupplier != null) {
 			enableFriendlyURLCustomization =
@@ -1954,6 +1995,51 @@ public class ObjectDefinition implements Serializable {
 	@JsonIgnore
 	private Supplier<String> _titleObjectFieldNameSupplier;
 
+	@io.swagger.v3.oas.annotations.media.Schema
+	@Valid
+	public WorkflowDefinitionLink[] getWorkflowDefinitionLinks() {
+		if (_workflowDefinitionLinksSupplier != null) {
+			workflowDefinitionLinks = _workflowDefinitionLinksSupplier.get();
+
+			_workflowDefinitionLinksSupplier = null;
+		}
+
+		return workflowDefinitionLinks;
+	}
+
+	public void setWorkflowDefinitionLinks(
+		WorkflowDefinitionLink[] workflowDefinitionLinks) {
+
+		this.workflowDefinitionLinks = workflowDefinitionLinks;
+
+		_workflowDefinitionLinksSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setWorkflowDefinitionLinks(
+		UnsafeSupplier<WorkflowDefinitionLink[], Exception>
+			workflowDefinitionLinksUnsafeSupplier) {
+
+		_workflowDefinitionLinksSupplier = () -> {
+			try {
+				return workflowDefinitionLinksUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected WorkflowDefinitionLink[] workflowDefinitionLinks;
+
+	@JsonIgnore
+	private Supplier<WorkflowDefinitionLink[]> _workflowDefinitionLinksSupplier;
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -2135,6 +2221,18 @@ public class ObjectDefinition implements Serializable {
 			sb.append("\"enableComments\": ");
 
 			sb.append(enableComments);
+		}
+
+		Boolean enableFormContainer = getEnableFormContainer();
+
+		if (enableFormContainer != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"enableFormContainer\": ");
+
+			sb.append(enableFormContainer);
 		}
 
 		Boolean enableFriendlyURLCustomization =
@@ -2663,6 +2761,29 @@ public class ObjectDefinition implements Serializable {
 			sb.append(_escape(titleObjectFieldName));
 
 			sb.append("\"");
+		}
+
+		WorkflowDefinitionLink[] workflowDefinitionLinks =
+			getWorkflowDefinitionLinks();
+
+		if (workflowDefinitionLinks != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"workflowDefinitionLinks\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < workflowDefinitionLinks.length; i++) {
+				sb.append(String.valueOf(workflowDefinitionLinks[i]));
+
+				if ((i + 1) < workflowDefinitionLinks.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		sb.append("}");

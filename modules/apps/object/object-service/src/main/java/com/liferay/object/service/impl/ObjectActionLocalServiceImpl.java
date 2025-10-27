@@ -18,6 +18,7 @@ import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.definition.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
+import com.liferay.object.definition.util.ObjectDefinitionThreadLocal;
 import com.liferay.object.definition.util.ObjectDefinitionUtil;
 import com.liferay.object.exception.DuplicateObjectActionExternalReferenceCodeException;
 import com.liferay.object.exception.LockedObjectActionException;
@@ -41,10 +42,9 @@ import com.liferay.object.scripting.validator.ObjectScriptingValidator;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFolderLocalService;
-import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.service.base.ObjectActionLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
-import com.liferay.object.tree.ObjectDefinitionTreeFactory;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -171,18 +171,8 @@ public class ObjectActionLocalServiceImpl
 				ObjectActionTriggerConstants.KEY_STANDALONE)) {
 
 			try {
-				if (objectDefinition.isRootDescendantNode()) {
-					objectDefinition =
-						_objectDefinitionPersistence.findByPrimaryKey(
-							objectDefinition.getRootObjectDefinitionId());
-				}
-
 				ObjectDefinitionResourcePermissionUtil.populateResourceActions(
-					objectActionLocalService, objectDefinition, null,
-					_objectDefinitionPersistence,
-					new ObjectDefinitionTreeFactory(
-						_objectDefinitionPersistence,
-						_objectRelationshipLocalService),
+					objectActionLocalService, objectDefinition,
 					_portletLocalService, _resourceActions, null);
 			}
 			catch (Exception exception) {
@@ -344,12 +334,24 @@ public class ObjectActionLocalServiceImpl
 	public void deleteObjectActions(long objectDefinitionId)
 		throws PortalException {
 
-		for (ObjectAction objectAction :
-				objectActionPersistence.findByObjectDefinitionId(
-					objectDefinitionId)) {
+		try (SafeCloseable safeCloseable =
+				ObjectDefinitionThreadLocal.
+					setSkipBundleAllowedCheckWithSafeCloseable(true)) {
 
-			objectActionLocalService.deleteObjectAction(objectAction);
+			for (ObjectAction objectAction :
+					objectActionPersistence.findByObjectDefinitionId(
+						objectDefinitionId)) {
+
+				objectActionLocalService.deleteObjectAction(objectAction);
+			}
 		}
+	}
+
+	@Override
+	public ObjectAction fetchObjectAction(
+		long objectDefinitionId, String name) {
+
+		return objectActionPersistence.fetchByODI_N(objectDefinitionId, name);
 	}
 
 	@Override
@@ -615,7 +617,8 @@ public class ObjectActionLocalServiceImpl
 			ObjectDefinition objectDefinition)
 		throws PortalException {
 
-		if (!FeatureFlagManagerUtil.isEnabled("LPD-34594") ||
+		if (!FeatureFlagManagerUtil.isEnabled(
+				objectDefinition.getCompanyId(), "LPD-34594") ||
 			objectDefinition.isRootNode()) {
 
 			return;
@@ -1148,9 +1151,6 @@ public class ObjectActionLocalServiceImpl
 
 	@Reference
 	private ObjectFolderLocalService _objectFolderLocalService;
-
-	@Reference
-	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 	@Reference
 	private ObjectScriptingValidator _objectScriptingValidator;

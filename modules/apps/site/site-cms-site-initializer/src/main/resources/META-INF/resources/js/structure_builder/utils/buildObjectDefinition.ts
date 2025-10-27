@@ -26,23 +26,30 @@ import {isFieldTextSearchable} from './isFieldTextSearchable';
 export default function buildObjectDefinition({
 	children = new Map(),
 	erc,
+	id,
 	label,
 	name,
 	spaces,
 	status = 'draft',
+	workflows,
 }: {
 	children?: Structure['children'];
 	erc: Structure['erc'];
+	id?: Structure['id'];
 	label: Structure['label'];
 	name: Structure['name'];
 	spaces: Structure['spaces'];
 	status?: Structure['status'];
+	workflows?: Structure['workflows'];
 }): ObjectDefinition {
 	const objectDefinition: ObjectDefinition = {
+		enableComments: true,
 		enableFriendlyURLCustomization: true,
 		enableIndexSearch: true,
 		enableLocalization: true,
 		enableObjectEntryDraft: true,
+		enableObjectEntryHistory: true,
+		enableObjectEntrySchedule: true,
 		enableObjectEntryVersioning: true,
 		externalReferenceCode: erc,
 		label,
@@ -57,7 +64,12 @@ export default function buildObjectDefinition({
 		status: {
 			code: status === 'published' ? 0 : 2,
 		},
+		titleObjectFieldName: 'title',
 	};
+
+	if (id) {
+		objectDefinition.id = id;
+	}
 
 	if (name) {
 		objectDefinition.name = name;
@@ -80,6 +92,12 @@ export default function buildObjectDefinition({
 				value: spaces.join(','),
 			},
 		];
+	}
+
+	if (workflows && Object.keys(workflows).length) {
+		objectDefinition.workflowDefinitionLinks = buildWorkflowDefinitionLinks(
+			{spaces, workflows}
+		);
 	}
 
 	return objectDefinition;
@@ -120,6 +138,7 @@ function buildFields(fields: Field[]) {
 			localized: field.localized,
 			name: field.name,
 			required: field.required,
+			system: field.locked,
 		};
 
 		if (field.indexableConfig.indexed) {
@@ -182,4 +201,45 @@ function buildRelationships({
 	}
 
 	return relationships;
+}
+
+function buildWorkflowDefinitionLinks({
+	spaces,
+	workflows,
+}: {
+	spaces: Structure['spaces'];
+	workflows: Structure['workflows'];
+}) {
+	const definitionLinks: ObjectDefinition['workflowDefinitionLinks'] = [];
+
+	for (const [
+		groupExternalReferenceCode,
+		workflowDefinitionName,
+	] of Object.entries(workflows)) {
+
+		// Don't insert workflow if structure does not include the space
+
+		if (
+			spaces !== 'all' &&
+			groupExternalReferenceCode &&
+			!spaces.includes(groupExternalReferenceCode)
+		) {
+			continue;
+		}
+
+		// Don't insert if there's no workflow name, what means the Default one was selected
+
+		if (!workflowDefinitionName) {
+			continue;
+		}
+
+		// Insert the workflow link
+
+		definitionLinks.push({
+			groupExternalReferenceCode,
+			workflowDefinitionName,
+		});
+	}
+
+	return definitionLinks;
 }

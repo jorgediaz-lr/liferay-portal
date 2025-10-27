@@ -26,11 +26,13 @@ type Tag = {
 
 export default function MergeTagsModalContent({
 	closeModal,
+	cmsGroupId,
 	loadData,
 	tagId,
 	tagName,
 }: {
 	closeModal: () => void;
+	cmsGroupId: number;
 	loadData: () => {};
 	tagId: number;
 	tagName: string;
@@ -41,7 +43,7 @@ export default function MergeTagsModalContent({
 	useEffect(() => {
 		const getTags = async () => {
 			const {data} = await ApiHelper.get<{items: any[]}>(
-				'/o/headless-admin-taxonomy/v1.0/keywords'
+				`/o/headless-admin-taxonomy/v1.0/sites/${cmsGroupId}/keywords`
 			);
 
 			if (data) {
@@ -65,7 +67,7 @@ export default function MergeTagsModalContent({
 		};
 
 		getTags();
-	}, [tagId, tagName]);
+	}, [cmsGroupId, tagId, tagName]);
 
 	const _handleTagChange = (items: Tag[]) => {
 		setSelectedTags(tags.filter((item) => items.includes(item)));
@@ -213,13 +215,15 @@ export default function MergeTagsModalContent({
 		return (
 			<>
 				<div className="categorization-section">
-					<ClayModal.Header>
+					<ClayModal.Header
+						closeButtonAriaLabel={Liferay.Language.get('close')}
+					>
 						{Liferay.Language.get('merge-tags')}
 					</ClayModal.Header>
 
 					<ClayModal.Body className="merge-tags">
 						<FrontendDataSet
-							apiURL="/o/headless-admin-taxonomy/v1.0/keywords"
+							apiURL={`/o/headless-admin-taxonomy/v1.0/sites/${cmsGroupId}/keywords`}
 							bulkActions={[{}]}
 							customRenderers={{
 								tableCell: [
@@ -319,7 +323,9 @@ export default function MergeTagsModalContent({
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<ClayModal.Header>
+			<ClayModal.Header
+				closeButtonAriaLabel={Liferay.Language.get('close')}
+			>
 				{Liferay.Language.get('merge-tags')}
 			</ClayModal.Header>
 

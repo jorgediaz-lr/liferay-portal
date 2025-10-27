@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.batch.engine.unit.BatchEngineUnitProcessor;
 import com.liferay.batch.engine.unit.BatchEngineUnitReader;
+import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.document.library.kernel.model.DLFileEntry;
@@ -38,15 +39,15 @@ import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 
 import java.io.File;
+import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,96 +60,24 @@ import org.osgi.framework.FrameworkUtil;
  */
 @FeatureFlags(
 	featureFlags = {
-		@FeatureFlag(value = "LPD-31149"), @FeatureFlag(value = "LPD-34594"),
-		@FeatureFlag(value = "LPS-179669"), @FeatureFlag(value = "LPD-17564"),
-		@FeatureFlag(value = "LPD-21926"), @FeatureFlag(value = "LPD-11232")
+		@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-21926"),
+		@FeatureFlag("LPD-32050"), @FeatureFlag("LPD-34594"),
+		@FeatureFlag("LPS-179669")
 	}
 )
 @RunWith(Arquillian.class)
 public class InventoryAnalysisResourceTest
 	extends BaseInventoryAnalysisResourceTestCase {
 
-	@Before
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
-		Bundle testBundle = FrameworkUtil.getBundle(OverviewResourceTest.class);
-
-		BundleContext bundleContext = testBundle.getBundleContext();
-
-		for (Bundle bundle : bundleContext.getBundles()) {
-			if (Objects.equals(
-					bundle.getSymbolicName(),
-					"com.liferay.site.initializer.cms")) {
-
-				_setUpProcessedFile(bundle, "01.object.folder");
-				_setUpProcessedFile(bundle, "02.object.definition");
-
-				CompletableFuture<Void> completableFuture =
-					_batchEngineUnitProcessor.processBatchEngineUnits(
-						_batchEngineUnitReader.getBatchEngineUnits(bundle));
-
-				completableFuture.join();
-			}
-		}
-
-		_serviceContext = ServiceContextTestUtil.getServiceContext(
-			testGroup.getGroupId(), TestPropsValues.getUserId());
-
-		_depotEntry = _depotEntryLocalService.addDepotEntry(
-			HashMapBuilder.put(
-				LocaleUtil.getDefault(), RandomTestUtil.randomString()
-			).build(),
-			HashMapBuilder.put(
-				LocaleUtil.getDefault(), RandomTestUtil.randomString()
-			).build(),
-			_serviceContext);
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.
-				getObjectDefinitionByExternalReferenceCode(
-					"L_BASIC_WEB_CONTENT", testCompany.getCompanyId());
-
-		_objectEntries.add(
-			ObjectEntryTestUtil.addObjectEntry(
-				_depotEntry.getGroupId(), objectDefinition,
-				Collections.emptyMap()));
-
-		_assetVocabulary = _assetVocabularyLocalService.addVocabulary(
-			TestPropsValues.getUserId(), _depotEntry.getGroupId(),
-			"My Vocabulary", _serviceContext);
-
-		_assetCategory = _assetCategoryLocalService.addCategory(
-			TestPropsValues.getUserId(), _depotEntry.getGroupId(),
-			"My Category", _assetVocabulary.getVocabularyId(), _serviceContext);
-
-		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
-			_depotEntry.getGroupId(), objectDefinition, Collections.emptyMap());
-
-		_objectEntries.add(objectEntry);
-
-		AssetEntry assetEntry = _assetEntryLocalService.getEntry(
-			objectDefinition.getClassName(), objectEntry.getObjectEntryId());
-
-		_assetEntryAssetCategoryRel =
-			_assetEntryAssetCategoryRelLocalService.
-				addAssetEntryAssetCategoryRel(
-					assetEntry.getEntryId(), _assetCategory.getCategoryId());
-
-		_objectEntries.add(
-			ObjectEntryTestUtil.addObjectEntry(
-				_depotEntry.getGroupId(), objectDefinition,
-				Collections.emptyMap(), RandomTestUtil.randomString()));
-	}
-
 	@Override
 	@Test
 	public void testGetInventoryAnalysis() throws Exception {
+		_setUpCMSContext();
+
 		InventoryAnalysis inventoryAnalysis =
 			inventoryAnalysisResource.getInventoryAnalysis(
-				null, null, null, null, null, null,
-				_depotEntry.getDepotEntryId(), null, null, null, null);
+				null, _depotEntry.getDepotEntryId(), null, null, null, null,
+				null, null, null, null, null);
 
 		InventoryAnalysisItem[] inventoryAnalysisItems =
 			inventoryAnalysis.getInventoryAnalysisItems();
@@ -165,8 +94,8 @@ public class InventoryAnalysisResourceTest
 			"Basic Web Content", inventoryAnalysisItem.getTitle());
 
 		inventoryAnalysis = inventoryAnalysisResource.getInventoryAnalysis(
-			null, "category", null, null, null, null,
-			_depotEntry.getDepotEntryId(), null, null, null, null);
+			null, _depotEntry.getDepotEntryId(), "category", null, null, null,
+			null, null, null, null, null);
 
 		inventoryAnalysisItems = inventoryAnalysis.getInventoryAnalysisItems();
 
@@ -187,8 +116,8 @@ public class InventoryAnalysisResourceTest
 		Assert.assertEquals("My Category", inventoryAnalysisItem.getTitle());
 
 		inventoryAnalysis = inventoryAnalysisResource.getInventoryAnalysis(
-			_assetCategory.getCategoryId(), "category", null, null, null, null,
-			_depotEntry.getDepotEntryId(), null, null, null, null);
+			_assetCategory.getCategoryId(), _depotEntry.getDepotEntryId(),
+			"category", null, null, null, null, null, null, null, null);
 
 		inventoryAnalysisItems = inventoryAnalysis.getInventoryAnalysisItems();
 
@@ -201,14 +130,92 @@ public class InventoryAnalysisResourceTest
 		Assert.assertEquals("My Category", inventoryAnalysisItem.getTitle());
 	}
 
-	private void _setUpProcessedFile(Bundle bundle, String fileName) {
+	private void _deleteFile(Bundle bundle, String fileName) {
 		File file = bundle.getDataFile(
-			".com.liferay.headless.builder.internal.batch." + fileName +
+			".com.liferay.site.initializer.cms.internal.batch." + fileName +
 				".batch.engine.data.json.0.processed");
 
 		if ((file != null) && file.exists()) {
 			file.delete();
 		}
+	}
+
+	private void _setUpCMSContext() throws Exception {
+		Bundle testBundle = FrameworkUtil.getBundle(OverviewResourceTest.class);
+
+		BundleContext bundleContext = testBundle.getBundleContext();
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			if (Objects.equals(
+					bundle.getSymbolicName(),
+					"com.liferay.site.initializer.cms")) {
+
+				_deleteFile(bundle, "00.list.type.definition");
+				_deleteFile(bundle, "01.object.folder");
+				_deleteFile(bundle, "02.object.definition");
+
+				CompletableFuture<Void> completableFuture =
+					_batchEngineUnitProcessor.processBatchEngineUnits(
+						_batchEngineUnitReader.getBatchEngineUnits(bundle));
+
+				completableFuture.join();
+			}
+		}
+
+		_serviceContext = ServiceContextTestUtil.getServiceContext(
+			testGroup.getGroupId(), TestPropsValues.getUserId());
+
+		_depotEntry = _depotEntryLocalService.addDepotEntry(
+			HashMapBuilder.put(
+				LocaleUtil.getDefault(), RandomTestUtil.randomString()
+			).build(),
+			HashMapBuilder.put(
+				LocaleUtil.getDefault(), RandomTestUtil.randomString()
+			).build(),
+			DepotConstants.TYPE_ASSET_LIBRARY, _serviceContext);
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.
+				getObjectDefinitionByExternalReferenceCode(
+					"L_CMS_BASIC_WEB_CONTENT", testCompany.getCompanyId());
+
+		Map<String, Serializable> objectEntryValues =
+			HashMapBuilder.<String, Serializable>put(
+				"title_i18n",
+				HashMapBuilder.put(
+					"en_US", RandomTestUtil.randomString()
+				).build()
+			).build();
+
+		_objectEntries.add(
+			ObjectEntryTestUtil.addObjectEntry(
+				_depotEntry.getGroupId(), objectDefinition, objectEntryValues));
+
+		_assetVocabulary = _assetVocabularyLocalService.addVocabulary(
+			TestPropsValues.getUserId(), _depotEntry.getGroupId(),
+			"My Vocabulary", _serviceContext);
+
+		_assetCategory = _assetCategoryLocalService.addCategory(
+			TestPropsValues.getUserId(), _depotEntry.getGroupId(),
+			"My Category", _assetVocabulary.getVocabularyId(), _serviceContext);
+
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			_depotEntry.getGroupId(), objectDefinition, objectEntryValues);
+
+		_objectEntries.add(objectEntry);
+
+		AssetEntry assetEntry = _assetEntryLocalService.getEntry(
+			objectDefinition.getClassName(), objectEntry.getObjectEntryId());
+
+		_assetEntryAssetCategoryRel =
+			_assetEntryAssetCategoryRelLocalService.
+				addAssetEntryAssetCategoryRel(
+					assetEntry.getEntryId(), _assetCategory.getCategoryId());
+
+		_objectEntries.add(
+			ObjectEntryTestUtil.addObjectEntry(
+				_depotEntry.getGroupId(), objectDefinition, objectEntryValues,
+				RandomTestUtil.randomString()));
 	}
 
 	@DeleteAfterTestRun

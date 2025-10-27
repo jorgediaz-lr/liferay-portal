@@ -6,7 +6,6 @@
 package com.liferay.object.admin.rest.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.feature.flag.test.util.FeatureFlagTestHelper;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectField;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectFieldSetting;
 import com.liferay.object.admin.rest.client.pagination.Page;
@@ -16,12 +15,11 @@ import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.FeatureFlag;
+import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.Arrays;
@@ -39,7 +37,9 @@ import org.junit.runner.RunWith;
 /**
  * @author Javier Gamarra
  */
-@FeatureFlag("LPD-17564")
+@FeatureFlags(
+	featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-32050")}
+)
 @RunWith(Arquillian.class)
 public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 
@@ -186,6 +186,7 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 		assertContains(objectField3, (List<ObjectField>)page3.getItems());
 	}
 
+	@FeatureFlag(enable = false, value = "LPD-17564")
 	@Override
 	@Test
 	public void testGetObjectDefinitionObjectFieldsPage() throws Exception {
@@ -242,33 +243,12 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 
 		objectFieldResource.deleteObjectField(objectField2.getId());
 
-		FeatureFlagTestHelper featureFlagTestHelper =
-			new FeatureFlagTestHelper();
+		page = objectFieldResource.getObjectDefinitionObjectFieldsPage(
+			objectDefinitionId, null, null, null, null);
 
-		boolean featureFlagValue = featureFlagTestHelper.getFeatureFlagValue(
-			TestPropsValues.getCompanyId(), "LPD-17564");
+		Collection<ObjectField> items = page.getItems();
 
-		featureFlagTestHelper.setFeatureFlagValue(
-			TestPropsValues.getCompanyId(), "LPD-17564", false);
-
-		String liferayMode = SystemProperties.get("liferay.mode");
-
-		try {
-			SystemProperties.clear("liferay.mode");
-
-			page = objectFieldResource.getObjectDefinitionObjectFieldsPage(
-				objectDefinitionId, null, null, null, null);
-
-			Collection<ObjectField> items = page.getItems();
-
-			Assert.assertEquals(items.size(), page.getTotalCount());
-		}
-		finally {
-			featureFlagTestHelper.setFeatureFlagValue(
-				TestPropsValues.getCompanyId(), "LPD-17564", featureFlagValue);
-
-			SystemProperties.set("liferay.mode", liferayMode);
-		}
+		Assert.assertEquals(items.size(), page.getTotalCount());
 	}
 
 	@Override
@@ -363,6 +343,18 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 	@Ignore
 	@Override
 	@Test
+	public void testGraphQLGetObjectDefinitionByExternalReferenceCodeObjectFieldsPage() {
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testGraphQLGetObjectDefinitionObjectFieldsPage() {
+	}
+
+	@Ignore
+	@Override
+	@Test
 	public void testGraphQLGetObjectFieldNotFound() {
 	}
 
@@ -446,10 +438,36 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 	}
 
 	@Override
+	protected ObjectField
+			testGraphQLGetObjectDefinitionByExternalReferenceCodeObjectFieldsPageObjectDefinitionObjectField_addObjectField(
+				String objectDefinitionExternalReferenceCode,
+				ObjectField objectField)
+		throws Exception {
+
+		return objectFieldResource.
+			postObjectDefinitionByExternalReferenceCodeObjectField(
+				objectDefinitionExternalReferenceCode, objectField);
+	}
+
+	@Override
 	protected ObjectField testGraphQLObjectField_addObjectField()
 		throws Exception {
 
 		return _addObjectField();
+	}
+
+	@Override
+	protected Long
+		testGraphQLPostObjectDefinitionByExternalReferenceCodeObjectField_getObjectDefinitionId() {
+
+		return _objectDefinition.getObjectDefinitionId();
+	}
+
+	@Override
+	protected Long
+		testGraphQLPostObjectDefinitionObjectField_getObjectDefinitionId() {
+
+		return _objectDefinition.getObjectDefinitionId();
 	}
 
 	@Override

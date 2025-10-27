@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {ButtonView, Plugin, icons} from 'ckeditor5';
+import {Plugin} from '@ckeditor/ckeditor5-core/dist/index.js';
+import {ButtonView} from '@ckeditor/ckeditor5-ui/dist/index.js';
+import {getIcon} from 'frontend-editor-ckeditor-web';
 
 class Timestamp extends Plugin {
 	init() {
@@ -13,7 +15,7 @@ class Timestamp extends Plugin {
 			const button = new ButtonView();
 
 			button.set({
-				icon: icons.history,
+				icon: getIcon({symbol: 'time'}),
 				label: 'Timestamp',
 			});
 

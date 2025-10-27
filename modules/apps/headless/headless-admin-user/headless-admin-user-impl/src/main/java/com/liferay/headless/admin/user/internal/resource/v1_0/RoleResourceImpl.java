@@ -15,7 +15,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.RoleAssignmentException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -66,6 +65,7 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/role.properties",
+	property = "export.import.vulcan.batch.engine.task.item.delegate=true",
 	scope = ServiceScope.PROTOTYPE, service = RoleResource.class
 )
 public class RoleResourceImpl
@@ -169,14 +169,25 @@ public class RoleResourceImpl
 	}
 
 	@Override
-	public String getPortletId() {
-		if (FeatureFlagManagerUtil.isEnabled(
-				CompanyConstants.SYSTEM, "LPD-35914")) {
+	public ExportImportDescriptor getExportImportDescriptor() {
+		return new ExportImportDescriptor() {
 
-			return RolesAdminPortletKeys.ROLES_ADMIN;
-		}
+			@Override
+			public String getItemClassName() {
+				return com.liferay.portal.kernel.model.Role.class.getName();
+			}
 
-		return null;
+			@Override
+			public String getPortletId() {
+				return RolesAdminPortletKeys.ROLES_ADMIN;
+			}
+
+			@Override
+			public Scope getScope() {
+				return Scope.COMPANY;
+			}
+
+		};
 	}
 
 	@Override
@@ -248,11 +259,6 @@ public class RoleResourceImpl
 						contextUriInfo, contextUser),
 					role);
 			});
-	}
-
-	@Override
-	public Scope getScope() {
-		return Scope.COMPANY;
 	}
 
 	@Override
@@ -606,7 +612,7 @@ public class RoleResourceImpl
 			Role role, com.liferay.portal.kernel.model.Role serviceBuilderRole)
 		throws Exception {
 
-		if (!FeatureFlagManagerUtil.isEnabled("LPD-47858")) {
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-35914")) {
 			return serviceBuilderRole;
 		}
 

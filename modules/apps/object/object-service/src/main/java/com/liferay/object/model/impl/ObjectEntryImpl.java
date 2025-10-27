@@ -192,6 +192,12 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 					return title;
 				}
 
+				if (Objects.equals(
+						objectField.getName(), "externalReferenceCode")) {
+
+					return getExternalReferenceCode();
+				}
+
 				if (Objects.equals(objectField.getName(), "id")) {
 					return String.valueOf(getObjectEntryId());
 				}
@@ -263,6 +269,26 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 		}
 
 		return _values;
+	}
+
+	@Override
+	public boolean isHead() {
+		if (getHeadObjectEntryId() == getObjectEntryId()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isRootDescendantNode() {
+		if ((getRootObjectEntryId() != 0) &&
+			(getRootObjectEntryId() != getObjectEntryId())) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

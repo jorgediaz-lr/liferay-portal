@@ -26,7 +26,7 @@ export const test = mergeTests(
 	accountsPagesTest,
 	dataApiHelpersTest,
 	featureFlagsTest({
-		'LPD-47858': {enabled: true},
+		'LPD-35914': {enabled: true},
 	}),
 	loginTest(),
 	rolesPagesTest,
@@ -1592,7 +1592,7 @@ test(
 
 		const roleName = getRandomString();
 
-		await editAccountRolePage.nameInput.fill(roleName);
+		await editAccountRolePage.titleInput.fill(roleName);
 		await editAccountRolePage.saveButton.click();
 
 		await waitForAlert(page);

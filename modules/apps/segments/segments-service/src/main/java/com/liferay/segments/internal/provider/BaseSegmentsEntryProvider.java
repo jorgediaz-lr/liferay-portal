@@ -135,7 +135,8 @@ public abstract class BaseSegmentsEntryProvider
 			segmentsEntries = segmentsEntryLocalService.getSegmentsEntries(
 				filterSegmentsEntryIds, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
-		else {
+
+		if (segmentsEntries.isEmpty()) {
 			segmentsEntries = segmentsEntryLocalService.getSegmentsEntries(
 				groupId, getSource(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				null);
@@ -248,7 +249,7 @@ public abstract class BaseSegmentsEntryProvider
 		Criteria.Conjunction contextConjunction = getConjunction(
 			segmentsEntry, Criteria.Type.CONTEXT);
 
-		if (context != null) {
+		if ((context != null) && Validator.isNotNull(contextFilterString)) {
 			boolean guestUser = !GetterUtil.getBoolean(
 				context.get(Context.SIGNED_IN), true);
 
@@ -260,28 +261,26 @@ public abstract class BaseSegmentsEntryProvider
 
 			boolean matchesContext = false;
 
-			if (Validator.isNotNull(contextFilterString)) {
-				try {
-					matchesContext = oDataMatcher.matches(
-						contextFilterString, context);
+			try {
+				matchesContext = oDataMatcher.matches(
+					contextFilterString, context);
+			}
+			catch (PortalException portalException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(portalException);
 				}
-				catch (PortalException portalException) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(portalException);
-					}
-				}
+			}
 
-				if (matchesContext &&
-					contextConjunction.equals(Criteria.Conjunction.OR)) {
+			if (matchesContext &&
+				contextConjunction.equals(Criteria.Conjunction.OR)) {
 
-					return true;
-				}
+				return true;
+			}
 
-				if (!matchesContext &&
-					contextConjunction.equals(Criteria.Conjunction.AND)) {
+			if (!matchesContext &&
+				contextConjunction.equals(Criteria.Conjunction.AND)) {
 
-					return false;
-				}
+				return false;
 			}
 
 			if (guestUser) {
@@ -295,8 +294,7 @@ public abstract class BaseSegmentsEntryProvider
 			try {
 				matchesModel = UserSegmentsEntryMembershipChecker.isMember(
 					StringBundler.concat(
-						"(", modelFilterString, ") and (classPK eq '", classPK,
-						"')"),
+						"(", modelFilterString, ") and (classPK eq CLASS_PK)"),
 					userAttributes);
 			}
 			catch (Exception exception) {

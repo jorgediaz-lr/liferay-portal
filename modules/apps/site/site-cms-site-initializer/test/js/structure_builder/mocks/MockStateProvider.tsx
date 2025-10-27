@@ -21,11 +21,11 @@ const DEFAULT_STRUCTURE: Structure = {
 	spaces: [],
 	status: 'new',
 	uuid: getUuid(),
+	workflows: {},
 };
 
 const DEFAULT_STATE: State = {
-	error: null,
-	history: {deletedChildren: false},
+	history: {deletedChildren: false, modifiedNames: new Set()},
 	invalids: new Map(),
 	publishedChildren: new Set(),
 	selection: [],

@@ -40,12 +40,14 @@ export default function buildStructure({
 			parent: uuid,
 		}),
 		erc: mainObjectDefinition.externalReferenceCode,
+		id: mainObjectDefinition.id,
 		label: mainObjectDefinition.label,
 		name: mainObjectDefinition.name ?? '',
 		spaces: getSpaces(mainObjectDefinition),
 		status: isPublished ? 'published' : 'draft',
 		type: mainObjectDefinition.objectFolderExternalReferenceCode as Structure['type'],
 		uuid: getUuid(),
+		workflows: getWorkflows(mainObjectDefinition),
 	};
 }
 
@@ -140,6 +142,7 @@ export function buildField({
 		indexableConfig,
 		label: objectField.label,
 		localized: objectField.localized,
+		locked: objectField.system,
 		name: objectField.name,
 		parent,
 		required: objectField.required,
@@ -178,10 +181,7 @@ export function buildReferencedStructure({
 
 	const url = new URL(window.location.href);
 
-	url.searchParams.set(
-		'objectDefinitionExternalReferenceCode',
-		objectDefinition.externalReferenceCode
-	);
+	url.searchParams.set('objectDefinitionId', String(objectDefinition.id));
 	url.searchParams.set(
 		'objectFolderExternalReferenceCode',
 		String(objectDefinition.objectFolderExternalReferenceCode)
@@ -203,6 +203,7 @@ export function buildReferencedStructure({
 		spaces: getSpaces(objectDefinition),
 		type: 'referenced-structure',
 		uuid,
+		workflows: getWorkflows(objectDefinition),
 	};
 }
 
@@ -328,6 +329,21 @@ export function getSpaces(objectDefinition: ObjectDefinition) {
 			: acceptedGroupExternalReferenceCodes?.split(',') || [];
 
 	return spaces;
+}
+
+export function getWorkflows(objectDefinition: ObjectDefinition) {
+	const workflows: Structure['workflows'] = {};
+
+	const definitionLinks = objectDefinition.workflowDefinitionLinks || [];
+
+	for (const {
+		groupExternalReferenceCode,
+		workflowDefinitionName,
+	} of definitionLinks) {
+		workflows[groupExternalReferenceCode] = workflowDefinitionName;
+	}
+
+	return workflows;
 }
 
 function isRepeatableGroup(

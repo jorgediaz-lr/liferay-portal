@@ -15,6 +15,7 @@ import com.liferay.portal.odata.entity.IntegerEntityField;
 import com.liferay.portal.odata.entity.StringEntityField;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,19 +23,14 @@ import java.util.Map;
  */
 public class PlacedOrderEntityModel implements EntityModel {
 
-	public PlacedOrderEntityModel() {
+	public PlacedOrderEntityModel(List<EntityField> entityFields) {
 		_entityFieldsMap = EntityModel.toEntityFieldsMap(
 			new CollectionEntityField(
 				new IntegerEntityField(
-					"accountId",
-					locale -> Field.getSortableFieldName("commerceAccountId"))),
-			new CollectionEntityField(
-				new IntegerEntityField(
-					"authorId",
-					locale -> Field.getSortableFieldName(
-						"orderCreatorUserId"))),
+					"accountId", locale -> "commerceAccountId")),
 			new CollectionEntityField(
 				new IntegerEntityField("orderStatus", locale -> "orderStatus")),
+			new ComplexEntityField("customFields", entityFields),
 			new ComplexEntityField(
 				"orderStatusInfo",
 				Collections.singletonList(
@@ -54,9 +50,8 @@ public class PlacedOrderEntityModel implements EntityModel {
 				"requestedDeliveryDate",
 				locale -> Field.getSortableFieldName("requestedDeliveryDate"),
 				locale -> "requestedDeliveryDate"),
-			new IntegerEntityField(
-				"id",
-				locale -> Field.getSortableFieldName(Field.ENTRY_CLASS_PK)),
+			new IntegerEntityField("authorId", locale -> "orderCreatorUserId"),
+			new IntegerEntityField("id", locale -> Field.ENTRY_CLASS_PK),
 			new StringEntityField(
 				"account", locale -> Field.getSortableFieldName("accountName")),
 			new StringEntityField(

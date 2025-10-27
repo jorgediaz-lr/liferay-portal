@@ -8,8 +8,8 @@ package com.liferay.portal.upgrade.data.cleanup;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
-import com.liferay.portal.kernel.upgrade.data.cleanup.AllTablesOrphanReferencesDataCleanupPreupgradeProcess;
 import com.liferay.portal.kernel.upgrade.data.cleanup.DataCleanupPreupgradeProcess;
+import com.liferay.portal.kernel.upgrade.data.cleanup.DefaultAllTablesOrphanReferencesDataCleanupPreupgradeProcess;
 import com.liferay.portal.kernel.upgrade.data.cleanup.TableOrphanReferencesDataCleanupPreupgradeProcess;
 import com.liferay.portal.kernel.util.PortletKeys;
 
@@ -22,25 +22,30 @@ public class GroupDataCleanupPreupgradeProcess
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(
-			new AllTablesOrphanReferencesDataCleanupPreupgradeProcess(
+			new DefaultAllTablesOrphanReferencesDataCleanupPreupgradeProcess(
 				"groupId", "Group_"));
 		upgrade(
 			new TableOrphanReferencesDataCleanupPreupgradeProcess(
-				"ownerType = " + PortletKeys.PREFS_OWNER_TYPE_GROUP, "ownerId",
-				"PortalPreferences", "groupId", "Group_"));
+				"[$SOURCE_TABLE_ALIAS$].ownerType = " +
+					PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				"ownerId", "PortalPreferences", "groupId", "Group_"));
 		upgrade(
 			new TableOrphanReferencesDataCleanupPreupgradeProcess(
-				"ownerType = " + PortletKeys.PREFS_OWNER_TYPE_GROUP, "ownerId",
-				"PortletPreferences", "groupId", "Group_"));
+				"[$SOURCE_TABLE_ALIAS$].ownerType = " +
+					PortletKeys.PREFS_OWNER_TYPE_GROUP,
+				"ownerId", "PortletPreferences", "groupId", "Group_"));
 		upgrade(
 			new TableOrphanReferencesDataCleanupPreupgradeProcess(
-				"scope = " + ResourceConstants.SCOPE_GROUP, "primKeyId",
-				"ResourcePermission", "groupId", "Group_"));
+				"[$SOURCE_TABLE_ALIAS$].scope = " +
+					ResourceConstants.SCOPE_GROUP,
+				"primKeyId", "ResourcePermission", "groupId", "Group_"));
 		upgrade(
 			new TableOrphanReferencesDataCleanupPreupgradeProcess(
 				StringBundler.concat(
-					"scope = ", ResourceConstants.SCOPE_INDIVIDUAL,
-					" and name = '", Group.class.getName(), "'"),
+					"[$SOURCE_TABLE_ALIAS$].scope = ",
+					ResourceConstants.SCOPE_INDIVIDUAL, " and ",
+					"[$SOURCE_TABLE_ALIAS$].name = '", Group.class.getName(),
+					"'"),
 				"primKeyId", "ResourcePermission", "groupId", "Group_"));
 	}
 

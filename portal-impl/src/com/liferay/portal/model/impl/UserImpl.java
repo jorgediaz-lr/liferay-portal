@@ -61,13 +61,13 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.users.admin.kernel.util.UserInitialsGeneratorUtil;
 
 import java.util.Collections;
@@ -934,6 +934,11 @@ public class UserImpl extends UserBaseImpl {
 	}
 
 	@Override
+	public boolean isLayoutsUpdated() {
+		return _layoutsUpdated;
+	}
+
+	@Override
 	public boolean isMale() throws PortalException {
 		return getMale();
 	}
@@ -1063,6 +1068,13 @@ public class UserImpl extends UserBaseImpl {
 	}
 
 	@Override
+	public void setLayoutsUpdated(boolean layoutsUpdated) {
+		_layoutsUpdated = layoutsUpdated;
+
+		layoutsUpdatedUpdateEntityCacheBiConsumer.accept(this, layoutsUpdated);
+	}
+
+	@Override
 	public void setOrganizationIds(long[] organizationIds) {
 		_organizationIds = organizationIds;
 	}
@@ -1180,6 +1192,10 @@ public class UserImpl extends UserBaseImpl {
 	private long _groupId = -1;
 
 	private long[] _groupIds;
+
+	@CacheField(permanent = true, propagateToInterface = true)
+	private boolean _layoutsUpdated;
+
 	private Locale _locale;
 	private long[] _organizationIds;
 	private boolean _passwordModified;

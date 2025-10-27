@@ -215,9 +215,10 @@ public class LayoutLocalServiceWrapper
 			TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
-					_updateLayoutPageTemplateStructureData(
-						data, layout, segmentsExperienceId, layout,
-						segmentsExperienceId, user);
+					_layoutPageTemplateStructureLocalService.
+						updateLayoutPageTemplateStructureData(
+							user.getUserId(), layout.getGroupId(),
+							layout.getPlid(), segmentsExperienceId, data);
 
 					return null;
 				});
@@ -433,8 +434,9 @@ public class LayoutLocalServiceWrapper
 
 			_layoutPageTemplateStructureLocalService.
 				updateLayoutPageTemplateStructureData(
-					targetLayout.getGroupId(), targetLayout.getPlid(),
-					entry.getValue(), dataJSONObject.toString());
+					user.getUserId(), targetLayout.getGroupId(),
+					targetLayout.getPlid(), entry.getValue(),
+					dataJSONObject.toString());
 
 			SegmentsExperience targetSegmentsExperience =
 				_segmentsExperienceLocalService.fetchSegmentsExperience(
@@ -1107,8 +1109,9 @@ public class LayoutLocalServiceWrapper
 
 		_layoutPageTemplateStructureLocalService.
 			updateLayoutPageTemplateStructureData(
-				targetLayout.getGroupId(), targetLayout.getPlid(),
-				targetSegmentsExperienceId, dataJSONObject.toString());
+				user.getUserId(), targetLayout.getGroupId(),
+				targetLayout.getPlid(), targetSegmentsExperienceId,
+				dataJSONObject.toString());
 
 		_fragmentEntryLinkLocalService.deleteFragmentEntryLinks(
 			ArrayUtil.toLongArray(targetFragmentEntryLinkIds));
@@ -1265,7 +1268,7 @@ public class LayoutLocalServiceWrapper
 				_targetLayout.getLayoutId(),
 				_getTypeSettings(_sourceLayout, _targetLayout), imageBytes,
 				_sourceLayout.getThemeId(), _sourceLayout.getColorSchemeId(),
-				_sourceLayout.getStyleBookEntryId(), _sourceLayout.getCss(),
+				_sourceLayout.getStyleBookEntryERC(), _sourceLayout.getCss(),
 				_sourceLayout.getFaviconFileEntryId(),
 				_sourceLayout.getMasterLayoutPlid());
 		}

@@ -215,6 +215,23 @@ class ChangeTrackingConflictsView extends ChangeTrackingBaseScheduleView {
 							<div className={this.getDateClassName()}>
 								<div>
 									<ClayDatePicker
+										ariaLabels={{
+											buttonChooseDate: `${Liferay.Language.get(
+												'select-date'
+											)}`,
+											buttonDot: `${Liferay.Language.get(
+												'select-current-date'
+											)}`,
+											buttonNextMonth: `${Liferay.Language.get(
+												'select-next-month'
+											)}`,
+											buttonPreviousMonth: `${Liferay.Language.get(
+												'select-previous-month'
+											)}`,
+											dialog: `${Liferay.Language.get('select-date')}`,
+											selectMonth: `${Liferay.Language.get('select-a-month')}`,
+											selectYear: `${Liferay.Language.get('select-a-year')}`,
+										}}
 										disabled={
 											!!this.unresolvedConflicts.length
 										}
@@ -669,7 +686,9 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 				size="full-screen"
 				spritemap={spritemap}
 			>
-				<ClayModal.Header>
+				<ClayModal.Header
+					closeButtonAriaLabel={Liferay.Language.get('close')}
+				>
 					<div className="autofit-row">
 						<div className="autofit-col">
 							<div className="modal-title">
@@ -685,6 +704,7 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 
 				<ClayModal.Header
 					className="publications-conflicts-header"
+					closeButtonAriaLabel={Liferay.Language.get('close')}
 					withTitle={false}
 				>
 					<ClayAlert

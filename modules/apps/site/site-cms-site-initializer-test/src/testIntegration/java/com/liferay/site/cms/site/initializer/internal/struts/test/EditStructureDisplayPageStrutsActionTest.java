@@ -6,6 +6,7 @@
 package com.liferay.site.cms.site.initializer.internal.struts.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.FeatureFlag;
+import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -74,7 +76,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Lourdes Fernández Besada
  */
 @DataGuard(scope = DataGuard.Scope.METHOD)
-@FeatureFlag("LPD-17564")
+@FeatureFlags(
+	featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-32050")}
+)
 @RunWith(Arquillian.class)
 public class EditStructureDisplayPageStrutsActionTest {
 
@@ -108,6 +112,7 @@ public class EditStructureDisplayPageStrutsActionTest {
 			HashMapBuilder.put(
 				LocaleUtil.getDefault(), RandomTestUtil.randomString()
 			).build(),
+			DepotConstants.TYPE_ASSET_LIBRARY,
 			ServiceContextTestUtil.getServiceContext());
 
 		_group = _groupLocalService.getGroup(
@@ -152,9 +157,15 @@ public class EditStructureDisplayPageStrutsActionTest {
 			ContentLayoutTestUtil.getMockHttpServletRequest(
 				_company, _group, _layout);
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)mockHttpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		themeDisplay.setUser(_user);
+
 		mockHttpServletRequest.setParameter(
-			"objectDefinitionExternalReferenceCode",
-			String.valueOf(_objectDefinition.getExternalReferenceCode()));
+			"objectDefinitionId",
+			String.valueOf(_objectDefinition.getObjectDefinitionId()));
 		mockHttpServletRequest.setParameter(
 			"backURL", RandomTestUtil.randomString());
 		mockHttpServletRequest.setRequestURI(_layout.getFriendlyURL());

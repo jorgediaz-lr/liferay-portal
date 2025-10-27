@@ -40,7 +40,7 @@ ext {
 		"com.liferay.gradle.plugins.theme.builder.version": "2.0.17",
 		"com.liferay.portal.tools.bundle.support.version": "3.7.5",
 		"com.liferay.portal.tools.service.builder.version": "1.0.501",
-		"com.liferay.portal.tools.rest.builder.version": "1.0.419",
+		"com.liferay.portal.tools.rest.builder.version": "1.0.435",
 		"com.liferay.portal.tools.soy.builder.version": "3.0.4",
 		"com.liferay.portal.tools.theme.builder.version": "1.1.9",
 		"com.liferay.portal.vulcan.api.version": "9.3.1"
@@ -264,10 +264,10 @@ gradle.beforeProject {
 					!project.sourceSets.testIntegration.allSource.isEmpty()) {
 
 					dependencies {
-						testImplementation group: "com.liferay", name: "org.springframework.test", version: "5.3.39.JAKARTA-LIFERAY-PATCHED-1"
 						testImplementation group: "junit", name: "junit", version: "4.13.1"
 						testImplementation group: "org.mockito", name: "mockito-core", version: "4.5.1"
 						testImplementation group: "org.mockito", name: "mockito-inline", version: "4.5.1"
+						testImplementation group: "org.springframework", name: "spring-test", version: "6.2.9"
 					}
 				}
 			}

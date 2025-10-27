@@ -23,10 +23,14 @@ ViewVersionHistoryDisplayContext viewVersionHistoryDisplayContext = (ViewVersion
 		additionalProps="<%= viewVersionHistoryDisplayContext.getProps() %>"
 		apiURL="<%= viewVersionHistoryDisplayContext.getAPIURL() %>"
 		fdsActionDropdownItems="<%= viewVersionHistoryDisplayContext.getFDSActionDropdownItems() %>"
+		fdsSortItemList="<%= viewVersionHistoryDisplayContext.getFDSSortItemList() %>"
 		formName="fm"
 		id="<%= CMSSiteInitializerFDSNames.VIEW_HISTORY %>"
 		itemsPerPage="<%= 20 %>"
 		propsTransformer="{ViewVersionHistoryFDSPropsTransformer} from site-cms-site-initializer"
+		selectedItemsKey="systemProperties.version.number"
+		selectionType="multiple"
+		showSelectAll="<%= true %>"
 		style="fluid"
 	/>
 </div>

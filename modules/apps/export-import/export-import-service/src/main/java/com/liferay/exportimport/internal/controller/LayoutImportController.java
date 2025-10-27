@@ -690,6 +690,10 @@ public class LayoutImportController implements ImportController {
 		Element layoutsElement = rootElement.element(
 			Layout.class.getSimpleName());
 
+		if (layoutsElement == null) {
+			return;
+		}
+
 		_validateLayoutPrototypes(companyId, headerElement, layoutsElement);
 	}
 
@@ -1072,7 +1076,7 @@ public class LayoutImportController implements ImportController {
 				portletDataContext.isPrivateLayout());
 
 			for (Layout layout : previousLayouts) {
-				if (Validator.isNull(layout.getSourcePrototypeLayoutUuid())) {
+				if (Validator.isNull(layout.getLayoutSetPrototypeLayoutERC())) {
 					continue;
 				}
 
@@ -1083,9 +1087,9 @@ public class LayoutImportController implements ImportController {
 				}
 
 				Layout sourcePrototypeLayout =
-					_layoutLocalService.fetchLayoutByUuidAndGroupId(
-						layout.getSourcePrototypeLayoutUuid(),
-						layoutSetPrototype.getGroupId(), true);
+					_layoutLocalService.fetchLayoutByExternalReferenceCode(
+						layout.getLayoutSetPrototypeLayoutERC(),
+						layoutSetPrototype.getGroupId());
 
 				if (sourcePrototypeLayout == null) {
 					_layoutLocalService.deleteLayout(layout, serviceContext);

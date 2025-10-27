@@ -147,6 +147,21 @@ public class ServletDataImpl implements ServletData {
 							ObjectEntryFolderResourceImpl.class,
 							"postScopeScopeKeyObjectEntryFolder"));
 					put(
+						"mutation#createScopeScopeKeyObjectEntryFolderByExternalReferenceCodeRestore",
+						new ObjectValuePair<>(
+							ObjectEntryFolderResourceImpl.class,
+							"postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeRestore"));
+					put(
+						"mutation#createScopeScopeKeyObjectEntryFolderByExternalReferenceCodeSubscribe",
+						new ObjectValuePair<>(
+							ObjectEntryFolderResourceImpl.class,
+							"postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeSubscribe"));
+					put(
+						"mutation#createScopeScopeKeyObjectEntryFolderByExternalReferenceCodeUnsubscribe",
+						new ObjectValuePair<>(
+							ObjectEntryFolderResourceImpl.class,
+							"postScopeScopeKeyObjectEntryFolderByExternalReferenceCodeUnsubscribe"));
+					put(
 						"mutation#updateObjectEntryFolder",
 						new ObjectValuePair<>(
 							ObjectEntryFolderResourceImpl.class,

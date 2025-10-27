@@ -53,7 +53,10 @@
 												},
 												"text": {
 													"value_i18n": {
-														"en_US": "Search Results"
+														"en_US": "Search Results",
+														"es_ES": "Resultados de búsqueda",
+														"ja_JP": "検索結果",
+														"pt_BR": "Resultados da Pesquisa"
 													}
 												}
 											}
@@ -70,7 +73,7 @@
 										"widgetConfig": {
 											"destination": "",
 											"displayStyle": "ddmTemplate_SEARCH-BAR-LEFT-ALIGNED-ICON-FTL",
-											"displayStyleGroupId": "20121",
+											"displayStyleGroupId": "[$GROUP_ID$]",
 											"displayStyleGroupKey": "68390129561053",
 											"federatedSearchKey": "",
 											"invisible": "false",
@@ -106,10 +109,10 @@
 					},
 					"indexed": true,
 					"layout": {
-						"paddingBottom": 2,
+						"paddingBottom": 4,
 						"paddingLeft": 2,
 						"paddingRight": 2,
-						"paddingTop": 2,
+						"paddingTop": 4,
 						"widthType": "Fixed"
 					}
 				},
@@ -194,7 +197,7 @@
 													"widgetInstance": {
 														"widgetConfig": {
 															"displayStyle": "ddmTemplate_SEARCH-SORT",
-															"displayStyleGroupId": "33863",
+															"displayStyleGroupId": "[$GROUP_ID$]",
 															"displayStyleGroupKey": "Customer Portal",
 															"fields": "[{\"field\": \"\", \"label\": \"relevance\"}, {\"field\": \"title+\", \"label\": \"alphabetical-a-z\"}, {\"field\": \"title-\", \"label\": \"alphabetical-z-a\"}, {\"field\": \"publishDate-\", \"label\": \"publish-date\"}]"
 														},
@@ -212,14 +215,15 @@
 											"widgetInstance": {
 												"widgetConfig": {
 													"displayStyle": "ddmTemplate_SEARCH-CATEGORY-FACET",
-													"displayStyleGroupId": "33863",
+													"displayStyleGroupId": "[$GROUP_ID$]",
 													"displayStyleGroupKey": "Customer Portal",
-													"frequenciesVisible": "false",
+													"frequenciesVisible": "true",
 													"frequencyThreshold": "1",
+													"groupVocabularyExternalReferenceCodes": "CUSTOMER_PORTAL&&ARTICLE-CATEGORIES",
 													"maxTerms": "1000",
 													"order": "key:asc",
 													"parameterName": "category",
-													"vocabularyIds": "34824"
+													"vocabularyIds": "[$TAXONOMY_VOCABULARY_ID:Article Categories$]"
 												},
 												"widgetName": "com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet"
 											}
@@ -278,7 +282,7 @@
 												"widgetConfig": {
 													"displayInDocumentForm": "false",
 													"displayStyle": "ddmTemplate_SEARCH-RESULTS",
-													"displayStyleGroupId": "33863",
+													"displayStyleGroupId": "[$GROUP_ID$]",
 													"displayStyleGroupKey": "Customer Portal",
 													"federatedSearchKey": "",
 													"fieldsToDisplay": "",

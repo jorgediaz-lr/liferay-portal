@@ -226,7 +226,9 @@ public class ObjectDefinitionGraphQLDTOContributor
 	}
 
 	@Override
-	public boolean deleteDTO(long id) throws Exception {
+	public boolean deleteDTO(DTOConverterContext dtoConverterContext, long id)
+		throws Exception {
+
 		DefaultObjectEntryManager defaultObjectEntryManager =
 			DefaultObjectEntryManagerProvider.provide(_objectEntryManager);
 
@@ -321,9 +323,11 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 		if (Validator.isNull(objectRelationshipObjectFieldName)) {
 			Page<ObjectEntry> page =
-				defaultObjectEntryManager.getObjectEntryRelatedObjectEntries(
-					dtoConverterContext, _objectDefinition, id,
-					relationshipName,
+				defaultObjectEntryManager.getRelatedObjectEntries(
+					dtoConverterContext, id,
+					_objectRelationshipLocalService.getObjectRelationship(
+						_objectDefinition.getObjectDefinitionId(),
+						relationshipName),
 					Pagination.of(QueryUtil.ALL_POS, QueryUtil.ALL_POS));
 
 			return (T)TransformUtil.transform(

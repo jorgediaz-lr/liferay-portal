@@ -265,6 +265,27 @@ public class ObjectDefinition implements Cloneable, Serializable {
 
 	protected Boolean enableComments;
 
+	public Boolean getEnableFormContainer() {
+		return enableFormContainer;
+	}
+
+	public void setEnableFormContainer(Boolean enableFormContainer) {
+		this.enableFormContainer = enableFormContainer;
+	}
+
+	public void setEnableFormContainer(
+		UnsafeSupplier<Boolean, Exception> enableFormContainerUnsafeSupplier) {
+
+		try {
+			enableFormContainer = enableFormContainerUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Boolean enableFormContainer;
+
 	public Boolean getEnableFriendlyURLCustomization() {
 		return enableFriendlyURLCustomization;
 	}
@@ -1014,6 +1035,31 @@ public class ObjectDefinition implements Cloneable, Serializable {
 	}
 
 	protected String titleObjectFieldName;
+
+	public WorkflowDefinitionLink[] getWorkflowDefinitionLinks() {
+		return workflowDefinitionLinks;
+	}
+
+	public void setWorkflowDefinitionLinks(
+		WorkflowDefinitionLink[] workflowDefinitionLinks) {
+
+		this.workflowDefinitionLinks = workflowDefinitionLinks;
+	}
+
+	public void setWorkflowDefinitionLinks(
+		UnsafeSupplier<WorkflowDefinitionLink[], Exception>
+			workflowDefinitionLinksUnsafeSupplier) {
+
+		try {
+			workflowDefinitionLinks =
+				workflowDefinitionLinksUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected WorkflowDefinitionLink[] workflowDefinitionLinks;
 
 	@Override
 	public ObjectDefinition clone() throws CloneNotSupportedException {

@@ -101,12 +101,12 @@ class OAuth2Client {
 
 	protected post<T>(
 		resource: RequestInfo,
-		data?: unknown,
+		data?: FormData | unknown,
 		options?: Options<T>
 	) {
 		return this.fetcher(resource, {
 			...options,
-			body: JSON.stringify(data),
+			body: data instanceof FormData ? data : JSON.stringify(data),
 			method: 'POST',
 		});
 	}
@@ -114,10 +114,7 @@ class OAuth2Client {
 
 export class MarketplaceSpringBootOAuth2 extends OAuth2Client {
 	constructor(resource: string) {
-		super(
-			'liferay-marketplace-etc-spring-boot-oauth-application-user-agent',
-			resource
-		);
+		super('liferay-marketplace-etc-spring-boot-oaua', resource);
 	}
 }
 

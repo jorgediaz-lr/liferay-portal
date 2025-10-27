@@ -17,8 +17,8 @@ const test = mergeTests(
 	cmsPagesTest,
 	dataApiHelpersTest,
 	featureFlagsTest({
-		'LPD-11232': {enabled: true},
 		'LPD-17564': {enabled: true},
+		'LPS-179669': {enabled: true},
 	}),
 	loginTest()
 );
@@ -26,7 +26,7 @@ const test = mergeTests(
 test(
 	'Can edit a folder',
 	{tag: '@LPD-42841'},
-	async ({apiHelpers, filesPage, page}) => {
+	async ({apiHelpers, assetsPage, page}) => {
 		const folderTitle = getRandomString();
 
 		const folderData =
@@ -35,11 +35,11 @@ test(
 				title: folderTitle,
 			});
 
-		await filesPage.goto();
+		await assetsPage.gotoFiles();
 
 		await clickAndExpectToBeVisible({
 			autoClick: true,
-			target: page.getByRole('menuitem', {name: 'Edit'}),
+			target: page.getByRole('menuitem', {exact: true, name: 'Edit'}),
 			trigger: page
 				.getByRole('row', {name: folderTitle})
 				.locator('.dropdown-toggle'),
@@ -57,6 +57,36 @@ test(
 		);
 
 		await expect(page.getByText(newFolderTitle)).toBeVisible();
+
+		await apiHelpers.objectFolder.deleteObjectEntryFolder(folderData.id);
+	}
+);
+
+test(
+	'Folders have View Folder action, but not View',
+	{tag: '@LPD-58720'},
+	async ({apiHelpers, assetsPage, page}) => {
+		const folderTitle = getRandomString();
+
+		const folderData =
+			await apiHelpers.objectFolder.createObjectEntryFolder({
+				scopeKey: 'Default',
+				title: folderTitle,
+			});
+
+		await assetsPage.gotoFiles();
+
+		await page
+			.getByRole('row', {name: folderTitle})
+			.locator('.dropdown-toggle')
+			.click();
+
+		expect(
+			page.getByRole('menuitem', {exact: true, name: 'View'})
+		).toBeHidden();
+		expect(
+			page.getByRole('menuitem', {exact: true, name: 'View Folder'})
+		).toBeVisible();
 
 		await apiHelpers.objectFolder.deleteObjectEntryFolder(folderData.id);
 	}

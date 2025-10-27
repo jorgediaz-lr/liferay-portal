@@ -19,6 +19,7 @@ import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationRecipientSettingLocalService;
 import com.liferay.notification.service.NotificationTemplateLocalService;
 import com.liferay.notification.test.util.NotificationTemplateUtil;
+import com.liferay.notification.util.NotificationRecipientSettingUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.FeatureFlag;
+import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -57,7 +59,9 @@ public class NotificationTemplateLocalServiceTest {
 		_externalReferenceCode = RandomTestUtil.randomString();
 	}
 
-	@FeatureFlag("LPD-42577")
+	@FeatureFlags(
+		featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-32050")}
+	)
 	@Test
 	public void testAddNotificationTemplate() throws Exception {
 		User user = TestPropsValues.getUser();
@@ -76,11 +80,11 @@ public class NotificationTemplateLocalServiceTest {
 					TestPropsValues.getUser(), StringUtil.randomString(255),
 					RandomTestUtil.randomString(),
 					Arrays.asList(
-						NotificationTemplateUtil.
+						NotificationRecipientSettingUtil.
 							createNotificationRecipientSetting(
 								notificationRecipientSettingName,
 								RandomTestUtil.randomString()),
-						NotificationTemplateUtil.
+						NotificationRecipientSettingUtil.
 							createNotificationRecipientSetting(
 								NotificationRecipientSettingConstants.
 									NAME_ROLE_NAME,
@@ -99,11 +103,11 @@ public class NotificationTemplateLocalServiceTest {
 					TestPropsValues.getUser(), StringUtil.randomString(255),
 					RandomTestUtil.randomString(),
 					Arrays.asList(
-						NotificationTemplateUtil.
+						NotificationRecipientSettingUtil.
 							createNotificationRecipientSetting(
 								notificationRecipientSettingName,
 								RandomTestUtil.randomString()),
-						NotificationTemplateUtil.
+						NotificationRecipientSettingUtil.
 							createNotificationRecipientSetting(
 								NotificationRecipientSettingConstants.
 									NAME_SINGLE_RECIPIENT,

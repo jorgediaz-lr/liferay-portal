@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -40,6 +41,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -109,6 +111,10 @@ public class ContentEditorSidePanelComponentSectionFragmentRenderer
 
 		ObjectEntry objectEntry = (ObjectEntry)displayObject;
 
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				objectEntry.getObjectDefinitionId());
+
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
@@ -168,6 +174,12 @@ public class ContentEditorSidePanelComponentSectionFragmentRenderer
 				return jsonArray;
 			}
 		).put(
+			"contentAPIURL",
+			StringBundler.concat(
+				themeDisplay.getPortalURL(), "/o",
+				objectDefinition.getRESTContextPath(), StringPool.SLASH,
+				objectEntry.getObjectEntryId())
+		).put(
 			"deleteCommentURL",
 			StringBundler.concat(
 				themeDisplay.getPortalURL(), themeDisplay.getPathMain(),
@@ -197,12 +209,39 @@ public class ContentEditorSidePanelComponentSectionFragmentRenderer
 				return data.get("editorConfig");
 			}
 		).put(
+			"expirationDate",
+			() -> {
+				Date expirationDate = objectEntry.getExpirationDate();
+
+				if (expirationDate == null) {
+					return null;
+				}
+
+				return DateUtil.getDate(
+					expirationDate, "yyyy-MM-dd'T'HH:mm",
+					themeDisplay.getLocale());
+			}
+		).put(
+			"groupId", themeDisplay.getScopeGroupId()
+		).put(
 			"id", String.valueOf(objectEntry.getObjectEntryId())
 		).put(
 			"isSubscribed",
 			() -> _subscriptionLocalService.isSubscribed(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 				objectEntry.getModelClassName(), objectEntry.getObjectEntryId())
+		).put(
+			"reviewDate",
+			() -> {
+				Date reviewDate = objectEntry.getReviewDate();
+
+				if (reviewDate == null) {
+					return null;
+				}
+
+				return DateUtil.getDate(
+					reviewDate, "yyyy-MM-dd'T'HH:mm", themeDisplay.getLocale());
+			}
 		).put(
 			"subscribeURL",
 			StringBundler.concat(
@@ -214,14 +253,7 @@ public class ContentEditorSidePanelComponentSectionFragmentRenderer
 				"&classPK=", objectEntry.getObjectEntryId(),
 				"&objectDefinitionId=", objectEntry.getObjectDefinitionId())
 		).put(
-			"type",
-			() -> {
-				ObjectDefinition objectDefinition =
-					_objectDefinitionLocalService.fetchObjectDefinition(
-						objectEntry.getObjectDefinitionId());
-
-				return objectDefinition.getLabel(themeDisplay.getLocale());
-			}
+			"type", objectDefinition.getLabel(themeDisplay.getLocale())
 		).put(
 			"version", () -> String.valueOf(objectEntry.getVersion())
 		).build();

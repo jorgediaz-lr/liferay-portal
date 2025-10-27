@@ -190,21 +190,20 @@ public class ObjectEntryInfoItemFormProviderUtil {
 							objectDefinitionId,
 							ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-					ObjectDefinition relatedObjectDefinition = null;
-
 					if (Objects.equals(
 							objectDefinitionId,
 							objectRelationship.getObjectDefinitionId1()) &&
 						FeatureFlagManagerUtil.isEnabled("LPD-50377")) {
 
-						relatedObjectDefinition =
-							objectDefinitionLocalService.fetchObjectDefinition(
-								objectRelationship.getObjectDefinitionId2());
+						return;
 					}
-					else if (FeatureFlagManagerUtil.isEnabled("LPD-60546") &&
-							 !Objects.equals(
-								 objectDefinitionId,
-								 objectRelationship.getObjectDefinitionId1())) {
+
+					ObjectDefinition relatedObjectDefinition = null;
+
+					if (FeatureFlagManagerUtil.isEnabled("LPD-60546") &&
+						!Objects.equals(
+							objectDefinitionId,
+							objectRelationship.getObjectDefinitionId1())) {
 
 						relatedObjectDefinition =
 							objectDefinitionLocalService.fetchObjectDefinition(
@@ -408,13 +407,22 @@ public class ObjectEntryInfoItemFormProviderUtil {
 
 						Locale locale = entry.getKey();
 
-						fieldSetLabelMap.put(
-							locale,
-							StringBundler.concat(
+						String fieldSetLabel = StringPool.BLANK;
+
+						if (Objects.equals(
+								objectRelationship.getLabel(locale),
+								entry.getValue())) {
+
+							fieldSetLabel = objectRelationship.getLabel(locale);
+						}
+						else {
+							fieldSetLabel = StringBundler.concat(
 								objectRelationship.getLabel(locale),
 								StringPool.SPACE, StringPool.OPEN_PARENTHESIS,
-								entry.getValue(),
-								StringPool.CLOSE_PARENTHESIS));
+								entry.getValue(), StringPool.CLOSE_PARENTHESIS);
+						}
+
+						fieldSetLabelMap.put(locale, fieldSetLabel);
 					}
 
 					unsafeConsumer.accept(

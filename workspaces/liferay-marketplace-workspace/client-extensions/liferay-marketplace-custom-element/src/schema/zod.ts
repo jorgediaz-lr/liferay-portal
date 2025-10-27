@@ -24,6 +24,18 @@ const baseContentSchema = z.object({
 	title: z.string().min(1),
 });
 
+const billingAddress = z.object({
+	city: z.string().min(1),
+	country: z.string().min(1),
+	countryISOCode: z.string().optional(),
+	name: z.string().min(1),
+	phoneNumber: z.string().min(1),
+	regionISOCode: z.string().optional(),
+	street1: z.string().min(1),
+	street2: z.string().optional(),
+	zip: z.string().min(1),
+});
+
 const blocksContentSchemas = {
 	textBlock: baseContentSchema,
 	textImages: baseContentSchema.extend({
@@ -52,9 +64,14 @@ const freeApp = z.object({
 
 const paidApp = z.object({
 	...baseAppSchema,
-	email: z.string().email(),
-	phone: z.string().min(8),
-	publisherWebsiteURL: z.string().url(),
+	email: z.string().email(i18n.translate('please-fill-in-a-valid-email')),
+	phone: z.string().min(8, {
+		message: i18n.translate('please-fill-in-a-valid-phone-number'),
+	}),
+	publisherWebsiteURL: z
+		.string()
+		.url({message: i18n.translate('please-fill-in-a-valid-url')})
+		.transform((url) => (url.startsWith('http') ? url : `https://${url}`)),
 });
 
 const resources = z.object({
@@ -93,6 +110,18 @@ const zodSchema = {
 		phoneNumber: z
 			.string()
 			.min(1, {message: 'Please enter a phone number to continue.'}),
+	}),
+	accountForm: z.object({
+		accountImage: z.any(),
+		accountName: z
+			.string()
+			.min(1, {message: 'Please enter a company name to continue'}),
+		accountType: z.string().min(1),
+		billingAddress,
+		emailAddress: z.string().email('Please fill in valid email'),
+		taxNumber: z
+			.string()
+			.min(1, {message: 'Please enter a Tax/VAT number to continue'}),
 	}),
 	analyticsProvisioning: z.object({
 		_refAllowedEmailDomains: z.array(z.any()),
@@ -170,17 +199,7 @@ const zodSchema = {
 			.string()
 			.min(3, {message: 'Request Description is required'}),
 	}),
-	billingAddress: z.object({
-		city: z.string().min(1),
-		country: z.string().min(1),
-		countryISOCode: z.string().optional(),
-		name: z.string().min(1),
-		phoneNumber: z.string().min(1),
-		regionISOCode: z.string().optional(),
-		street1: z.string().min(1),
-		street2: z.string().optional(),
-		zip: z.string().min(1),
-	}),
+	billingAddress,
 	contactSales: z.object({
 		accountName: z
 			.string()
@@ -189,6 +208,14 @@ const zodSchema = {
 		comments: z.string(),
 		email: z.string().email(i18n.translate('please-fill-in-a-valid-email')),
 		name: z.string().min(3, i18n.sub('x-is-required', 'name')),
+	}),
+	extendSSATrial: z.object({
+		duration: z.coerce
+			.number()
+			.int()
+			.min(1, 'Please enter a valid number (1-60)')
+			.max(60, 'Please enter a valid number (1-60)'),
+		reason: z.string().min(3),
 	}),
 	generateLicenseKey: z.object({
 		description: z.string().max(100, {message: 'Invalid license name'}),
@@ -278,6 +305,40 @@ const zodSchema = {
 		}),
 		termsAndConditions: z.boolean().refine((data) => data === true),
 	},
+	ssaTrialForm: z.object({
+		duration: z.coerce
+			.number()
+			.int()
+			.min(1, 'Please enter a valid number (1-60)')
+			.max(60, 'Please enter a valid number (1-60)'),
+		emailAddress: z
+			.array(
+				z.object({
+					key: z.string(),
+					label: z.string(),
+					value: z.string(),
+				})
+			)
+			.refine(
+				(emails) =>
+					emails.every(
+						(error) =>
+							z.string().email().safeParse(error.value).success
+					),
+				{message: 'One or more email addresses are invalid'}
+			)
+			.optional(),
+		objective: z.string().refine((val) => val, {
+			message: 'Select an Option',
+		}),
+		projectId: z
+			.string()
+			.min(3, {message: 'Project ID must have at least 3 characters'})
+			.regex(/^[a-zA-Z0-9-]*$/, {
+				message: 'Only letters, numbers, and hyphens are allowed',
+			}),
+		siteInitializerKey: z.string(),
+	}),
 	trialForm: z.object({
 		accountId: z.string().optional(),
 		consoleInviteEmailAddresses: z.array(z.string().email()),

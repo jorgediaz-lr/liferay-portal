@@ -6,8 +6,8 @@
 import {HashRouter, Route, Routes} from 'react-router-dom';
 
 import {useMarketplaceContext} from '../../context/MarketplaceContext';
+import {MarketplaceCategories} from '../../enums/Categories';
 import {
-	ProductCategories,
 	ProductSpecificationKey,
 	ProductTypeVocabulary,
 	SolutionTypes,
@@ -28,37 +28,55 @@ import ContactSalesPage from './pages/App/InsuficientResources/ContactSales';
 import ContactSalesForm from './pages/App/InsuficientResources/ContactSalesForm';
 import License from './pages/App/License';
 import PaymentMethod from './pages/App/PaymentMethod';
+import OrderSummary from './pages/App/PaymentMethod/OrderSummary/OrderSummary';
 import NextSteps from './pages/NextSteps';
 import SolutionProvisioningForm from './pages/Solution';
 
 export const productTypeRoutes = {
 	[ProductTypeVocabulary.APP]: {
 		metadata: {
-			isNavigationStepVisible: (product: DeliveryProduct) =>
-				getProductPriceModel(product).isPaidApp,
+			tinyStepsDisplay: true,
 			useCart: true,
 		},
-		routes: [
-			{
-				element: AppAccountSelection,
-				index: true,
-				title: i18n.translate('account'),
-			},
-			{
-				element: License,
-				path: 'license',
-				title: i18n.translate('licenses'),
-			},
-			{
-				element: PaymentMethod,
-				path: 'payment-method',
-				title: i18n.translate('payment'),
-			},
-		],
+		routes: (product: DeliveryProduct) => {
+			const {isPaidApp} = getProductPriceModel(product);
+
+			return [
+				{
+					element: AppAccountSelection,
+					index: true,
+					title: i18n.translate('account'),
+				},
+				{
+					element: License,
+					isPaidOnly: true,
+					path: 'license',
+					title: i18n.translate('licenses'),
+				},
+				{
+					element: PaymentMethod,
+					isPaidOnly: true,
+					path: 'payment-method',
+					title: i18n.translate('payment'),
+				},
+				{
+					element: OrderSummary,
+					path: 'summary',
+					title: i18n.translate('summary'),
+				},
+			].filter((route) => {
+				if (isPaidApp) {
+					return true;
+				}
+
+				return !route.isPaidOnly;
+			});
+		},
 	},
 	[ProductTypeVocabulary.SOLUTION]: {
 		metadata: {
 			skipSingleAccountSelection: true,
+			tinyStepsDisplay: false,
 		},
 		routes: [
 			{
@@ -97,7 +115,7 @@ const ProductPurchaseRouter = () => {
 
 	const productTypes = getProductCategoriesByVocabularyName(
 		product?.categories || [],
-		ProductCategories.MARKETPLACE_PRODUCT_TYPE
+		MarketplaceCategories.MARKETPLACE_PRODUCT_TYPE
 	);
 
 	const productTypeCategory = productTypes[0] as ProductTypeVocabulary;
@@ -112,7 +130,12 @@ const ProductPurchaseRouter = () => {
 
 	const productTypeRoute = productTypeRoutes[productTypeCategory];
 
-	const {routes = []} = productTypeRoute || {};
+	const {routes: _routes = []} = productTypeRoute || {};
+
+	const routes =
+		typeof _routes === 'function'
+			? _routes(product as DeliveryProduct)
+			: _routes;
 
 	return (
 		<HashRouter>
@@ -121,7 +144,9 @@ const ProductPurchaseRouter = () => {
 					element={
 						<ProductPurchaseOutlet
 							product={product as DeliveryProduct}
-							productTypeRoute={productTypeRoute as any}
+							productTypeRoute={
+								{...productTypeRoute, routes} as any
+							}
 							solutionTypeSpecificationValue={
 								solutionTypeSpecificationValue
 							}

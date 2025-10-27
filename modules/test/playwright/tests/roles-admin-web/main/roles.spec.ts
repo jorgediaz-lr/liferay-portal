@@ -27,7 +27,7 @@ import {setupBookmark} from './utils/bookmarks';
 export const test = mergeTests(
 	dataApiHelpersTest,
 	featureFlagsTest({
-		'LPD-47858': {enabled: true},
+		'LPD-35914': {enabled: true},
 		'LPS-178052': {enabled: true},
 	}),
 	isolatedSiteTest,
@@ -117,7 +117,7 @@ test(
 		const title = getRandomString();
 
 		await rolePage.keyInput.fill(role.name);
-		await rolePage.nameInput.fill(title);
+		await rolePage.titleInput.fill(title);
 		await rolePage.saveButton.click();
 
 		await waitForAlert(page, 'Your request failed to complete', {
@@ -155,7 +155,7 @@ test(
 
 		await rolePage.descriptionInput.fill(description);
 		await rolePage.keyInput.fill(name);
-		await rolePage.nameInput.fill(title);
+		await rolePage.titleInput.fill(title);
 		await rolePage.saveButton.click();
 
 		await waitForAlert(page);
@@ -177,7 +177,7 @@ test(
 
 		await expect(rolePage.descriptionInput).toHaveValue(description);
 		await expect(rolePage.keyInput).toHaveValue(name);
-		await expect(rolePage.nameInput).toHaveValue(title);
+		await expect(rolePage.titleInput).toHaveValue(title);
 	}
 );
 
@@ -219,7 +219,7 @@ test(
 		await (await rolesPage.rolesTable.cellLink(key)).click();
 
 		await expect(rolePage.keyInput).toHaveValue(key);
-		await expect(rolePage.nameInput).toHaveValue('');
+		await expect(rolePage.titleInput).toHaveValue('');
 	}
 );
 
@@ -2172,5 +2172,87 @@ test(
 		await copyRole('Guest', 'Regular');
 		await copyRole('Organization Administrator', 'Organization');
 		await copyRole('Site Member', 'Site');
+	}
+);
+
+test(
+	'Escape role name to avoid XSS injections',
+	{tag: '@LPD-67812'},
+	async ({apiHelpers, page, rolePage, rolesPage}) => {
+		const name = '"><img src=x onerror=alert(origin)></img>';
+
+		await rolesPage.goto();
+
+		await expect(rolesPage.rolesTable.searchInput).toBeEditable();
+
+		await expect(async () => {
+			await rolesPage.rolesTable.newButton.click();
+
+			await expect(rolePage.keyInput).toBeVisible();
+		}).toPass();
+
+		await rolePage.addRole(apiHelpers, {name, title: name});
+
+		page.on('dialog', async (dialog) => {
+			if (dialog.type() === 'alert') {
+				throw new Error('XSS detected');
+			}
+		});
+
+		await rolePage.backButton.click();
+
+		await expect(rolesPage.rolesTable.cell(name)).toHaveCount(1);
+	}
+);
+
+test(
+	'Escape role name to avoid XSS injection on role selection',
+	{tag: ['@LPD-67812']},
+	async ({
+		apiHelpers,
+		editUserPage,
+		page,
+		rolePage,
+		rolesPage,
+		usersAndOrganizationsPage,
+	}) => {
+		const name = '"><img src=x onerror=alert(origin)></img>';
+
+		await rolesPage.goto();
+
+		await expect(rolesPage.rolesTable.searchInput).toBeEditable();
+
+		await expect(async () => {
+			await rolesPage.rolesTable.newButton.click();
+
+			await expect(rolePage.keyInput).toBeVisible();
+		}).toPass();
+
+		await rolePage.addRole(apiHelpers, {name, title: name});
+
+		await rolePage.backButton.click();
+
+		const user = await apiHelpers.headlessAdminUser.postUserAccount();
+
+		await usersAndOrganizationsPage.goToUsers();
+		await (
+			await usersAndOrganizationsPage.usersTableRowLink(
+				user.alternateName
+			)
+		).click();
+
+		await expect(editUserPage.rolesLink).toBeVisible();
+
+		await editUserPage.rolesLink.click();
+
+		page.on('dialog', async (dialog) => {
+			if (dialog.type() === 'alert') {
+				throw new Error('XSS detected');
+			}
+		});
+
+		await editUserPage.selectRegularRolesButton.click();
+
+		await expect(editUserPage.selectRegularRolesSearchInput).toBeEnabled();
 	}
 );

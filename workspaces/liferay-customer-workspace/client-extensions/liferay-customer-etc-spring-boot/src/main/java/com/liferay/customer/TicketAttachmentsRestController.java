@@ -7,23 +7,24 @@ package com.liferay.customer;
 
 import com.liferay.client.extension.util.spring.boot3.BaseRestController;
 import com.liferay.client.extension.util.spring.boot3.client.LiferayOAuth2AccessTokenManager;
+import com.liferay.customer.constants.JiraIssueConstants;
 import com.liferay.customer.exception.TicketAttachmentNotFoundException;
+import com.liferay.customer.model.JiraSupportIssue;
 import com.liferay.customer.model.TicketAttachment;
 import com.liferay.customer.service.GoogleCloudStorageService;
 import com.liferay.customer.service.JiraService;
 import com.liferay.customer.service.NotificationQueueEntryService;
 import com.liferay.customer.service.TicketAttachmentService;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +52,7 @@ public class TicketAttachmentsRestController extends BaseRestController {
 
 		try {
 			TicketAttachment ticketAttachment =
-				_ticketAttachmentService.fetchTicketAttachment(
+				_ticketAttachmentService.getTicketAttachment(
 					"Bearer " + jwt.getTokenValue(), ticketAttachmentId);
 
 			_ticketAttachmentService.updateTicketAttachmentState(
@@ -98,33 +99,23 @@ public class TicketAttachmentsRestController extends BaseRestController {
 			_log.info("Cleaning up JSM large file attachments");
 		}
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("(project in (");
-		sb.append(_jiraSupportProjects);
-		sb.append(")) and (status = Closed) and (status changed to (Closed) ");
-		sb.append("after -8d) and (status changed to (Closed) before -7d)");
+		sb.append(_jiraSupportFLSProject);
+		sb.append(StringPool.COMMA);
+		sb.append(_jiraSupportHCProject);
+		sb.append(")) and (status in ('");
+		sb.append(StringUtil.merge(JiraIssueConstants.STATUSES_CLOSED, "', '"));
+		sb.append("')) and (status changed to ('");
+		sb.append(StringUtil.merge(JiraIssueConstants.STATUSES_CLOSED, "', '"));
+		sb.append("') after -8d before -7d)");
 
-		int page = 1;
+		List<JiraSupportIssue> jiraSupportIssues = _jiraService.search(
+			sb.toString(), new String[] {"key"});
 
-		while (true) {
-			JSONObject jsonObject = _jiraService.search(
-				sb.toString(), page, 20, new String[] {"key"});
-
-			JSONArray jsonArray = jsonObject.getJSONArray("issues");
-
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject itemJSONObject = jsonArray.getJSONObject(i);
-
-				_deleteTicketAttachments(itemJSONObject.getString("key"));
-			}
-
-			if ((page * 20) < jsonObject.getInt("total")) {
-				page++;
-			}
-			else {
-				break;
-			}
+		for (JiraSupportIssue jiraSupportIssue : jiraSupportIssues) {
+			_deleteTicketAttachments(jiraSupportIssue.getKey());
 		}
 	}
 
@@ -198,8 +189,11 @@ public class TicketAttachmentsRestController extends BaseRestController {
 	@Autowired
 	private JiraService _jiraService;
 
-	@Value("${liferay.customer.jira.support.projects}")
-	private String _jiraSupportProjects;
+	@Value("${liferay.customer.jira.support.fls.project}")
+	private String _jiraSupportFLSProject;
+
+	@Value("${liferay.customer.jira.support.hc.project}")
+	private String _jiraSupportHCProject;
 
 	@Autowired
 	private LiferayOAuth2AccessTokenManager _liferayOAuth2AccessTokenManager;

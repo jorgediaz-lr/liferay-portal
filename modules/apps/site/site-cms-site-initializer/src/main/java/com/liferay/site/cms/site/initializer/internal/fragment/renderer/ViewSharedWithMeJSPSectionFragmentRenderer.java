@@ -6,11 +6,14 @@
 package com.liferay.site.cms.site.initializer.internal.fragment.renderer;
 
 import com.liferay.fragment.renderer.FragmentRenderer;
+import com.liferay.object.service.ObjectDefinitionService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.site.cms.site.initializer.internal.display.context.ViewSharedWithMeSectionDisplayContext;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alicia García
@@ -29,12 +32,19 @@ public class ViewSharedWithMeJSPSectionFragmentRenderer
 	protected ViewSharedWithMeSectionDisplayContext getDisplayContext(
 		HttpServletRequest httpServletRequest) {
 
-		return new ViewSharedWithMeSectionDisplayContext(httpServletRequest);
+		return new ViewSharedWithMeSectionDisplayContext(
+			httpServletRequest, _objectDefinitionService, _portal);
 	}
 
 	@Override
 	protected String getJSPPath() {
 		return "/view_shared_with_me.jsp";
 	}
+
+	@Reference
+	private ObjectDefinitionService _objectDefinitionService;
+
+	@Reference
+	private Portal _portal;
 
 }

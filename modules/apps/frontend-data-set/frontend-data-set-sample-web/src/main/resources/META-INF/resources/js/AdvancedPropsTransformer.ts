@@ -10,16 +10,19 @@ import {fetch} from 'frontend-js-web';
 
 import CustomAuthorTableCell from './CustomAuthorTableCell';
 import SampleInfoPanel from './SampleInfoPanel';
+import dummyUploader from './dummyUploader';
 
 import type {
 	ICardSchema,
 	IFileDropSettings,
 	IInternalRenderer,
+	IItemsActions,
 	IView,
 } from '@liferay/frontend-data-set-web';
 
 export default function propsTransformer({
-	additionalProps: {greeting},
+	additionalProps: {enableItemsActionsGroups, greeting},
+	itemsActions,
 	selectedItemsKey,
 	...otherProps
 }: any) {
@@ -32,6 +35,7 @@ export default function propsTransformer({
 	const fileDropSettings: IFileDropSettings = {
 		enabled: true,
 		isDropTarget: ({item}: {item: any}) => item.color !== 'Green',
+		onFileDrop: dummyUploader,
 	};
 
 	const views: Array<IView> = otherProps.views;
@@ -103,6 +107,19 @@ export default function propsTransformer({
 		return props;
 	};
 
+	const itemActionsWithStyling = itemsActions.map((action: IItemsActions) => {
+		const key = action?.data?.id as string;
+
+		if (!key || key !== 'sampleDeleteMessage') {
+			return action;
+		}
+
+		return {
+			...action,
+			className: 'text-danger',
+		};
+	});
+
 	return {
 		...otherProps,
 		customRenderers: {
@@ -110,9 +127,57 @@ export default function propsTransformer({
 		},
 		fileDropSettings,
 		infoPanelComponent: SampleInfoPanel,
+		itemsActions: enableItemsActionsGroups
+			? [
+					{
+						items: itemActionsWithStyling,
+						separator: true,
+						type: 'group',
+					},
+					{
+						items: [
+							{
+								data: {
+									id: 'emptyGroupTest',
+									permissionKey: 'nonexistentPermissionKey',
+								},
+								icon: 'hidden',
+								label: 'Empty Group Test',
+							},
+						],
+						separator: true,
+						type: 'group',
+					},
+					{
+						items: [
+							{
+								data: {
+									id: 'groupItem',
+								},
+								icon: 'separator',
+								label: 'Group Item',
+								onClick: () => {
+									alert('You clicked on an item in a group');
+								},
+							},
+							{
+								data: {
+									id: 'groupPermissionTest',
+									permissionKey: 'nonexistentPermissionKey',
+								},
+								icon: 'hidden',
+								label: 'Group Permission Test',
+							},
+						],
+						separator: true,
+						type: 'group',
+					},
+				]
+			: itemActionsWithStyling,
 		onActionDropdownItemClick({
 			action,
 			itemData,
+			items,
 			loadData,
 			openSidePanel,
 		}: any) {
@@ -123,13 +188,22 @@ export default function propsTransformer({
 				loadData();
 			}
 			else if (action.data.id === 'sampleMessage') {
-				alert(`${greeting} ${itemData.title}!`);
+				const itemsIds = items
+					.map((item: any): string => item.id)
+					.join(',');
+
+				const currentItemPos =
+					items.findIndex((item: any) => item.id === itemData.id) + 1;
+
+				alert(
+					`${greeting} ${itemData.title}! You are ${itemData.id}, the element #${currentItemPos} in [${itemsIds}]`
+				);
 			}
 		},
 		onBulkActionItemClick({
 			action,
 			loadData,
-			selectedData: {items, keyValues, selectAll},
+			selectedData: {filters, items, keyValues, searchQuery, selectAll},
 		}: any) {
 			if (action.data.id === 'sampleBulkAction') {
 				openModal({
@@ -163,7 +237,13 @@ export default function propsTransformer({
 
 			if (action.data.id === 'testBulkAction') {
 				fetch(action.href, {
-					body: JSON.stringify({items, keyValues, selectAll}),
+					body: JSON.stringify({
+						filters,
+						items,
+						keyValues,
+						searchQuery,
+						selectAll,
+					}),
 					headers: DEFAULT_FETCH_HEADERS,
 					method: action.data.method,
 				});

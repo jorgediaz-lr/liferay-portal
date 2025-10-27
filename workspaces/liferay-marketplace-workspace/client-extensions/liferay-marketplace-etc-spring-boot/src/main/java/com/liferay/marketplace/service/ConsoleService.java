@@ -31,17 +31,13 @@ import reactor.util.retry.Retry;
 @Component
 public class ConsoleService extends BaseService {
 
-	public void deleteProject(long projectId, String projectPrefix)
-		throws Exception {
-
-		String projectName = projectPrefix + "-ext" + projectId;
-
+	public void deleteProject(String projectId) throws Exception {
 		delete(
 			getAuthorization(), "",
 			UriComponentsBuilder.fromUriString(
 				_consoleAuthURL
 			).path(
-				"/projects/" + projectName
+				"/projects/" + projectId
 			).build(
 			).toUri());
 	}
@@ -162,18 +158,14 @@ public class ConsoleService extends BaseService {
 	public void setUpProject(
 			String cluster, boolean deployable, String dxpProjectUid,
 			String dxpVirtualInstanceId, String[] emailAddresses, long orderId,
-			String projectPrefix)
+			String projectId)
 		throws Exception {
-
-		String projectId = projectPrefix + "-ext" + orderId;
 
 		JSONObject jsonObject = _postProject(cluster, projectId);
 
 		for (String emailAddress : emailAddresses) {
 			_inviteProject(emailAddress, projectId);
 		}
-
-		_inviteProject(_trialAdminEmailAddress, projectId);
 
 		_linkDXPWithProject(
 			dxpProjectUid, dxpVirtualInstanceId, jsonObject.getString("id"));
@@ -320,8 +312,5 @@ public class ConsoleService extends BaseService {
 	private String _consoleAuthURL;
 
 	private long _tokenExpirationMillis;
-
-	@Value("${liferay.marketplace.trial.admin.email.address}")
-	private String _trialAdminEmailAddress;
 
 }

@@ -11,7 +11,7 @@
 ViewSpaceMembersSummarySectionDisplayContext viewSpaceMembersSummarySectionDisplayContext = (ViewSpaceMembersSummarySectionDisplayContext)request.getAttribute(ViewSpaceMembersSummarySectionDisplayContext.class.getName());
 %>
 
-<div class="cms-section">
+<div class="cms-section cms-tabs-fluid">
 	<div id="<%= CMSSiteInitializerFDSNames.SPACE_MEMBERS_SUMMARY_SECTION %>">
 		<react:component
 			module="{SpaceSummaryHeader} from site-cms-site-initializer"
@@ -23,7 +23,7 @@ ViewSpaceMembersSummarySectionDisplayContext viewSpaceMembersSummarySectionDispl
 		tabsItems="<%= viewSpaceMembersSummarySectionDisplayContext.getTabsItems() %>"
 	>
 		<clay:tabs-panel>
-			<div class="cms-fds-fluid cms-section custom-empty-state">
+			<div class="cms-fds-fluid cms-space-summary custom-empty-state">
 				<frontend-data-set:headless-display
 					apiURL='<%= viewSpaceMembersSummarySectionDisplayContext.getAPIURL("user-accounts") %>'
 					creationMenu="<%= viewSpaceMembersSummarySectionDisplayContext.getCreationMenu() %>"
@@ -41,7 +41,7 @@ ViewSpaceMembersSummarySectionDisplayContext viewSpaceMembersSummarySectionDispl
 		</clay:tabs-panel>
 
 		<clay:tabs-panel>
-			<div class="cms-fds-fluid cms-section custom-empty-state">
+			<div class="cms-fds-fluid cms-space-summary custom-empty-state">
 				<frontend-data-set:headless-display
 					apiURL='<%= viewSpaceMembersSummarySectionDisplayContext.getAPIURL("user-groups") %>'
 					creationMenu="<%= viewSpaceMembersSummarySectionDisplayContext.getCreationMenu() %>"

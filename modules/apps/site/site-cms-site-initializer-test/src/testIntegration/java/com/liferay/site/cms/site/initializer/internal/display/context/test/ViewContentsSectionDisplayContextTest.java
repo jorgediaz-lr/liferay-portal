@@ -14,8 +14,9 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.test.rule.FeatureFlag;
+import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -36,7 +37,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * @author Mikel Lorza
  */
-@FeatureFlag("LPD-17564")
+@FeatureFlags(
+	featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-32050")}
+)
 @RunWith(Arquillian.class)
 @Sync
 public class ViewContentsSectionDisplayContextTest
@@ -55,7 +58,7 @@ public class ViewContentsSectionDisplayContextTest
 			getFDSActionDropdownItems();
 
 		Assert.assertEquals(
-			fdsActionDropdownItems.toString(), 8,
+			fdsActionDropdownItems.toString(), 17,
 			fdsActionDropdownItems.size());
 
 		assertFDSActionDropdownItem(
@@ -71,31 +74,58 @@ public class ViewContentsSectionDisplayContextTest
 			fdsActionDropdownItems.get(3), "pencil", "actionLink", "edit",
 			"get", "item");
 		assertFDSActionDropdownItem(
-			fdsActionDropdownItems.get(4), "view", "viewContent", "view", "get",
+			fdsActionDropdownItems.get(4), "share", "share", "share", "get",
 			"item");
 		assertFDSActionDropdownItem(
-			fdsActionDropdownItems.get(5), "date-time", "version-history",
+			fdsActionDropdownItems.get(5), "automatic-translate", "translate",
+			"translate", "get", "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(6), "time", "expire", "expire", "post",
+			"item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(7), "view", "view-content", "view", null,
+			"item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(8), "view", "view-file", "view", null,
+			"item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(9), "date-time", "version-history",
 			"view-history", "get", "item");
 		assertFDSActionDropdownItem(
-			fdsActionDropdownItems.get(6), "password-policies", "permissions",
+			fdsActionDropdownItems.get(10), "upload", "export-for-translation",
+			"export-for-translation", null, "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(11), "download", "import-translation",
+			"import-translation", null, "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(12), "password-policies", "permissions",
 			"permissions", "get", "item");
 		assertFDSActionDropdownItem(
-			fdsActionDropdownItems.get(7), "trash", "delete", "delete",
-			"delete", "item");
+			fdsActionDropdownItems.get(13), "password-policies",
+			"default-permissions", "default-permissions", null, "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(14), "password-policies",
+			"edit-and-propagate-default-permissions",
+			"edit-and-propagate-default-permissions", null, "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(15), "password-policies",
+			"reset-to-default-permissions", "reset-to-default-permissions",
+			null, "item");
+		assertFDSActionDropdownItem(
+			fdsActionDropdownItems.get(16), "trash", "delete", "delete", null,
+			"item");
 	}
 
 	@Override
 	protected Map<String, String> getExpectedCreationMenuItems()
 		throws PortalException {
 
-		return HashMapBuilder.put(
-			"Basic Web Content", getRedirect("L_BASIC_WEB_CONTENT")
-		).put(
-			"Blog", getRedirect("L_BLOG")
-		).put(
+		return LinkedHashMapBuilder.put(
 			"folder", StringPool.BLANK
 		).put(
-			"Knowledge Base", getRedirect("L_KNOWLEDGE_BASE")
+			"basic-content", getRedirect("L_CMS_BASIC_WEB_CONTENT")
+		).put(
+			"blog", getRedirect("L_CMS_BLOG")
 		).build();
 	}
 

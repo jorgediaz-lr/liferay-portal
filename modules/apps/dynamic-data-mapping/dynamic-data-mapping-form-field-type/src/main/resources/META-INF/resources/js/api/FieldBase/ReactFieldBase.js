@@ -21,7 +21,7 @@ import {FieldFeedback} from 'frontend-js-components-web';
 import {sub} from 'frontend-js-web';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
-import {getFilteredPage} from './translation';
+import {getFilteredPage, getNonLocalizableFieldMessage} from './translation';
 
 import './FieldBase.scss';
 
@@ -261,14 +261,9 @@ export default function FieldBase({
 		type,
 	]);
 
-	const nonLocalizableFieldMessage =
-		isLocalizationSupported === undefined
-			? Liferay.Language.get('this-field-cannot-be-localized')
-			: isLocalizationSupported
-				? Liferay.Language.get('translation-is-disabled-for-this-field')
-				: Liferay.Language.get(
-						'this-field-does-not-support-translations'
-					);
+	const nonLocalizableFieldMessage = getNonLocalizableFieldMessage(
+		isLocalizationSupported
+	);
 
 	const renderLabel =
 		(label && showLabel) || hideField || repeatable || required || tooltip;
@@ -608,7 +603,7 @@ export default function FieldBase({
 							<label
 								{...accessiblePropsFields}
 								className={classNames('lfr-ddm-legend', {
-									'text-muted': showDisabledFieldIcon,
+									'text-secondary': showDisabledFieldIcon,
 								})}
 								id={fieldLabelId}
 							>
@@ -640,7 +635,7 @@ export default function FieldBase({
 									'ddm-empty': !showLabel && !required,
 									'ddm-label': showLabel || required,
 									'ddm-repeatable': repeatable,
-									'text-muted': showDisabledFieldIcon,
+									'text-secondary': showDisabledFieldIcon,
 								})}
 								{...((shouldRenderAsGroup ||
 									type === 'select') && {

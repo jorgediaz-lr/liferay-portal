@@ -41,7 +41,9 @@ public class UserAccountDTOConverter
 	public UserAccount toDTO(DTOConverterContext dtoConverterContext)
 		throws Exception {
 
-		User user = _userLocalService.getUser(
+		// Use the local service. See LPD-62456.
+
+		User user = _userLocalService.getUserById(
 			(Long)dtoConverterContext.getId());
 
 		return new UserAccount() {
@@ -67,6 +69,9 @@ public class UserAccountDTOConverter
 					() -> NestedFieldsSupplier.supply(
 						"roles",
 						nestedFieldNames -> {
+
+							// Use the local service. See LPD-62456.
+
 							long assetLibraryId = GetterUtil.getLong(
 								dtoConverterContext.getAttribute(
 									"assetLibraryId"));

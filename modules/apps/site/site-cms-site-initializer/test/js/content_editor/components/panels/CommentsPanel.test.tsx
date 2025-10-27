@@ -3,29 +3,17 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 // eslint-disable-next-line
 import {checkAccessibility} from '@liferay/layout-js-components-web/test/__lib__/index';
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {fetch} from 'frontend-js-web';
 import React from 'react';
 
 import CommentsPanel from '../../../../../src/main/resources/META-INF/resources/js/content_editor/components/panels/CommentsPanel';
-import {Comment} from '../../../../../src/main/resources/META-INF/resources/js/content_editor/components/services/CommentService';
-
-jest.mock('frontend-js-web', () => {
-	const actual = jest.requireActual('frontend-js-web');
-
-	return {
-		...actual,
-		fetch: jest.fn().mockResolvedValue({
-			json: async () => ({}),
-			ok: true,
-		}),
-	};
-});
+import {Comment} from '../../../../../src/main/resources/META-INF/resources/js/content_editor/services/CommentService';
+import {mockFetch} from '../../../__mocks__/frontend-js-web';
 
 jest.mock('@ckeditor/ckeditor5-react', () => ({
 	CKEditor: ({onReady}: any) => {
@@ -82,6 +70,7 @@ const renderComponent = () => {
 			deleteCommentURL="deleteCommentURL"
 			editCommentURL="editCommentURL"
 			editorConfig={{}}
+			getCommentsURL="getCommentsURL"
 		/>
 	);
 };
@@ -110,8 +99,10 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getAllByText('delete')[1]);
 
 		await waitFor(() => {
-			expect(fetch).toBeCalledWith('deleteCommentURL', {
-				body: expect.any(FormData),
+			expect(mockFetch).toBeCalledWith('deleteCommentURL', {
+				body: {
+					commentId: '2',
+				},
 				method: 'POST',
 			});
 
@@ -135,8 +126,10 @@ describe('CommentsPanel', () => {
 		await userEvent.click(screen.getAllByText('delete')[0]);
 
 		await waitFor(() => {
-			expect(fetch).toBeCalledWith('deleteCommentURL', {
-				body: expect.any(FormData),
+			expect(mockFetch).toBeCalledWith('deleteCommentURL', {
+				body: {
+					commentId: '1',
+				},
 				method: 'POST',
 			});
 
@@ -154,15 +147,17 @@ describe('CommentsPanel', () => {
 	it('shows a toast with the error when the request to delete a comment fails', async () => {
 		const error = 'Unexpected error deleting a comment';
 
-		(fetch as jest.Mock).mockRejectedValueOnce(new Error(error));
+		(mockFetch as jest.Mock).mockRejectedValueOnce(new Error(error));
 
 		renderComponent();
 
 		await userEvent.click(screen.getAllByText('delete')[0]);
 
 		await waitFor(() => {
-			expect(fetch).toBeCalledWith('deleteCommentURL', {
-				body: expect.any(FormData),
+			expect(mockFetch).toBeCalledWith('deleteCommentURL', {
+				body: {
+					commentId: '1',
+				},
 				method: 'POST',
 			});
 
@@ -179,15 +174,10 @@ describe('CommentsPanel', () => {
 
 		await userEvent.click(thumbUpButton);
 
-		expect(fetch).toBeCalledWith('/c/portal/rate_entry', {
-			body: expect.any(FormData),
+		expect(mockFetch).toBeCalledWith('/c/portal/rate_entry', {
+			body: expect.objectContaining({score: 1}),
 			method: 'POST',
 		});
-
-		const formData = (fetch as jest.Mock).mock.calls[0][1].body;
-		const formDataObject = Object.fromEntries(formData.entries());
-
-		expect(formDataObject).toEqual(expect.objectContaining({score: '1'}));
 	});
 
 	it('Votes when the thumb down button is pressed', async () => {
@@ -197,14 +187,9 @@ describe('CommentsPanel', () => {
 
 		await userEvent.click(thumbDownButton);
 
-		expect(fetch).toBeCalledWith('/c/portal/rate_entry', {
-			body: expect.any(FormData),
+		expect(mockFetch).toBeCalledWith('/c/portal/rate_entry', {
+			body: expect.objectContaining({score: 0}),
 			method: 'POST',
 		});
-
-		const formData = (fetch as jest.Mock).mock.calls[0][1].body;
-		const formDataObject = Object.fromEntries(formData.entries());
-
-		expect(formDataObject).toEqual(expect.objectContaining({score: '0'}));
 	});
 });

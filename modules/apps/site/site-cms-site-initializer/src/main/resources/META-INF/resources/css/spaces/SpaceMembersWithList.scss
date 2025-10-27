@@ -1,5 +1,7 @@
 .space-members-with-list {
-	padding: 24px;
+	.permission-select-trigger-text {
+		max-width: 300px !important;
+	}
 
 	.members-list {
 		max-height: 200px;
@@ -10,8 +12,6 @@
 		}
 
 		li {
-			list-style: none;
-
 			&:not(:last-child) {
 				margin-bottom: 8px;
 			}

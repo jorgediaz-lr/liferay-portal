@@ -35,21 +35,25 @@ function DetailViewDefinitionCol({
 }
 
 interface ErrorDetail {
+	classExternalReferenceCode: string;
+	classPK: number;
 	creator: {
 		name: string;
 	};
 	dateCreated: string;
 	dateModified: string;
-	entityExternalReferenceCode: string;
-	entityId: number;
-	entityScope: string;
-	entitySite: string;
-	entityType: string;
-	errorId: number;
 	errorMessage: string;
-	errorStackTrace: string;
-	errorType: string;
-	externalReferenceCode: string;
+	errorStacktrace: string;
+	id: number;
+	modelName: string;
+	scope: {
+		label: string;
+		type: string;
+	};
+	type: {
+		code: number;
+		label: string;
+	};
 }
 
 export function ViewImportErrorDetail({
@@ -69,7 +73,8 @@ export function ViewImportErrorDetail({
 			response.json().then((data: ErrorDetail) => {
 				setErrorDetail({
 					...data,
-					dateCreated: formatDate(data.dateCreated),
+					dateCreated:
+						data.dateCreated && formatDate(data.dateCreated),
 				});
 				setIsLoading(false);
 			});
@@ -104,30 +109,29 @@ export function ViewImportErrorDetail({
 	}
 
 	const {
+		classExternalReferenceCode,
+		classPK,
 		creator,
 		dateCreated,
-		entityExternalReferenceCode,
-		entityId,
-		entityScope,
-		entitySite,
-		entityType,
-		errorId,
 		errorMessage,
-		errorStackTrace,
-		errorType,
+		errorStacktrace,
+		id,
+		modelName,
+		scope,
+		type,
 	} = errorDetail;
 
 	return (
 		<ClayLayout.ContainerFluid>
 			{isLoading ? (
 				<div className="align-items-center d-flex justify-content-center mt-4">
-					<ClayLoadingIndicator title="Loaging import error details..." />
+					<ClayLoadingIndicator />
 				</div>
 			) : (
 				<>
 					<ClayLayout.Sheet className="mt-4">
 						<ClayLayout.SheetHeader>
-							<h2 className="sheet-title">{entityType}</h2>
+							<h2 className="sheet-title">{modelName}</h2>
 
 							<div className="sheet-text">
 								{`${dateCreated} · ${creator.name}`}
@@ -141,19 +145,19 @@ export function ViewImportErrorDetail({
 
 							<ClayLayout.Row>
 								<DetailViewDefinitionCol
-									body={errorId.toString()}
+									body={id}
 									md={4}
 									title={Liferay.Language.get('error-id')}
 								/>
 
 								<DetailViewDefinitionCol
-									body={errorType}
+									body={type.label}
 									md={4}
 									title={Liferay.Language.get('error-type')}
 								/>
 
 								<DetailViewDefinitionCol
-									body={entityType}
+									body={modelName}
 									md={4}
 									title={Liferay.Language.get('entity-type')}
 								/>
@@ -183,7 +187,7 @@ export function ViewImportErrorDetail({
 											onClick={() =>
 												openStackTraceModal({
 													stackTraceMessage:
-														errorStackTrace,
+														errorStacktrace,
 												})
 											}
 										>
@@ -203,13 +207,13 @@ export function ViewImportErrorDetail({
 
 							<ClayLayout.Row>
 								<DetailViewDefinitionCol
-									body={entityId.toString()}
+									body={classPK}
 									md={6}
 									title={Liferay.Language.get('entity-id')}
 								/>
 
 								<DetailViewDefinitionCol
-									body={entityExternalReferenceCode}
+									body={classExternalReferenceCode}
 									md={6}
 									title={Liferay.Language.get(
 										'external-reference-code'
@@ -219,27 +223,26 @@ export function ViewImportErrorDetail({
 
 							<ClayLayout.Row>
 								<DetailViewDefinitionCol
-									body={entityScope}
+									body={Liferay.Language.get(scope.type)}
 									md={6}
 									title={Liferay.Language.get('scope')}
 								/>
 
 								<DetailViewDefinitionCol
-									body={entitySite}
+									body={scope.label}
 									md={6}
 									title={Liferay.Language.get('site')}
 								/>
 							</ClayLayout.Row>
 						</ClayLayout.SheetSection>
 					</ClayLayout.Sheet>
+					<ClayLayout.SheetFooter>
+						<ClayLink button displayType="secondary" href={backURL}>
+							{Liferay.Language.get('back')}
+						</ClayLink>
+					</ClayLayout.SheetFooter>
 				</>
 			)}
-
-			<ClayLayout.SheetFooter>
-				<ClayLink button displayType="secondary" href={backURL}>
-					{Liferay.Language.get('back')}
-				</ClayLink>
-			</ClayLayout.SheetFooter>
 		</ClayLayout.ContainerFluid>
 	);
 }
