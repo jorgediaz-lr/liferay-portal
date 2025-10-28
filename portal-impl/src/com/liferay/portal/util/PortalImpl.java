@@ -1145,11 +1145,6 @@ public class PortalImpl implements Portal {
 		String actualURL = null;
 
 		if (friendlyURL != null) {
-			HttpServletRequest httpServletRequest =
-				(HttpServletRequest)requestContext.get("request");
-
-			long companyId = PortalInstances.getCompanyId(httpServletRequest);
-
 			for (String urlSeparator :
 					FriendlyURLResolverRegistryUtil.getURLSeparators()) {
 
@@ -1163,8 +1158,9 @@ public class PortalImpl implements Portal {
 							urlSeparator);
 
 					actualURL = friendlyURLResolver.getActualURL(
-						companyId, groupId, privateLayout, mainPath,
-						friendlyURL, params, requestContext);
+						CompanyThreadLocal.getCompanyId(), groupId,
+						privateLayout, mainPath, friendlyURL, params,
+						requestContext);
 
 					break;
 				}
@@ -2713,11 +2709,6 @@ public class PortalImpl implements Portal {
 			layoutFriendlyURLSeparatorComposite = null;
 
 		if (friendlyURL != null) {
-			HttpServletRequest httpServletRequest =
-				(HttpServletRequest)requestContext.get("request");
-
-			long companyId = PortalInstances.getCompanyId(httpServletRequest);
-
 			for (String urlSeparator :
 					FriendlyURLResolverRegistryUtil.getURLSeparators()) {
 
@@ -2733,8 +2724,9 @@ public class PortalImpl implements Portal {
 					layoutFriendlyURLSeparatorComposite =
 						friendlyURLResolver.
 							getLayoutFriendlyURLSeparatorComposite(
-								companyId, groupId, privateLayout, friendlyURL,
-								params, requestContext);
+								CompanyThreadLocal.getCompanyId(), groupId,
+								privateLayout, friendlyURL, params,
+								requestContext);
 
 					break;
 				}

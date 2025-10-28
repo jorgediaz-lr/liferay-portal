@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -447,7 +448,7 @@ public class MainServlet extends HttpServlet {
 			_log.debug("Get company ID");
 		}
 
-		long companyId = PortalInstances.getCompanyId(httpServletRequest);
+		long companyId = CompanyThreadLocal.getCompanyId();
 
 		if (_processCompanyInactiveRequest(
 				httpServletRequest, httpServletResponse, companyId)) {

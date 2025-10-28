@@ -8,6 +8,7 @@ package com.liferay.portal.xmlrpc;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -18,7 +19,6 @@ import com.liferay.portal.kernel.xmlrpc.Method;
 import com.liferay.portal.kernel.xmlrpc.Response;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcConstants;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcException;
-import com.liferay.portal.util.PortalInstances;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -53,8 +53,6 @@ public class XmlRpcServlet extends HttpServlet {
 		Response xmlRpcResponse = null;
 
 		try {
-			long companyId = PortalInstances.getCompanyId(httpServletRequest);
-
 			String xml = StringUtil.read(httpServletRequest.getInputStream());
 
 			Tuple methodTuple = XmlRpcUtil.parseMethod(xml);
@@ -63,7 +61,8 @@ public class XmlRpcServlet extends HttpServlet {
 			Object[] args = (Object[])methodTuple.getObject(1);
 
 			xmlRpcResponse = invokeMethod(
-				companyId, getToken(httpServletRequest), methodName, args);
+				CompanyThreadLocal.getCompanyId(), getToken(httpServletRequest),
+				methodName, args);
 		}
 		catch (IOException ioException) {
 			xmlRpcResponse = XmlRpcUtil.createFault(

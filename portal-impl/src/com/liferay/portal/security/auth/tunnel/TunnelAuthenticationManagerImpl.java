@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.AuthException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.RemoteAuthException;
 import com.liferay.portal.kernel.security.auth.http.HttpAuthorizationHeader;
 import com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManager;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.http.HttpAuthManagerUtil;
-import com.liferay.portal.util.PortalInstances;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -104,7 +104,7 @@ public class TunnelAuthenticationManagerImpl
 		User user = UserLocalServiceUtil.fetchUser(GetterUtil.getLong(login));
 
 		if (user == null) {
-			long companyId = PortalInstances.getCompanyId(httpServletRequest);
+			long companyId = CompanyThreadLocal.getCompanyId();
 
 			user = UserLocalServiceUtil.fetchUserByEmailAddress(
 				companyId, login);

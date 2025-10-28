@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.util.PortalInstances;
 import com.liferay.portlet.AsyncPortletServletRequest;
 
 import jakarta.servlet.RequestDispatcher;
@@ -169,8 +169,7 @@ public class I18nServlet extends HttpServlet {
 					friendlyURLIndices[0], friendlyURLIndices[1]);
 
 				siteGroup = GroupLocalServiceUtil.fetchFriendlyURLGroup(
-					PortalInstances.getCompanyId(httpServletRequest),
-					friendlyURL);
+					CompanyThreadLocal.getCompanyId(), friendlyURL);
 
 				if (siteGroup == null) {
 					httpServletRequest.setAttribute(
