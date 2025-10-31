@@ -37,7 +37,7 @@ public class IndexStatusManagerImpl implements IndexStatusManager {
 	public boolean isIndexReadOnly() {
 		if (DBUpgrader.isUpgradeClient() ||
 			IndexStatusManagerThreadLocal.isIndexReadOnly() || _indexReadOnly ||
-			StartupHelperUtil.isUpgrading()) {
+			(StartupHelperUtil.isUpgrading() && !StartupHelperUtil.isDBNew())) {
 
 			return true;
 		}
