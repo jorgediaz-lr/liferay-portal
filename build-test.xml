@@ -859,7 +859,7 @@ jdbc.default.password=${database.password}
 #
 
 jdbc.default.connectionTimeout=600000
-jdbc.default.maximumPoolSize=30
+jdbc.default.maximumPoolSize=100
 jdbc.default.minimumIdle=0]]></echo>
 
 			<if>
@@ -12595,10 +12595,10 @@ ${update.properties}</echo>
 				</or>
 			</and>
 			<then>
-				<property name="database.max.pool.size" value="50" />
+				<property name="database.max.pool.size" value="100" />
 			</then>
 			<else>
-				<property name="database.max.pool.size" value="30" />
+				<property name="database.max.pool.size" value="100" />
 			</else>
 		</if>
 
