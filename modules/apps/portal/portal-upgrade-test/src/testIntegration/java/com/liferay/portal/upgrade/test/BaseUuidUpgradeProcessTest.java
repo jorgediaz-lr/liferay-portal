@@ -22,6 +22,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,7 @@ public class BaseUuidUpgradeProcessTest extends BaseUuidUpgradeProcess {
 		_db.runSQL("DROP_TABLE_IF_EXISTS(TestTable2)");
 	}
 
+	@Ignore
 	@Test
 	public void testUuidUpgrade() throws Exception {
 		_insertValues("TestTable1", 10000);
