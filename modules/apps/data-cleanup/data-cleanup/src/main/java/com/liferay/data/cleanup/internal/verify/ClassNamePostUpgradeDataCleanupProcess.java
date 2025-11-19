@@ -162,8 +162,8 @@ public class ClassNamePostUpgradeDataCleanupProcess
 							" has been deleted because it is not in use");
 				}
 			}
-			else if (_log.isInfoEnabled()) {
-				_log.info(
+			else if (_log.isWarnEnabled()) {
+				_log.warn(
 					StringBundler.concat(
 						"Class name ", value,
 						" has not been found but is referenced in the next ",
