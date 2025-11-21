@@ -399,7 +399,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				ObjectRelatedModelsPredicateProvider.class,
 				new ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl(
-					objectDefinition, _objectFieldLocalService),
+					objectDefinition, _objectDefinitionLocalService,
+					_objectFieldLocalService),
 				null),
 			_bundleContext.registerService(
 				PersistedModelLocalService.class, _objectEntryLocalService,

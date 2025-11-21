@@ -14,6 +14,7 @@ import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.petra.sql.dsl.DynamicObjectRelationshipMappingTable;
+import com.liferay.object.petra.sql.dsl.DynamicObjectRelationshipMappingTableFactory;
 import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -233,10 +234,6 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 			_objectRelationshipLocalService.getObjectRelationship(
 				objectRelationshipId);
 
-		ObjectDefinition objectDefinition1 =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectRelationship.getObjectDefinitionId1());
-
 		ObjectDefinition objectDefinition2 =
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
@@ -251,10 +248,8 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 
 		DynamicObjectRelationshipMappingTable
 			dynamicObjectRelationshipMappingTable =
-				new DynamicObjectRelationshipMappingTable(
-					objectDefinition1.getPKObjectFieldDBColumnName(),
-					objectDefinition2.getPKObjectFieldDBColumnName(),
-					objectRelationship.getDBTableName());
+				DynamicObjectRelationshipMappingTableFactory.create(
+					_objectDefinitionLocalService, objectRelationship);
 
 		Column<DynamicObjectRelationshipMappingTable, Long> primaryKeyColumn1 =
 			dynamicObjectRelationshipMappingTable.getPrimaryKeyColumn1();
@@ -292,6 +287,10 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 			).and(
 				() -> {
 					Column<?, Long> groupIdColumn = _table.getColumn("groupId");
+
+					ObjectDefinition objectDefinition1 =
+						_objectDefinitionLocalService.getObjectDefinition(
+							objectRelationship.getObjectDefinitionId1());
 
 					if ((groupIdColumn == null) ||
 						Objects.equals(
@@ -356,10 +355,8 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 
 		DynamicObjectRelationshipMappingTable
 			dynamicObjectRelationshipMappingTable =
-				new DynamicObjectRelationshipMappingTable(
-					objectDefinition1.getPKObjectFieldDBColumnName(),
-					objectDefinition2.getPKObjectFieldDBColumnName(),
-					objectRelationship.getDBTableName());
+				DynamicObjectRelationshipMappingTableFactory.create(
+					_objectDefinitionLocalService, objectRelationship);
 
 		return fromStep.from(
 			_table
