@@ -195,8 +195,8 @@ public class ObjectRelationshipLocalServiceImpl
 			DynamicObjectRelationshipMappingTable
 				dynamicObjectRelationshipMappingTable =
 					DynamicObjectRelationshipMappingTableFactory.create(
-						_objectDefinitionLocalService, objectRelationship,
-						objectRelationship.isReverse());
+						_objectDefinitionLocalServiceSnapshot.get(),
+						objectRelationship, objectRelationship.isReverse());
 
 			if (_hasManyToManyObjectRelationshipMappingTableValues(
 					dynamicObjectRelationshipMappingTable, primaryKey1,
@@ -311,7 +311,8 @@ public class ObjectRelationshipLocalServiceImpl
 		DynamicObjectRelationshipMappingTable
 			dynamicObjectRelationshipMappingTable =
 				DynamicObjectRelationshipMappingTableFactory.create(
-					_objectDefinitionLocalService, objectRelationship);
+					_objectDefinitionLocalServiceSnapshot.get(),
+					objectRelationship);
 
 		runSQL(dynamicObjectRelationshipMappingTable.getCreateTableSQL());
 
@@ -2153,9 +2154,6 @@ public class ObjectRelationshipLocalServiceImpl
 
 	@Reference
 	private ObjectActionPersistence _objectActionPersistence;
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;

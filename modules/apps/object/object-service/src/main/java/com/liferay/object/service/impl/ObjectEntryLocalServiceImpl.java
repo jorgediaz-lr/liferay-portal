@@ -3555,10 +3555,13 @@ public class ObjectEntryLocalServiceImpl
 				objectRelationship.getType(),
 				ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
+			ObjectDefinitionLocalService objectDefinitionLocalService =
+				_objectDefinitionLocalServiceSnapshot.get();
+
 			DynamicObjectRelationshipMappingTable
 				dynamicObjectRelationshipMappingTable =
 					DynamicObjectRelationshipMappingTableFactory.create(
-						_objectDefinitionLocalService, objectRelationship);
+						objectDefinitionLocalService, objectRelationship);
 
 			joinStep = joinStep.innerJoinON(
 				dynamicObjectRelationshipMappingTable,
@@ -3999,10 +4002,13 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition2 =
 			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId2);
 
+		ObjectDefinitionLocalService objectDefinitionLocalService =
+			_objectDefinitionLocalServiceSnapshot.get();
+
 		DynamicObjectRelationshipMappingTable
 			dynamicObjectRelationshipMappingTable =
 				DynamicObjectRelationshipMappingTableFactory.create(
-					_objectDefinitionLocalService, objectRelationship, reverse);
+					objectDefinitionLocalService, objectRelationship, reverse);
 
 		Column<DynamicObjectRelationshipMappingTable, Long> primaryKeyColumn1 =
 			dynamicObjectRelationshipMappingTable.getPrimaryKeyColumn1();
@@ -7553,6 +7559,10 @@ public class ObjectEntryLocalServiceImpl
 	private static final Snapshot<ObjectActionEngine>
 		_objectActionEngineSnapshot = new Snapshot<>(
 			ObjectEntryLocalServiceImpl.class, ObjectActionEngine.class, null);
+	private static final Snapshot<ObjectDefinitionLocalService>
+		_objectDefinitionLocalServiceSnapshot = new Snapshot<>(
+			ObjectEntryLocalServiceImpl.class,
+			ObjectDefinitionLocalService.class, null, true);
 	private static final Snapshot<ObjectRelationshipLocalService>
 		_objectRelationshipLocalServiceSnapshot = new Snapshot<>(
 			ObjectEntryLocalServiceImpl.class,
@@ -7644,9 +7654,6 @@ public class ObjectEntryLocalServiceImpl
 	private Localization _localization;
 
 	private volatile ObjectConfiguration _objectConfiguration;
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;
