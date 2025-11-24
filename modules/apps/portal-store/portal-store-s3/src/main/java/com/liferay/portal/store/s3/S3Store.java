@@ -22,6 +22,8 @@ import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -47,6 +49,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 
@@ -106,6 +110,10 @@ public class S3Store implements Store {
 		}
 	}
 
+	public void deleteCompany(long companyId) {
+		deleteObjects(String.valueOf(companyId) + CharPool.SLASH);
+	}
+
 	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
@@ -137,6 +145,37 @@ public class S3Store implements Store {
 
 	public String getBucketName() {
 		return _bucketName;
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+		List<Long> companyIds = new ArrayList<>();
+
+		ListObjectsV2Request request = new ListObjectsV2Request(
+		).withBucketName(
+			getBucketName()
+		).withDelimiter(
+			"/"
+		);
+
+		while (true) {
+			ListObjectsV2Result result = _amazonS3.listObjectsV2(request);
+
+			for (String commonPrefix : result.getCommonPrefixes()) {
+				String companyIdString = StringUtil.removeSubstring(
+					commonPrefix, "/");
+
+				companyIds.add(GetterUtil.getLong(companyIdString));
+			}
+
+			if (!result.isTruncated()) {
+				break;
+			}
+
+			request.setContinuationToken(result.getNextContinuationToken());
+		}
+
+		return companyIds;
 	}
 
 	@Override
