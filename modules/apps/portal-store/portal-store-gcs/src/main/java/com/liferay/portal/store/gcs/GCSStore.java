@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -55,9 +56,11 @@ import java.time.temporal.TemporalAmount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.osgi.framework.BundleContext;
@@ -109,49 +112,17 @@ public class GCSStore implements Store {
 		}
 	}
 
+	public void deleteCompany(long companyId) {
+		deleteObjects(String.valueOf(companyId) + CharPool.SLASH);
+	}
+
 	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
 		String path = _getDirectoryKey(companyId, repositoryId, dirName);
 
-		try {
-			Page<Blob> blobPage = _gcsStore.list(
-				_gcsStoreConfiguration.bucketName(),
-				Storage.BlobListOption.pageSize(_PAGE_SIZE),
-				Storage.BlobListOption.prefix(path));
-
-			Iterable<Blob> blobs = blobPage.iterateAll();
-
-			List<StorageBatchResult<Boolean>> results = new ArrayList<>();
-
-			StorageBatch storageBatch = _gcsStore.batch();
-
-			try {
-				blobs.forEach(
-					blob -> results.add(_deleteBlob(blob, storageBatch)));
-			}
-			finally {
-				if (!results.isEmpty()) {
-					storageBatch.submit();
-
-					for (StorageBatchResult<Boolean> result : results) {
-						if ((result == null) || !result.get()) {
-							_log.error(
-								StringBundler.concat(
-									"Error deleting objects in bucket ",
-									_gcsStoreConfiguration.bucketName(), " at ",
-									path));
-
-							break;
-						}
-					}
-				}
-			}
-		}
-		catch (StorageException storageException) {
-			_log.error("Unable to delete " + path, storageException);
-		}
+		deleteObjects(path);
 	}
 
 	@Override
@@ -164,6 +135,34 @@ public class GCSStore implements Store {
 				_gcsStoreConfiguration.bucketName(),
 				_getHeadVersionLabel(
 					companyId, repositoryId, fileName, versionLabel)));
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+		Set<Long> companyIds = new HashSet<>();
+
+		Page<Blob> blobPage = _gcsStore.list(
+			_gcsStoreConfiguration.bucketName(),
+
+			// Optional: Use fields to fetch only the name, which is more
+			// efficient
+
+			Storage.BlobListOption.fields(Storage.BlobField.NAME)
+		);
+
+		for (Blob blob : blobPage.iterateAll()) {
+			String name = blob.getName();
+
+			int index = name.indexOf(CharPool.SLASH);
+
+			if (index != -1) {
+				String companyIdString = name.substring(0, index);
+
+				companyIds.add(GetterUtil.getLong(companyIdString));
+			}
+		}
+
+		return new ArrayList<>(companyIds);
 	}
 
 	@Override
@@ -271,6 +270,46 @@ public class GCSStore implements Store {
 	@Deactivate
 	protected void deactivate() {
 		_serviceRegistration.unregister();
+	}
+
+	protected void deleteObjects(String path) {
+		try {
+			Page<Blob> blobPage = _gcsStore.list(
+				_gcsStoreConfiguration.bucketName(),
+				Storage.BlobListOption.pageSize(_PAGE_SIZE),
+				Storage.BlobListOption.prefix(path));
+
+			Iterable<Blob> blobs = blobPage.iterateAll();
+
+			List<StorageBatchResult<Boolean>> results = new ArrayList<>();
+
+			StorageBatch storageBatch = _gcsStore.batch();
+
+			try {
+				blobs.forEach(
+					blob -> results.add(_deleteBlob(blob, storageBatch)));
+			}
+			finally {
+				if (!results.isEmpty()) {
+					storageBatch.submit();
+
+					for (StorageBatchResult<Boolean> result : results) {
+						if ((result == null) || !result.get()) {
+							_log.error(
+								StringBundler.concat(
+									"Error deleting objects in bucket ",
+									_gcsStoreConfiguration.bucketName(), " at ",
+									path));
+
+							break;
+						}
+					}
+				}
+			}
+		}
+		catch (StorageException storageException) {
+			_log.error("Unable to delete " + path, storageException);
+		}
 	}
 
 	@Modified
