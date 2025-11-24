@@ -9,6 +9,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.io.InputStream;
 
+import java.util.List;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -39,6 +41,8 @@ public interface Store {
 			String versionLabel, InputStream inputStream)
 		throws PortalException;
 
+	public void deleteCompany(long companyId);
+
 	/**
 	 * Deletes a directory.
 	 *
@@ -62,6 +66,8 @@ public interface Store {
 	public void deleteFile(
 		long companyId, long repositoryId, String fileName,
 		String versionLabel);
+
+	public List<Long> getCompanyIds();
 
 	/**
 	 * Returns the file as an {@link InputStream} object.
