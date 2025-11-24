@@ -11,7 +11,9 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 
 import java.io.InputStream;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -47,6 +49,13 @@ public class StoreAreaAwareStoreWrapper implements Store {
 			store.addFile(
 				companyId, repositoryId, fileName, versionLabel, inputStream);
 		}
+	}
+
+	@Override
+	public void deleteCompany(long companyId) {
+
+		// TODO
+
 	}
 
 	@Override
@@ -103,6 +112,14 @@ public class StoreAreaAwareStoreWrapper implements Store {
 		else {
 			store.deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+
+		// TODO
+
+		return new ArrayList<>();
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import com.liferay.petra.string.StringPool;
 
 import java.io.InputStream;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +44,13 @@ public class DBStore implements Store {
 	}
 
 	@Override
+	public void deleteCompany(long companyId) {
+
+		// TODO
+
+	}
+
+	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
@@ -57,6 +65,14 @@ public class DBStore implements Store {
 
 		_dlContentLocalService.deleteContent(
 			companyId, repositoryId, fileName, versionLabel);
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+
+		// TODO
+
+		return new ArrayList<>();
 	}
 
 	@Override

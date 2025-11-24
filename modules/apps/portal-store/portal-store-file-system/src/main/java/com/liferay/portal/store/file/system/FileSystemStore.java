@@ -88,6 +88,13 @@ public class FileSystemStore implements Store {
 	}
 
 	@Override
+	public void deleteCompany(long companyId) {
+
+		// TODO
+
+	}
+
+	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
@@ -133,6 +140,14 @@ public class FileSystemStore implements Store {
 		fileNameVersionFile.delete();
 
 		_deleteEmptyAncestors(parentFile);
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+
+		// TODO
+
+		return new ArrayList<>();
 	}
 
 	@Override

@@ -20,11 +20,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.InputStream;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -91,6 +93,18 @@ public class CTStore implements Store {
 
 		_ctsContentLocalService.deleteCTSContentsByDirectory(
 			companyId, repositoryId, dirName, _storeType);
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+		// TODO
+
+		return new ArrayList<>();
+	}
+
+	@Override
+	public void deleteCompany(long companyId) {
+		// TODO
 	}
 
 	@Override
