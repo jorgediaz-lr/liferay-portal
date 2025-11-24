@@ -11,6 +11,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.io.InputStream;
 
+import java.util.List;
+
 /**
  * @author Adolfo Pérez
  */
@@ -31,6 +33,11 @@ public class LenientStore implements Store {
 	}
 
 	@Override
+	public void deleteCompany(long companyId) {
+		_store.deleteCompany(companyId);
+	}
+
+	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
@@ -43,6 +50,11 @@ public class LenientStore implements Store {
 		String versionLabel) {
 
 		_store.deleteFile(companyId, repositoryId, fileName, versionLabel);
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+		return _store.getCompanyIds();
 	}
 
 	@Override
