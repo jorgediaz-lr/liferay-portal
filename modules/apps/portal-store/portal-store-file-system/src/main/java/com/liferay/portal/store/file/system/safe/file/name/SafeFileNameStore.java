@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,6 +44,11 @@ public class SafeFileNameStore implements Store {
 	}
 
 	@Override
+	public void deleteCompany(long companyId) {
+		_store.deleteCompany(companyId);
+	}
+
+	@Override
 	public void deleteDirectory(
 		long companyId, long repositoryId, String dirName) {
 
@@ -67,6 +73,11 @@ public class SafeFileNameStore implements Store {
 		}
 
 		_store.deleteFile(companyId, repositoryId, safeFileName, versionLabel);
+	}
+
+	@Override
+	public List<Long> getCompanyIds() {
+		return _store.getCompanyIds();
 	}
 
 	@Override
