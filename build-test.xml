@@ -9611,6 +9611,12 @@ war.path=${app.server.portal.dir}/</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="wait-for-upgrade-report-generated">
+		<sequential>
+			<wait-for-app-server-log-message log.message="Upgrade report generated" />
+		</sequential>
+	</macrodef>
+
 	<target name="build-service">
 		<gradle-execute dir="${project.dir}/${gradle.file.path}" task="buildService" />
 	</target>
@@ -17835,5 +17841,9 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 		</condition>
 
 		<wait-for-app-server app.server.bin.dir="${app.server.bin.dir}" />
+	</target>
+
+	<target name="wait-for-upgrade-report-generated">
+		<wait-for-upgrade-report-generated />
 	</target>
 </project>
