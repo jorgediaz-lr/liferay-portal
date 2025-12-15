@@ -17,11 +17,10 @@ import com.liferay.commerce.product.type.virtual.order.util.CommerceVirtualOrder
 import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -141,10 +140,7 @@ public class CommerceVirtualOrderItemCheckerImpl
 
 		serviceContext.setUserId(accountEntry.getUserId());
 
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-		serviceContext.setUuid(uuid.toString());
+		serviceContext.setUuid(PortalUUIDUtil.generate());
 
 		return serviceContext;
 	}

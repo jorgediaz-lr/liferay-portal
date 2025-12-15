@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
@@ -36,6 +35,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.upload.UniqueFileNameProvider;
 import com.liferay.upload.UploadFileEntryHandler;
 import com.liferay.upload.UploadHandler;
@@ -49,7 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.Map;
-import java.util.UUID;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -200,12 +199,9 @@ public class UploadImageMVCActionCommand extends BaseMVCActionCommand {
 				fileName, curFileName -> _exists(themeDisplay, curFileName));
 
 			return TempFileEntryUtil.addTempFileEntry(
-				String.valueOf(
-					new UUID(
-						SecureRandomUtil.nextLong(),
-						SecureRandomUtil.nextLong())),
-				themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
-				_tempFolderName, uniqueFileName, inputStream, contentType);
+				PortalUUIDUtil.generate(), themeDisplay.getScopeGroupId(),
+				themeDisplay.getUserId(), _tempFolderName, uniqueFileName,
+				inputStream, contentType);
 		}
 
 		private FileEntry _editImageFileEntry(

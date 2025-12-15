@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutPrototype;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Pavel Savinov
@@ -59,10 +58,7 @@ public class LayoutUpgradeProcess extends UpgradeProcess {
 	}
 
 	private String _generateFriendlyURLUUID() {
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-		return StringPool.SLASH + uuid;
+		return StringPool.SLASH + PortalUUIDUtil.generate();
 	}
 
 	private long _getPlid(

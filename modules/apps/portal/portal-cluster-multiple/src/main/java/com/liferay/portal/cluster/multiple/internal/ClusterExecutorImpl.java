@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Http;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
@@ -54,7 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -471,10 +470,7 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	}
 
 	private String _generateClusterNodeId() {
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-		return uuid.toString();
+		return PortalUUIDUtil.generate();
 	}
 
 	private InetSocketAddress _getConfiguredPortalInetSocketAddress() {

@@ -298,7 +298,6 @@ import com.liferay.portal.kernel.model.VirtualHostModel;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -322,6 +321,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.impl.AddressModelImpl;
 import com.liferay.portal.model.impl.ClassNameModelImpl;
@@ -411,7 +411,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.UUID;
 
 /**
  * @author Brian Wing Shun Chan
@@ -2737,11 +2736,7 @@ public class DataFactory {
 		layoutModels.add(
 			_newContentPageLayoutModel(
 				groupId, getClassNameId(Layout.class),
-				publicLayoutModel.getPlid(), name,
-				String.valueOf(
-					new UUID(
-						SecureRandomUtil.nextLong(),
-						SecureRandomUtil.nextLong()))));
+				publicLayoutModel.getPlid(), name, PortalUUIDUtil.generate()));
 
 		return layoutModels;
 	}
