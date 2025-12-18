@@ -92,6 +92,8 @@ public abstract class BaseDBProcess implements DBProcess {
 		DB db = DBManagerUtil.getDB();
 
 		if (connection == null) {
+			_log.error("Connection is null", new Exception());
+
 			db.runSQL(dbTypeToSQLMap);
 		}
 		else {
@@ -104,6 +106,8 @@ public abstract class BaseDBProcess implements DBProcess {
 		DB db = DBManagerUtil.getDB();
 
 		if (connection == null) {
+			_log.error("Connection is null", new Exception());
+
 			db.runSQL(template);
 		}
 		else {
@@ -116,6 +120,8 @@ public abstract class BaseDBProcess implements DBProcess {
 		DB db = DBManagerUtil.getDB();
 
 		if (connection == null) {
+			_log.error("Connection is null", new Exception());
+
 			db.runSQL(templates);
 		}
 		else {
@@ -169,6 +175,8 @@ public abstract class BaseDBProcess implements DBProcess {
 			DB db = DBManagerUtil.getDB();
 
 			if (connection == null) {
+				_log.error("Connection is null", new Exception());
+
 				db.runSQLTemplate(template, failOnError);
 			}
 			else {
