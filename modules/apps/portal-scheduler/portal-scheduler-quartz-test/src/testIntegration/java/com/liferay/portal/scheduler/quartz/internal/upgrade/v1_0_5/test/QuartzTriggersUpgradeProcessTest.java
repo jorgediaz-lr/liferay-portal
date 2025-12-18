@@ -48,7 +48,8 @@ public class QuartzTriggersUpgradeProcessTest {
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		if (_dbInspector.hasIndex("QUARTZ_TRIGGERS", "IX_186442A4")) {
-			_db.runSQL("drop index IX_186442A4 on table QUARTZ_TRIGGERS");
+			_db.runSQL(
+				_connection, "drop index IX_186442A4 on table QUARTZ_TRIGGERS");
 		}
 
 		DataAccess.cleanUp(_connection);
@@ -57,6 +58,7 @@ public class QuartzTriggersUpgradeProcessTest {
 	@Test
 	public void testUpgrade() throws Exception {
 		_db.runSQL(
+			_connection,
 			"create index IX_186442A4 on QUARTZ_TRIGGERS (SCHED_NAME, " +
 				"TRIGGER_NAME, TRIGGER_GROUP, TRIGGER_STATE)");
 

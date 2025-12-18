@@ -148,6 +148,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 		try {
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> db.runSQL(
+					connection,
 					StringBundler.concat(
 						"alter table ", TEST_CONTROL_TABLE_NAME, " add column ",
 						TEST_CONTROL_TABLE_NEW_COLUMN, " bigint")));
@@ -170,6 +171,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 							TEST_CONTROL_TABLE_NEW_COLUMN)) {
 
 						db.runSQL(
+							connection,
 							StringBundler.concat(
 								"alter table ", TEST_CONTROL_TABLE_NAME,
 								" drop column ",
@@ -533,21 +535,21 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 						CompanyConstants.SYSTEM)) {
 
-				db.runSQL(databasePartitionSchemaNamePrefixSQL);
+				db.runSQL(connection, databasePartitionSchemaNamePrefixSQL);
 			}
 
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 						PortalInstancePool.getDefaultCompanyId())) {
 
-				db.runSQL(databasePartitionSchemaNamePrefixSQL);
+				db.runSQL(connection, databasePartitionSchemaNamePrefixSQL);
 			}
 
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 						COMPANY_IDS[0])) {
 
-				db.runSQL(databasePartitionSchemaNamePrefixSQL);
+				db.runSQL(connection, databasePartitionSchemaNamePrefixSQL);
 
 				Assert.fail();
 			}
@@ -772,6 +774,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 		try {
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> db.runSQL(
+					connection,
 					StringBundler.concat(
 						"alter table ", TEST_CONTROL_TABLE_NAME, " add column ",
 						TEST_CONTROL_TABLE_NEW_COLUMN, " bigint")));
@@ -790,6 +793,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 							TEST_CONTROL_TABLE_NEW_COLUMN)) {
 
 						db.runSQL(
+							connection,
 							StringBundler.concat(
 								"alter table ", TEST_CONTROL_TABLE_NAME,
 								" drop column ",
@@ -859,6 +863,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 				finally {
 					if (dbInspector.hasIndex("Company", TEST_INDEX_NAME)) {
 						db.runSQL(
+							connection,
 							"drop index " + TEST_INDEX_NAME + " on Company");
 					}
 				}

@@ -117,8 +117,10 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	public static void tearDownClass() throws Exception {
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> {
-				_db.runSQL("DROP_TABLE_IF_EXISTS(UpgradeReportTable1)");
-				_db.runSQL("DROP_TABLE_IF_EXISTS(UpgradeReportTable2)");
+				_db.runSQL(
+					_connection, "DROP_TABLE_IF_EXISTS(UpgradeReportTable1)");
+				_db.runSQL(
+					_connection, "DROP_TABLE_IF_EXISTS(UpgradeReportTable2)");
 			});
 
 		ReflectionTestUtil.setFieldValue(
@@ -128,6 +130,8 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 			_originalUpgradeLogContextEnabled);
 
 		_restoreRelease();
+
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Before
@@ -209,13 +213,16 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 	@Test
 	public void testDatabaseTablesCounts() throws Exception {
-		_db.runSQL("insert into UpgradeReportTable2 (id_) values (1)");
+		_db.runSQL(
+			_connection, "insert into UpgradeReportTable2 (id_) values (1)");
 
 		_appender.start();
 
-		_db.runSQL("insert into UpgradeReportTable1 (id_) values (1)");
+		_db.runSQL(
+			_connection, "insert into UpgradeReportTable1 (id_) values (1)");
 
-		_db.runSQL("delete from UpgradeReportTable2 where id_ = 1");
+		_db.runSQL(
+			_connection, "delete from UpgradeReportTable2 where id_ = 1");
 
 		_appender.stop();
 
@@ -287,10 +294,10 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 		try (AutoCloseable autoCloseable =
 				ReflectionTestUtil.setFieldValueWithAutoCloseable(
 					PortalClassLoaderUtil.class, "_classLoader",
-					currentThread.getContextClassLoader());
-			Connection connection = DataAccess.getConnection()) {
+					currentThread.getContextClassLoader())) {
 
 			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into Portlet (mvccVersion, id_, companyId, ",
 					"portletId, active_) values (0, ",
@@ -313,12 +320,12 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 			upgradeProcess.upgrade();
 
 			OrphanReferencesDataCleanupUtil.cleanUpTable(
-				connection, null, "companyId", "Portlet",
+				_connection, null, "companyId", "Portlet",
 				new String[] {"companyId"}, "Company");
 
 			_appender.stop();
 
-			DBInspector dbInspector = new DBInspector(connection);
+			DBInspector dbInspector = new DBInspector(_connection);
 
 			_assertLogContextDiagnostics(
 				"upgrade.report.data.clean.up", _CLEANUP_INFO_MESSAGE);
@@ -339,6 +346,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 		}
 		finally {
 			_db.runSQL(
+				_connection,
 				"delete from Portlet where companyId = " + randomCompanyId);
 		}
 	}
@@ -752,8 +760,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 		try (AutoCloseable autoCloseable =
 				ReflectionTestUtil.setFieldValueWithAutoCloseable(
 					PortalClassLoaderUtil.class, "_classLoader",
-					currentThread.getContextClassLoader());
-			Connection connection = DataAccess.getConnection()) {
+					currentThread.getContextClassLoader())) {
 
 			String value = "com.liferay.test." + RandomTestUtil.randomString();
 
@@ -761,11 +768,11 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 			_appender.start();
 
-			_runClassNamePostUpgradeDataCleanUpProcess(connection);
+			_runClassNamePostUpgradeDataCleanUpProcess(_connection);
 
 			_appender.stop();
 
-			DBInspector dbInspector = new DBInspector(connection);
+			DBInspector dbInspector = new DBInspector(_connection);
 
 			_assertLogContextDiagnostics(
 				"upgrade.report.data.clean.up",
@@ -1074,12 +1081,16 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	protected static void setUpClass(boolean upgradeClient) throws Exception {
 		_db = DBManagerUtil.getDB();
 
+		_connection = DataAccess.getConnection();
+
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> {
 				_db.runSQL(
+					_connection,
 					"create table UpgradeReportTable1 (id_ LONG not null " +
 						"primary key)");
 				_db.runSQL(
+					_connection,
 					"create table UpgradeReportTable2 (id_ LONG not null " +
 						"primary key)");
 			});
@@ -1110,8 +1121,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 			Version schemaVersion, int buildNumber)
 		throws Exception {
 
-		try (Connection connection = DataAccess.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = _connection.prepareStatement(
 				"update Release_ set schemaVersion = ?, buildNumber = ? " +
 					"where releaseId = ?")) {
 
@@ -1387,6 +1397,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	private static final String _DELETE_DUPLICATES_FINDER_WARNING_MESSAGE =
 		RandomTestUtil.randomString();
 
+	private static Connection _connection;
 	private static DB _db;
 	private static Appender _logContextAppender;
 	private static final Pattern _logContextTablesInitialFinalRowsPattern =

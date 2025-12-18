@@ -59,7 +59,7 @@ public class BaseJakartaUpgradeProcessTest extends BaseJakartaUpgradeProcess {
 		_db = DBManagerUtil.getDB();
 
 		_companyLocalService.forEachCompany(
-			company -> _db.runSQL(
+			company -> runSQL(
 				StringBundler.concat(
 					"create table ", _TABLE_NAME,
 					" (mvccVersion LONG default 0 not null, uuid_ VARCHAR(75) ",
@@ -72,7 +72,7 @@ public class BaseJakartaUpgradeProcessTest extends BaseJakartaUpgradeProcess {
 	@After
 	public void tearDown() throws Exception {
 		_companyLocalService.forEachCompany(
-			company -> _db.runSQL("drop table " + _TABLE_NAME));
+			company -> runSQL("drop table " + _TABLE_NAME));
 	}
 
 	@Test
@@ -180,13 +180,13 @@ public class BaseJakartaUpgradeProcessTest extends BaseJakartaUpgradeProcess {
 	private void _insertInitialData(String javaxValue) throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> {
-				_db.runSQL(
+				runSQL(
 					StringBundler.concat(
 						"insert into ", _TABLE_NAME, " (mvccVersion, uuid_, ",
 						_COLUMN_NAME_1, ", ", _COLUMN_NAME_2, ", ",
 						_COLUMN_NAME_3, ") values (0, 'uuid1', '", javaxValue,
 						"', '", javaxValue, "', '", javaxValue, "')"));
-				_db.runSQL(
+				runSQL(
 					StringBundler.concat(
 						"insert into ", _TABLE_NAME, " (mvccVersion, uuid_, ",
 						_COLUMN_NAME_1, ", ", _COLUMN_NAME_2,

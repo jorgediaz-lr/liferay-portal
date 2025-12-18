@@ -49,9 +49,12 @@ public class UpgradeCTModelTest {
 	public static void setUpClass() throws Exception {
 		_db = DBManagerUtil.getDB();
 
+		_connection = DataAccess.getConnection();
+
 		_companyLocalService.forEachCompany(
 			company -> {
 				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table UpgradeCTModelTest (mvccVersion LONG ",
 						"default 0 not null, uuid_ VARCHAR(75) null, ",
@@ -60,16 +63,19 @@ public class UpgradeCTModelTest {
 						"DATE null, name STRING null)"));
 
 				_db.runSQL(
+					_connection,
 					"insert into UpgradeCTModelTest values (0, 'uuid', 1, 2, " +
 						"NULL, NULL, 'name')");
 
 				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table UpgradeCTModelMappingTest (companyId ",
 						"LONG not null, leftId LONG not null, rightId LONG ",
 						"not null, primary key (leftId, rightId))"));
 
 				_db.runSQL(
+					_connection,
 					"insert into UpgradeCTModelMappingTest values (1, 2, 3)");
 			});
 	}
@@ -78,10 +84,12 @@ public class UpgradeCTModelTest {
 	public static void tearDownClass() throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> {
-				_db.runSQL("drop table UpgradeCTModelTest");
+				_db.runSQL(_connection, "drop table UpgradeCTModelTest");
 
-				_db.runSQL("drop table UpgradeCTModelMappingTest");
+				_db.runSQL(_connection, "drop table UpgradeCTModelMappingTest");
 			});
+
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Test
@@ -208,6 +216,7 @@ public class UpgradeCTModelTest {
 	@Inject
 	private static CompanyLocalService _companyLocalService;
 
+	private static Connection _connection;
 	private static DB _db;
 
 }

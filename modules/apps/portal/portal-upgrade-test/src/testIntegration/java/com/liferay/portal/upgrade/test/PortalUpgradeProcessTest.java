@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -54,10 +55,15 @@ public class PortalUpgradeProcessTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		try (Connection connection = DataAccess.getConnection()) {
-			_currentSchemaVersion =
-				PortalUpgradeProcess.getCurrentSchemaVersion(connection);
-		}
+		_connection = DataAccess.getConnection();
+
+		_currentSchemaVersion = PortalUpgradeProcess.getCurrentSchemaVersion(
+			_connection);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Before
@@ -77,6 +83,7 @@ public class PortalUpgradeProcessTest {
 		DB db = DBManagerUtil.getDB();
 
 		db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"update Release_ set releaseId = -1, servletContextName = '",
 				ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME,
@@ -101,9 +108,11 @@ public class PortalUpgradeProcessTest {
 		}
 		finally {
 			db.runSQL(
+				_connection,
 				"delete from Release_ where servletContextName = '" +
 					ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME + "'");
 			db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"update Release_ set releaseId = ",
 					ReleaseConstants.DEFAULT_ID, ", servletContextName = '",
@@ -427,6 +436,7 @@ public class PortalUpgradeProcessTest {
 	private static final Version _ORIGINAL_SCHEMA_VERSION = new Version(
 		0, 0, 0);
 
+	private static Connection _connection;
 	private static Version _currentSchemaVersion;
 
 	private InnerPortalUpgradeProcess _innerPortalUpgradeProcess;

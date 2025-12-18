@@ -114,6 +114,7 @@ public abstract class BaseDBPartitionTestCase {
 					PortalInstancePool.getDefaultCompanyId())) {
 
 			db.runSQL(
+				connection,
 				"create table " + tableName +
 					" (testColumn bigint primary key)");
 		}
@@ -127,11 +128,12 @@ public abstract class BaseDBPartitionTestCase {
 	}
 
 	protected static void createIndex(String tableName) throws Exception {
-		db.runSQL(getCreateIndexSQL(tableName));
+		db.runSQL(connection, getCreateIndexSQL(tableName));
 	}
 
 	protected static void createUniqueIndex(String tableName) throws Exception {
 		db.runSQL(
+			connection,
 			StringBundler.concat(
 				"create unique index ", TEST_INDEX_NAME, " on ", tableName,
 				" (testColumn)"));
@@ -175,6 +177,7 @@ public abstract class BaseDBPartitionTestCase {
 
 	protected static void dropIndex(String tableName) throws Exception {
 		db.runSQL(
+			connection,
 			StringBundler.concat(
 				"drop index ", TEST_INDEX_NAME, " on ", tableName));
 	}
@@ -182,12 +185,13 @@ public abstract class BaseDBPartitionTestCase {
 	protected static void dropSchemas() throws Exception {
 		for (long companyId : COMPANY_IDS) {
 			db.runSQL(
+				connection,
 				dbPartitionDB.getDropPartitionSQL(getPartitionName(companyId)));
 		}
 	}
 
 	protected static void dropTable(String tableName) throws Exception {
-		db.runSQL("drop table if exists " + tableName + " cascade");
+		db.runSQL(connection, "drop table if exists " + tableName + " cascade");
 	}
 
 	protected static void exportCompany(long companyId) throws Exception {

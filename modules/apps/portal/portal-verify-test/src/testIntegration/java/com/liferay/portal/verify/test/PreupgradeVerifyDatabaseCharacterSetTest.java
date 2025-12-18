@@ -82,11 +82,13 @@ public class PreupgradeVerifyDatabaseCharacterSetTest
 			(_db.getDBType() == DBType.MYSQL)) {
 
 			_db.runSQL(
+				_connection,
 				"create database unsupported_character_set_db default " +
 					"character set latin1");
 		}
 		else if (_db.getDBType() == DBType.POSTGRESQL) {
 			_db.runSQL(
+				_connection,
 				"create database unsupported_character_set_db encoding " +
 					"'LATIN1' lc_ctype 'C' lc_collate 'C' template template0");
 		}
@@ -115,7 +117,8 @@ public class PreupgradeVerifyDatabaseCharacterSetTest
 			DataSourceFactoryUtil.destroyDataSource(
 				_unsupportedCharacterSetDataSource);
 
-			_db.runSQL("drop database unsupported_character_set_db");
+			_db.runSQL(
+				_connection, "drop database unsupported_character_set_db");
 		}
 	}
 
@@ -141,6 +144,7 @@ public class PreupgradeVerifyDatabaseCharacterSetTest
 		_serviceComponentLocalService.addServiceComponent(serviceComponent);
 
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"create table ", tableName,
 				" (testColumn VARCHAR(75) primary key) collate utf8_bin"));
@@ -167,7 +171,7 @@ public class PreupgradeVerifyDatabaseCharacterSetTest
 			_serviceComponentLocalService.deleteServiceComponent(
 				serviceComponent);
 
-			_db.runSQL("drop table " + tableName);
+			_db.runSQL(_connection, "drop table " + tableName);
 		}
 	}
 
@@ -210,26 +214,35 @@ public class PreupgradeVerifyDatabaseCharacterSetTest
 				StringUtil.randomId(), false,
 				ObjectRelationshipConstants.TYPE_MANY_TO_MANY, null);
 
-		_db.runSQL("drop table " + objectDefinition1.getDBTableName());
-		_db.runSQL("drop table " + objectDefinition1.getExtensionDBTableName());
 		_db.runSQL(
+			_connection, "drop table " + objectDefinition1.getDBTableName());
+		_db.runSQL(
+			_connection,
+			"drop table " + objectDefinition1.getExtensionDBTableName());
+		_db.runSQL(
+			_connection,
 			"drop table " + objectDefinition1.getLocalizationDBTableName());
-		_db.runSQL("drop table " + objectRelationship.getDBTableName());
+		_db.runSQL(
+			_connection, "drop table " + objectRelationship.getDBTableName());
 
 		String createTableSQL =
 			"create table %s (testColumn VARCHAR(75) primary key) collate " +
 				"utf8_bin";
 
 		_db.runSQL(
+			_connection,
 			String.format(createTableSQL, objectDefinition1.getDBTableName()));
 		_db.runSQL(
+			_connection,
 			String.format(
 				createTableSQL, objectDefinition1.getExtensionDBTableName()));
 		_db.runSQL(
+			_connection,
 			String.format(
 				createTableSQL,
 				objectDefinition1.getLocalizationDBTableName()));
 		_db.runSQL(
+			_connection,
 			String.format(createTableSQL, objectRelationship.getDBTableName()));
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(

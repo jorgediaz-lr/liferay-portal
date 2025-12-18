@@ -88,8 +88,10 @@ public class UpgradePartitionedConfigurationTableTest
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> {
 				if (companyId != _companyId) {
-					db.runSQL("drop table if exists Configuration_");
 					db.runSQL(
+						connection, "drop table if exists Configuration_");
+					db.runSQL(
+						connection,
 						StringBundler.concat(
 							"create or replace view Configuration_ as select ",
 							"* from ", defaultPartitionName,

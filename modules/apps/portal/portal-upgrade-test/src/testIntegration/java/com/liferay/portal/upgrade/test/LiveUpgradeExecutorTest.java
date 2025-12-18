@@ -68,15 +68,18 @@ public class LiveUpgradeExecutorTest {
 	@Before
 	public void setUp() throws Exception {
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"create table ", _TABLE_NAME,
 				" (id LONG not null primary key, name VARCHAR(128) not null, ",
 				"description VARCHAR(255) null)"));
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into ", _TABLE_NAME,
 				" (id, name) values (1, 'test_a')"));
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into ", _TABLE_NAME,
 				" (id, name) values (2, 'test_b')"));
@@ -84,9 +87,12 @@ public class LiveUpgradeExecutorTest {
 
 	@After
 	public void tearDown() throws Exception {
-		_db.runSQL("DROP_TABLE_IF_EXISTS(" + _TABLE_NAME + ")");
-		_db.runSQL("DROP_TABLE_IF_EXISTS(" + _getArchiveTableName() + ")");
-		_db.runSQL("DROP_TABLE_IF_EXISTS(" + _getTempTableName() + ")");
+		_db.runSQL(_connection, "DROP_TABLE_IF_EXISTS(" + _TABLE_NAME + ")");
+		_db.runSQL(
+			_connection,
+			"DROP_TABLE_IF_EXISTS(" + _getArchiveTableName() + ")");
+		_db.runSQL(
+			_connection, "DROP_TABLE_IF_EXISTS(" + _getTempTableName() + ")");
 	}
 
 	@Test

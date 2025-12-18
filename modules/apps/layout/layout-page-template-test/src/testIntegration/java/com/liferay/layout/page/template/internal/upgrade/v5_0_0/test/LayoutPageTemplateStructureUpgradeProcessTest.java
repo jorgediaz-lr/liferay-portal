@@ -118,6 +118,7 @@ public class LayoutPageTemplateStructureUpgradeProcessTest {
 			Layout.class.getName());
 
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"update LayoutPageTemplateStructure set classNameId = ",
 				layoutClassNameId, ", classPK = plid"));
@@ -131,6 +132,7 @@ public class LayoutPageTemplateStructureUpgradeProcessTest {
 			layoutPageTemplateEntry1.getLayoutPageTemplateEntryId());
 
 		_db.runSQL(
+			_connection,
 			"delete from LayoutPageTemplateStructure where plid = " +
 				layoutPageTemplateEntry2.getPlid());
 

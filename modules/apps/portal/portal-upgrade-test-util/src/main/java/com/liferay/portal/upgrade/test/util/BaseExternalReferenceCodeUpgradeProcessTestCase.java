@@ -45,6 +45,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -68,6 +69,13 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 	public static void setUpClass() throws Exception {
 		dataSource = InfrastructureUtil.getDataSource();
 		db = DBManagerUtil.getDB();
+
+		connection = dataSource.getConnection();
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		DataAccess.cleanUp(connection);
 	}
 
 	@Before
@@ -128,8 +136,7 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 			sql = sql + " AND groupId = ?";
 		}
 
-		try (Connection connection = dataSource.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sql)) {
 
 			if (hasGroupIdColumn) {
@@ -192,12 +199,13 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 				sql, " and groupId = ", group.getGroupId());
 		}
 
-		db.runSQL(sql);
+		db.runSQL(connection, sql);
 
 		entityCache.clearCache();
 		multiVMPool.clear();
 	}
 
+	protected static Connection connection;
 	protected static DataSource dataSource;
 	protected static DB db;
 
@@ -215,10 +223,8 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 	private void _addIndexes(List<IndexMetadata> indexMetadatas)
 		throws Exception {
 
-		try (Connection connection = dataSource.getConnection()) {
-			if (ListUtil.isNotEmpty(indexMetadatas)) {
-				db.addIndexes(connection, indexMetadatas);
-			}
+		if (ListUtil.isNotEmpty(indexMetadatas)) {
+			db.addIndexes(connection, indexMetadatas);
 		}
 	}
 
@@ -249,20 +255,15 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 	private List<IndexMetadata> _dropIndexes(String tableName)
 		throws Exception {
 
-		try (Connection connection = dataSource.getConnection()) {
-			return db.dropIndexes(
-				connection, tableName, "externalReferenceCode");
-		}
+		return db.dropIndexes(connection, tableName, "externalReferenceCode");
 	}
 
 	private boolean _hasColumn(String tableName, String columnName)
 		throws Exception {
 
-		try (Connection connection = DataAccess.getConnection()) {
-			DBInspector dbInspector = new DBInspector(connection);
+		DBInspector dbInspector = new DBInspector(connection);
 
-			return dbInspector.hasColumn(tableName, columnName);
-		}
+		return dbInspector.hasColumn(tableName, columnName);
 	}
 
 	private void _prepareDatabaseForUpgradeProcess(

@@ -37,19 +37,21 @@ public class DefaultAllTablesOrphanReferencesDataCleanupPreupgradeProcessTest
 
 	@After
 	public void tearDown() throws Exception {
-		db.runSQL("drop table " + _TABLE_NAME);
+		db.runSQL(connection, "drop table " + _TABLE_NAME);
 	}
 
 	@Override
 	protected UnsafeRunnable<Exception> getInsertDataUnsafeRunnable() {
 		return () -> {
 			db.runSQL(
+				connection,
 				StringBundler.concat(
 					"create table ", _TABLE_NAME,
 					" (mvccVersion LONG default 0 not null, testId LONG not ",
 					"null primary key, companyId VARCHAR(50))"));
 
 			db.runSQL(
+				connection,
 				StringBundler.concat(
 					"insert into ", _TABLE_NAME, " (mvccVersion, testId, ",
 					"companyId ) values (0, 0, '", _companyId1, "')"));

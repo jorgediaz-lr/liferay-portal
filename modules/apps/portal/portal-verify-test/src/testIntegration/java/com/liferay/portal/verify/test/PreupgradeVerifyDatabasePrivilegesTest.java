@@ -96,6 +96,7 @@ public class PreupgradeVerifyDatabasePrivilegesTest
 			DBInspector dbInspector = new DBInspector(_connection);
 
 			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"revoke all privileges on schema ", dbInspector.getSchema(),
 					" from test"));
@@ -105,10 +106,10 @@ public class PreupgradeVerifyDatabasePrivilegesTest
 			DataSourceFactoryUtil.destroyDataSource(_testUserDataSource);
 		}
 
-		_db.runSQL("drop user test");
+		_db.runSQL(_connection, "drop user test");
 
 		if (_db.getDBType() == DBType.SQLSERVER) {
-			_db.runSQL("drop login test");
+			_db.runSQL(_connection, "drop login test");
 		}
 	}
 
@@ -274,6 +275,7 @@ public class PreupgradeVerifyDatabasePrivilegesTest
 
 		if (_db.getDBType() == DBType.POSTGRESQL) {
 			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"revoke create on schema ", dbInspector.getSchema(),
 					" from public"));
@@ -281,6 +283,7 @@ public class PreupgradeVerifyDatabasePrivilegesTest
 
 		if (_db.getDBType() == DBType.SQLSERVER) {
 			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"create login [test] with password = 'test', ",
 					"default_database = [", dbInspector.getCatalog(),
@@ -312,7 +315,7 @@ public class PreupgradeVerifyDatabasePrivilegesTest
 				" to test"));
 
 		if (_db.getDBType() == DBType.SQLSERVER) {
-			_db.runSQL("grant create table to test");
+			_db.runSQL(_connection, "grant create table to test");
 		}
 
 		dbTypeToSQLMap.add(

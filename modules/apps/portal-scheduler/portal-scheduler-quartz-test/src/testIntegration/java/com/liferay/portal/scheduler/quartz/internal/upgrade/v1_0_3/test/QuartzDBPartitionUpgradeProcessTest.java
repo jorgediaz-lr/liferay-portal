@@ -76,14 +76,17 @@ public class QuartzDBPartitionUpgradeProcessTest
 
 	private void _dropQuartzIndexes() throws Exception {
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"drop index ", _QUARTZ_INDEXES[0].getIndexName(), " on ",
 				_QUARTZ_INDEXES[0].getTableName()));
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"drop index ", _QUARTZ_INDEXES[5].getIndexName(), " on ",
 				_QUARTZ_INDEXES[5].getTableName()));
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"drop index ", _QUARTZ_INDEXES[7].getIndexName(), " on ",
 				_QUARTZ_INDEXES[7].getTableName()));

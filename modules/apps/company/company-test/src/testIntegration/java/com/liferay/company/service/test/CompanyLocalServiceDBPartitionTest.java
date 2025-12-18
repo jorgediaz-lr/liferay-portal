@@ -330,6 +330,7 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 		finally {
 			db.runSQL(
+				connection,
 				dbPartitionDB.getDropPartitionSQL(
 					CompanyLocalServiceTestUtil.getExportedPartitionName(
 						company.getCompanyId())));
@@ -383,6 +384,7 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 		finally {
 			db.runSQL(
+				connection,
 				dbPartitionDB.getDropPartitionSQL(
 					CompanyLocalServiceTestUtil.getExportedPartitionName(
 						company.getCompanyId())));
@@ -449,6 +451,7 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 		finally {
 			db.runSQL(
+				connection,
 				dbPartitionDB.getDropPartitionSQL(
 					CompanyLocalServiceTestUtil.getExportedPartitionName(
 						company.getCompanyId())));

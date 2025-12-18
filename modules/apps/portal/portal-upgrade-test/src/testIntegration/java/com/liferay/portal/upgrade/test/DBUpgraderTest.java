@@ -332,7 +332,7 @@ public class DBUpgraderTest {
 	public void testUpgradeModuleIndexes() throws Exception {
 		DB db = DBManagerUtil.getDB();
 
-		db.runSQL("create index IX_TEST on Lock_ (createDate)");
+		db.runSQL(_connection, "create index IX_TEST on Lock_ (createDate)");
 
 		Boolean newRelease = ReflectionTestUtil.getAndSetFieldValue(
 			StartupHelperUtil.class, "_newRelease", false);

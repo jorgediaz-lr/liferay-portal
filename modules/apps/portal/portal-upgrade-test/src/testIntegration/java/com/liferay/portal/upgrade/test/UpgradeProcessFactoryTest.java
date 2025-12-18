@@ -60,6 +60,7 @@ public class UpgradeProcessFactoryTest {
 	public void setUp() throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> _db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"create table ", _TABLE_NAME_1,
 					" (id LONG not null primary key, notNilColumn VARCHAR(75) ",
@@ -74,7 +75,7 @@ public class UpgradeProcessFactoryTest {
 	public void tearDown() throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> _db.runSQL(
-				"DROP_TABLE_IF_EXISTS(" + _TABLE_NAME_1 + ")"));
+				_connection, "DROP_TABLE_IF_EXISTS(" + _TABLE_NAME_1 + ")"));
 	}
 
 	@Test
@@ -129,6 +130,7 @@ public class UpgradeProcessFactoryTest {
 	@Test
 	public void testDropTables() throws Exception {
 		_db.runSQL(
+			_connection,
 			"create table " + _TABLE_NAME_2 +
 				" (id LONG not null primary key)");
 

@@ -424,6 +424,7 @@ public class FragmentEntryLinkUpgradeProcessTest
 				long fragmentEntryLinkId2 = resultSet.getLong(4);
 
 				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"update FragmentEntryLink set ",
 						"originalFragmentEntryLinkId = ", fragmentEntryLinkId2,
@@ -447,6 +448,7 @@ public class FragmentEntryLinkUpgradeProcessTest
 					fragmentEntryLinkId);
 
 			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"update FragmentEntryLink set originalFragmentEntryLinkId ",
 					"= ", _getOriginalFragmentEntryLinkId(fragmentEntryLink),

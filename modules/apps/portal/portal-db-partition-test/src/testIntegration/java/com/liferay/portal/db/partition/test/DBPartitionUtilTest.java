@@ -84,6 +84,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 	public void setUp() throws Exception {
 		for (long companyId : COMPANY_IDS) {
 			db.runSQL(
+				connection,
 				dbPartitionDB.getCreatePartitionSQL(
 					connection, getPartitionName(companyId)));
 		}
@@ -341,6 +342,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 
 				for (long companyId : COMPANY_IDS) {
 					db.runSQL(
+						connection,
 						dbPartitionDB.getDropPartitionSQL(
 							getExportedPartitionName(companyId)));
 				}
@@ -418,6 +420,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 						portal.getDefaultCompanyId())) {
 
 				db.runSQL(
+					connection,
 					dbPartitionDB.getDropPartitionSQL(
 						getExportedPartitionName(companyId)));
 			}
@@ -512,6 +515,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 
 				for (long companyId : COMPANY_IDS) {
 					db.runSQL(
+						connection,
 						dbPartitionDB.getDropPartitionSQL(
 							getExportedPartitionName(companyId)));
 				}

@@ -48,6 +48,7 @@ public class LiveUpgradeSchemaDiffTest {
 		_db = DBManagerUtil.getDB();
 
 		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"create table ", _TABLE_NAME,
 				" (id LONG not null primary key, name VARCHAR(128) not null, ",
@@ -58,7 +59,7 @@ public class LiveUpgradeSchemaDiffTest {
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		_db.runSQL("DROP_TABLE_IF_EXISTS(" + _TABLE_NAME + ")");
+		_db.runSQL(_connection, "DROP_TABLE_IF_EXISTS(" + _TABLE_NAME + ")");
 
 		DataAccess.cleanUp(_connection);
 	}
