@@ -7,7 +7,9 @@ package com.liferay.portal.upgrade.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -47,6 +49,8 @@ public class UpgradeCompanyIdTest {
 	public static void setUpClass() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 	}
 
@@ -59,22 +63,26 @@ public class UpgradeCompanyIdTest {
 	public void setUp() throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> {
-				_upgradeProcess.runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ", _MAPPING_TABLE_NAME, " (",
 						_COLUMN_NAME, " LONG not null primary key)"));
 
-				_upgradeProcess.runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into ", _MAPPING_TABLE_NAME, " (", _COLUMN_NAME,
 						") values (", _COLUMN_VALUE, ")"));
 
-				_upgradeProcess.runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ", _TABLE_NAME, " (", _COLUMN_NAME,
 						" LONG not null primary key, companyId LONG)"));
 
-				_upgradeProcess.runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into ", _TABLE_NAME, " (", _COLUMN_NAME,
 						", companyId) values (", _COLUMN_VALUE,
@@ -86,8 +94,8 @@ public class UpgradeCompanyIdTest {
 	public void tearDown() throws Exception {
 		_companyLocalService.forEachCompany(
 			company -> {
-				_upgradeProcess.runSQL("drop table " + _MAPPING_TABLE_NAME);
-				_upgradeProcess.runSQL("drop table " + _TABLE_NAME);
+				_db.runSQL(_connection, "drop table " + _MAPPING_TABLE_NAME);
+				_db.runSQL(_connection, "drop table " + _TABLE_NAME);
 			});
 	}
 
@@ -104,7 +112,8 @@ public class UpgradeCompanyIdTest {
 	public void testUpgradeNullValues() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
 
-		_upgradeProcess.runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into ", _MAPPING_TABLE_NAME, " (", _COLUMN_NAME,
 				") values (", _COLUMN_VALUE - 1, ")"));
@@ -134,6 +143,7 @@ public class UpgradeCompanyIdTest {
 	private static CompanyLocalService _companyLocalService;
 
 	private static Connection _connection;
+	private static DB _db;
 	private static DBInspector _dbInspector;
 
 	private final UpgradeCompanyIdCustom _upgradeProcess =

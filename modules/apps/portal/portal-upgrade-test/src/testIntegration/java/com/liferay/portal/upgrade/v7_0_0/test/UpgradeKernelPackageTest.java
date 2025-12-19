@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -43,9 +44,12 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		_connection = DataAccess.getConnection();
+
 		_db = DBManagerUtil.getDB();
 
 		_db.runSQL(
+			_connection,
 			"create table UpgradeKernelPackageTest (" +
 				"id LONG not null primary key, data VARCHAR(40) null, " +
 					"textData VARCHAR(255) null)");
@@ -53,7 +57,9 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		_db.runSQL("drop table UpgradeKernelPackageTest");
+		_db.runSQL(_connection, "drop table UpgradeKernelPackageTest");
+
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Before
@@ -138,7 +144,7 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 
 			// Test preventDuplicates
 
-			runSQL("delete from UpgradeKernelPackageTest");
+			_db.runSQL(_connection, "delete from UpgradeKernelPackageTest");
 
 			_insert(10, _PREFIX_POSTFIX_CLASS_NAME_OLD, "");
 			_insert(11, _PREFIX_POSTFIX_CLASS_NAME_NEW, "");
@@ -157,6 +163,7 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 			}
 
 			_db.runSQL(
+				_connection,
 				"create unique index IX_TEMP on UpgradeKernelPackageTest " +
 					"(data, textData)");
 
@@ -171,11 +178,13 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 				_assertData(12, "textData", "uniqueTextData");
 			}
 			finally {
-				_db.runSQL("drop index IX_TEMP on UpgradeKernelPackageTest");
+				_db.runSQL(
+					_connection,
+					"drop index IX_TEMP on UpgradeKernelPackageTest");
 			}
 		}
 		finally {
-			runSQL("delete from UpgradeKernelPackageTest");
+			_db.runSQL(_connection, "delete from UpgradeKernelPackageTest");
 		}
 	}
 
@@ -237,7 +246,8 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 	private void _insert(long id, String data, String textData)
 		throws Exception {
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into UpgradeKernelPackageTest values(", id, ", '", data,
 				"', '", textData, "')"));
@@ -269,6 +279,7 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 		{_CLASS_NAME_OLD, _CLASS_NAME_NEW}
 	};
 
+	private static Connection _connection;
 	private static DB _db;
 
 }

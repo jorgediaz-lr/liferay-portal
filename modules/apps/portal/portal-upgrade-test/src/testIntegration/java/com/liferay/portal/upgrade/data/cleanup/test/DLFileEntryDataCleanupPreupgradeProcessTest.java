@@ -33,6 +33,7 @@ import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -99,6 +100,8 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		_connection = DataAccess.getConnection();
+
+		_db = DBManagerUtil.getDB();
 
 		_dbInspector = new DBInspector(_connection);
 
@@ -188,7 +191,8 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 		_dlFileEntryMetadataLocalService.addDLFileEntryMetadata(
 			dlFileEntryMetadata);
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			"delete from DLFileEntry where fileEntryId = " +
 				fileEntry.getFileEntryId());
 
@@ -212,13 +216,15 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 				DLFileEntryDataCleanupPreupgradeProcess.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			runSQL(
+			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into DLFileEntry (",
 					"mvccVersion, ctCollectionId, fileEntryId, groupId) ",
 					"values (0, 0, ", fileEntryId1, ", ",
 					RandomTestUtil.nextLong(), ")"));
-			runSQL(
+			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into DLFileEntry (",
 					"mvccVersion, ctCollectionId, fileEntryId, groupId, name) ",
@@ -249,9 +255,11 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 							"empty")));
 		}
 		finally {
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId1);
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId2);
 		}
 	}
@@ -314,6 +322,7 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 	private ClassNameLocalService _classNameLocalService;
 
 	private Connection _connection;
+	private DB _db;
 	private DBInspector _dbInspector;
 
 	@Inject

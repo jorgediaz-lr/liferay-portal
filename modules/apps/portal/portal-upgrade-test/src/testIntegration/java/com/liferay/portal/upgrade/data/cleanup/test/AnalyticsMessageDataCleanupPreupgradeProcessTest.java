@@ -8,7 +8,9 @@ package com.liferay.portal.upgrade.data.cleanup.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -50,6 +52,8 @@ public class AnalyticsMessageDataCleanupPreupgradeProcessTest
 	public static void setUpClass() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 
 		if (PropsValues.DATABASE_PARTITION_ENABLED) {
@@ -69,7 +73,8 @@ public class AnalyticsMessageDataCleanupPreupgradeProcessTest
 
 	@Test
 	public void testUpgradeWithContent() throws Exception {
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into AnalyticsMessage (mvccVersion, ctCollectionId, ",
 				"analyticsMessageId, companyId) values (0, 0, ",
@@ -98,7 +103,8 @@ public class AnalyticsMessageDataCleanupPreupgradeProcessTest
 			}
 		}
 		finally {
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from AnalyticsMessage where companyId = '" +
 					CompanyThreadLocal.getCompanyId() + "'");
 		}
@@ -122,6 +128,7 @@ public class AnalyticsMessageDataCleanupPreupgradeProcessTest
 	}
 
 	private static Connection _connection;
+	private static DB _db;
 	private static DBInspector _dbInspector;
 	private static SafeCloseable _safeCloseable;
 

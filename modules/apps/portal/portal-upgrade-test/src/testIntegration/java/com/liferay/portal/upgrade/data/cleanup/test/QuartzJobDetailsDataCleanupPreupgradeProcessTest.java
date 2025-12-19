@@ -8,7 +8,9 @@ package com.liferay.portal.upgrade.data.cleanup.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -47,7 +49,7 @@ public class QuartzJobDetailsDataCleanupPreupgradeProcessTest
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_connection = DataAccess.getConnection();
-
+		_db = DBManagerUtil.getDB();
 		_dbInspector = new DBInspector(_connection);
 
 		if (PropsValues.DATABASE_PARTITION_ENABLED) {
@@ -73,7 +75,8 @@ public class QuartzJobDetailsDataCleanupPreupgradeProcessTest
 				QuartzJobDetailsDataCleanupPreupgradeProcess.class.getName(),
 				LoggerTestUtil.INFO)) {
 
-			runSQL(
+			_db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into QUARTZ_JOB_DETAILS (SCHED_NAME, JOB_NAME, ",
 					"JOB_GROUP, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, ",
@@ -98,13 +101,15 @@ public class QuartzJobDetailsDataCleanupPreupgradeProcessTest
 						" was null for job ", jobName)));
 		}
 		finally {
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from QUARTZ_JOB_DETAILS where JOB_NAME = '" + jobName +
 					"'");
 		}
 	}
 
 	private static Connection _connection;
+	private static DB _db;
 	private static DBInspector _dbInspector;
 	private static SafeCloseable _safeCloseable;
 

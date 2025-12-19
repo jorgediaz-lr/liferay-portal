@@ -6,6 +6,9 @@
 package com.liferay.portal.upgrade.data.cleanup.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
@@ -24,6 +27,10 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.data.cleanup.GroupDataCleanupPreupgradeProcess;
 import com.liferay.portal.upgrade.data.cleanup.UserDataCleanupPreupgradeProcess;
 
+import java.sql.Connection;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +48,18 @@ public class UserDataCleanupPreupgradeProcessTest
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
+
+	@Before
+	public void setUp() throws Exception {
+		_connection = DataAccess.getConnection();
+
+		_db = DBManagerUtil.getDB();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		DataAccess.cleanUp(_connection);
+	}
 
 	@Test
 	public void testUpgrade() throws Exception {
@@ -61,7 +80,9 @@ public class UserDataCleanupPreupgradeProcessTest
 			new long[] {TestPropsValues.getGroupId()},
 			ServiceContextTestUtil.getServiceContext());
 
-		runSQL("delete from User_ where userId = " + user.getUserId());
+		_db.runSQL(
+			_connection,
+			"delete from User_ where userId = " + user.getUserId());
 
 		upgrade();
 
@@ -70,6 +91,9 @@ public class UserDataCleanupPreupgradeProcessTest
 
 		dataCleanupPreupgradeProcess.upgrade();
 	}
+
+	private Connection _connection;
+	private DB _db;
 
 	@Inject
 	private UserLocalService _userLocalService;

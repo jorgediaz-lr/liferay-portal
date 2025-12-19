@@ -106,6 +106,7 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcessTest
 			if (dbType == DBType.SQLSERVER) {
 				DBPartitionUtil.forEachCompanyId(
 					companyId -> _db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"create table [", invalidTableName, "] ([",
 							invalidColumnName, "] LONG)")));
@@ -113,6 +114,7 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcessTest
 			else {
 				DBPartitionUtil.forEachCompanyId(
 					companyId -> _db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"create table `", invalidTableName, "` (`",
 							invalidColumnName, "` LONG)")));
@@ -160,12 +162,15 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcessTest
 
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> _db.runSQL(
+					_connection,
 					"DROP_TABLE_IF_EXISTS(" + invalidTableName + ")"));
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> _db.runSQL(
+					_connection,
 					"DROP_TABLE_IF_EXISTS(" + testTableName + ")"));
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> _db.runSQL(
+					_connection,
 					"DROP_TABLE_IF_EXISTS(" + testTableName + "_temp)"));
 		}
 	}

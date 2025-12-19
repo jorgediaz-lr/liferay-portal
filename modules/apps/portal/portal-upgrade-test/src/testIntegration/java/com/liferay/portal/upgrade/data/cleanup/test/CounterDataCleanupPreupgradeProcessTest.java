@@ -13,7 +13,9 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Layout;
@@ -55,6 +57,8 @@ public class CounterDataCleanupPreupgradeProcessTest
 	public void setUp() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 
 		upgrade();
@@ -81,9 +85,11 @@ public class CounterDataCleanupPreupgradeProcessTest
 		}
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"delete from Company where companyId = " + companyId),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"insert into Company (mvccVersion, companyId) values (0 ," +
 					companyId + ")"),
 			(UnsafeConsumer<List<String>, Exception>)messages -> {
@@ -110,21 +116,25 @@ public class CounterDataCleanupPreupgradeProcessTest
 
 		_test(
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"delete from Counter where name = '" + counterName + "'");
-				runSQL("drop table " + _TABLE_NAME);
+				_db.runSQL(_connection, "drop table " + _TABLE_NAME);
 			},
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ", _TABLE_NAME,
 						" (mvccVersion LONG default 0 not null, testId LONG ",
 						"not null primary key)"));
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"insert into Counter (name, currentId) values ('" +
 						counterName + "', 100 )");
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into ", _TABLE_NAME, " (mvccVersion, testId) ",
 						"values (0, ", 1000, ")"));
@@ -143,16 +153,18 @@ public class CounterDataCleanupPreupgradeProcessTest
 				1000;
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
-				"drop table " + _TABLE_NAME),
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection, "drop table " + _TABLE_NAME),
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ", _TABLE_NAME,
 						" (mvccVersion LONG default 0 not null, testId LONG ",
 						"not null primary key)"));
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into ", _TABLE_NAME, " (mvccVersion, testId) ",
 						"values (0, ", testId, ")"));
@@ -171,9 +183,11 @@ public class CounterDataCleanupPreupgradeProcessTest
 			DLFileEntry.class.getName());
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into DLFileEntry (mvccVersion, ctCollectionId, ",
 					"fileEntryId, name) values (0, 0,", fileEntryId, ", '",
@@ -199,9 +213,11 @@ public class CounterDataCleanupPreupgradeProcessTest
 				100;
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into DLFileEntry (mvccVersion, ctCollectionId, ",
 					"fileEntryId, name) values (0, 0,", fileEntryId, ", '",
@@ -224,9 +240,10 @@ public class CounterDataCleanupPreupgradeProcessTest
 				1000;
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
-				"delete from Role_ where roleId = " + roleId),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection, "delete from Role_ where roleId = " + roleId),
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into Role_ (mvccVersion, ctCollectionId, roleId) ",
 					"values (0, 0,", roleId, ")")),
@@ -249,9 +266,11 @@ public class CounterDataCleanupPreupgradeProcessTest
 			Layout.class.getName(), "#", RandomTestUtil.nextLong(), "#true");
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"delete from Counter where name = '" + counterName + "'"),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"insert into Counter (name, currentId) values ('" +
 					counterName + "', 100 )"),
 			(UnsafeConsumer<List<String>, Exception>)
@@ -273,15 +292,19 @@ public class CounterDataCleanupPreupgradeProcessTest
 
 		_test(
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"delete from Counter where name = '" + counterName + "'");
-				runSQL("delete from Layout where plid = " + plid);
+				_db.runSQL(
+					_connection, "delete from Layout where plid = " + plid);
 			},
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"insert into Counter (name, currentId) values ('" +
 						counterName + "', 100 )");
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into Layout (mvccVersion, ctCollectionId, ",
 						"plid, groupId, privateLayout, layoutId ) values (0, ",
@@ -304,15 +327,18 @@ public class CounterDataCleanupPreupgradeProcessTest
 				1000;
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL("drop table " + tableName),
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection, "drop table " + tableName),
 			(UnsafeRunnable<Exception>)() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ", tableName,
 						" (mvccVersion LONG default 0 not null, testId LONG ",
 						"not null primary key)"));
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into ", tableName, " (mvccVersion, testId) ",
 						"values (0, ", testId, ")"));
@@ -336,9 +362,10 @@ public class CounterDataCleanupPreupgradeProcessTest
 			CounterLocalServiceUtil.getCurrentId(Region.class.getName()) + 1000;
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
-				"delete from Region where regionId = " + regionId),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection, "delete from Region where regionId = " + regionId),
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				StringBundler.concat(
 					"insert into Region (mvccVersion, ctCollectionId, ",
 					"regionId) values (0, 0,", regionId, ")")),
@@ -361,9 +388,11 @@ public class CounterDataCleanupPreupgradeProcessTest
 			"com.liferay.portal.kernel." + RandomTestUtil.randomString();
 
 		_test(
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"delete from Counter where name = '" + counterName + "'"),
-			(UnsafeRunnable<Exception>)() -> runSQL(
+			(UnsafeRunnable<Exception>)() -> _db.runSQL(
+				_connection,
 				"insert into Counter (name, currentId) values ('" +
 					counterName + "', 100 )"),
 			(UnsafeConsumer<List<String>, Exception>)
@@ -394,7 +423,9 @@ public class CounterDataCleanupPreupgradeProcessTest
 
 	private static final String _TABLE_NAME = "TestTable";
 
-	private Connection _connection;
+	private static Connection _connection;
+	private static DB _db;
+
 	private DBInspector _dbInspector;
 
 }

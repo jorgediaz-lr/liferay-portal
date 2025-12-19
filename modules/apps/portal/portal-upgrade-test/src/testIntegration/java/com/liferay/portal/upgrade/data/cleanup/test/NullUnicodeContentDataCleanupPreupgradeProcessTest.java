@@ -61,8 +61,11 @@ public class NullUnicodeContentDataCleanupPreupgradeProcessTest
 	public static void tearDownClass() throws Exception {
 		try {
 			_db.alterTableDropColumn(_connection, "JournalArticle", "content");
-			_db.runSQL("delete from JournalArticle where id_ = " + _journalId);
 			_db.runSQL(
+				_connection,
+				"delete from JournalArticle where id_ = " + _journalId);
+			_db.runSQL(
+				_connection,
 				"delete from DDMContent where contentId = " + _contentId);
 		}
 		finally {
@@ -82,7 +85,7 @@ public class NullUnicodeContentDataCleanupPreupgradeProcessTest
 
 		_contentId = RandomTestUtil.nextLong();
 
-		runSQL(
+		_db.runSQL(
 			_connection,
 			StringBundler.concat(
 				"insert into DDMContent (",
@@ -92,7 +95,7 @@ public class NullUnicodeContentDataCleanupPreupgradeProcessTest
 
 		_journalId = RandomTestUtil.nextLong();
 
-		runSQL(
+		_db.runSQL(
 			_connection,
 			StringBundler.concat(
 				"insert into JournalArticle (",

@@ -7,6 +7,8 @@ package com.liferay.portal.upgrade.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -53,9 +55,12 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_companyLocalService.forEachCompany(
 			company -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ResourceBlock (mvccVersion LONG default ",
 						"0 not null, resourceBlockId LONG not null primary ",
@@ -63,18 +68,21 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 						"null, permissionsHash VARCHAR(75) null, ",
 						"referenceCount LONG)"));
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ResourceBlockPermission (mvccVersion ",
 						"LONG default 0 not null, resourceBlockPermissionId ",
 						"LONG not null primary key, companyId LONG, ",
 						"resourceBlockId LONG, roleId LONG, actionIds LONG)"));
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"create table UpgradeResourceBlockTest(id_ LONG not null " +
 						"primary key, userId LONG, resourceBlockId LONG)");
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"create table ResourceTypePermission (mvccVersion ",
 						"LONG default 0 not null, resourceTypePermissionId ",
@@ -95,7 +103,7 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 				sb.append(resourceBlockId);
 				sb.append(")");
 
-				runSQL(sb.toString());
+				_db.runSQL(_connection, sb.toString());
 
 				_insertResourceTypePermission(
 					-2, 0, _regularRole.getRoleId(), _COMPANY_SCOPE_ACTION_IDS);
@@ -124,7 +132,7 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 				sb.append(UpgradeResourceBlockTest.class.getName());
 				sb.append("', 'hash', 1)");
 
-				runSQL(sb.toString());
+				_db.runSQL(_connection, sb.toString());
 
 				sb.setIndex(0);
 
@@ -141,7 +149,7 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 				sb.append(_INDIVIDUAL_SCOPE_ACTION_IDS);
 				sb.append(")");
 
-				runSQL(sb.toString());
+				_db.runSQL(_connection, sb.toString());
 			});
 	}
 
@@ -155,7 +163,8 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 
 				dropTable("ResourceTypePermission");
 
-				runSQL(
+				_db.runSQL(
+					_connection,
 					"delete from ResourcePermission where name = '" +
 						UpgradeResourceBlockTest.class.getName() + "'");
 
@@ -173,6 +182,10 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 	@Test
 	public void testUpgradeWithUserId() throws Exception {
 		_testUpgrade(true);
+	}
+
+	protected void dropTable(String tableName) throws Exception {
+		_db.runSQL(_connection, "DROP_TABLE_IF_EXISTS(" + tableName + ")");
 	}
 
 	@Override
@@ -234,7 +247,8 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 			long actionIds)
 		throws Exception {
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into ResourceTypePermission(mvccVersion, ",
 				"resourceTypePermissionId, companyId, groupId, name, roleId, ",
@@ -319,6 +333,7 @@ public class UpgradeResourceBlockTest extends BaseUpgradeResourceBlock {
 
 	private static Connection _connection;
 
+	private DB _db;
 	private boolean _hasUserId;
 
 	@DeleteAfterTestRun

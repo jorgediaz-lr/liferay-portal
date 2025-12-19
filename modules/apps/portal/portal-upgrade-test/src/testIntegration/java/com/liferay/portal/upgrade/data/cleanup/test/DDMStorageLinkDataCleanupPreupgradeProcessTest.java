@@ -8,7 +8,9 @@ package com.liferay.portal.upgrade.data.cleanup.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -23,7 +25,9 @@ import java.sql.Connection;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,27 +46,43 @@ public class DDMStorageLinkDataCleanupPreupgradeProcessTest
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_connection = DataAccess.getConnection();
+
+		_db = DBManagerUtil.getDB();
+
+		_dbInspector = new DBInspector(_connection);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		DataAccess.cleanUp(_connection);
+	}
+
 	@Test
 	public void testUpgrade() throws Exception {
 		long contentId = RandomTestUtil.nextLong();
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into DDMContent (mvccVersion, ctCollectionId, ",
 				"contentId) values (0, 0, ", contentId, ")"));
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into DDMField (mvccVersion, ctCollectionId, fieldId, ",
 				"storageId) values (0, 0, ", RandomTestUtil.nextLong(), ", ",
 				contentId, ")"));
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into DDMFieldAttribute (mvccVersion, ctCollectionId, ",
 				"fieldAttributeId, storageId) values (0, 0, ",
 				RandomTestUtil.nextLong(), ", ", contentId, ")"));
 
-		try (Connection connection = DataAccess.getConnection();
-			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				OrphanReferencesDataCleanupUtil.class.getName(),
 				LoggerTestUtil.INFO)) {
 
@@ -72,46 +92,53 @@ public class DDMStorageLinkDataCleanupPreupgradeProcessTest
 
 			Assert.assertEquals(messages.toString(), 3, messages.size());
 
-			DBInspector dbInspector = new DBInspector(connection);
-
 			Assert.assertTrue(
 				messages.contains(
 					StringBundler.concat(
-						"Table ", dbInspector.normalizeName("DDMContent"),
+						"Table ", _dbInspector.normalizeName("DDMContent"),
 						", 1 row deleted because ",
-						dbInspector.normalizeName("contentId"),
+						_dbInspector.normalizeName("contentId"),
 						StringPool.SPACE, contentId,
 						" was not found in column ",
-						dbInspector.normalizeName("classPK"), " from table ",
-						dbInspector.normalizeName("DDMStorageLink"))));
+						_dbInspector.normalizeName("classPK"), " from table ",
+						_dbInspector.normalizeName("DDMStorageLink"))));
 			Assert.assertTrue(
 				messages.contains(
 					StringBundler.concat(
-						"Table ", dbInspector.normalizeName("DDMField"),
+						"Table ", _dbInspector.normalizeName("DDMField"),
 						", 1 row deleted because ",
-						dbInspector.normalizeName("storageId"),
+						_dbInspector.normalizeName("storageId"),
 						StringPool.SPACE, contentId,
 						" was not found in column ",
-						dbInspector.normalizeName("classPK"), " from table ",
-						dbInspector.normalizeName("DDMStorageLink"))));
+						_dbInspector.normalizeName("classPK"), " from table ",
+						_dbInspector.normalizeName("DDMStorageLink"))));
 			Assert.assertTrue(
 				messages.contains(
 					StringBundler.concat(
 						"Table ",
-						dbInspector.normalizeName("DDMFieldAttribute"),
+						_dbInspector.normalizeName("DDMFieldAttribute"),
 						", 1 row deleted because ",
-						dbInspector.normalizeName("storageId"),
+						_dbInspector.normalizeName("storageId"),
 						StringPool.SPACE, contentId,
 						" was not found in column ",
-						dbInspector.normalizeName("classPK"), " from table ",
-						dbInspector.normalizeName("DDMStorageLink"))));
+						_dbInspector.normalizeName("classPK"), " from table ",
+						_dbInspector.normalizeName("DDMStorageLink"))));
 		}
 		finally {
-			runSQL("delete from DDMContent where contentId = " + contentId);
-			runSQL("delete from DDMField where storageId = " + contentId);
-			runSQL(
+			_db.runSQL(
+				_connection,
+				"delete from DDMContent where contentId = " + contentId);
+			_db.runSQL(
+				_connection,
+				"delete from DDMField where storageId = " + contentId);
+			_db.runSQL(
+				_connection,
 				"delete from DDMFieldAttribute where storageId = " + contentId);
 		}
 	}
+
+	private static Connection _connection;
+	private static DB _db;
+	private static DBInspector _dbInspector;
 
 }

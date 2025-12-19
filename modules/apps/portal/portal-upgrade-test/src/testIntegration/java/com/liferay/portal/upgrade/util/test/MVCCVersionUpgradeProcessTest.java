@@ -8,6 +8,7 @@ package com.liferay.portal.upgrade.util.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 
@@ -28,14 +29,18 @@ public class MVCCVersionUpgradeProcessTest extends MVCCVersionUpgradeProcess {
 	public void setUp() throws Exception {
 		connection = DataAccess.getConnection();
 
+		db = DBManagerUtil.getDB();
+
 		_createTable(_HIBERNATE_MAPPING_TABLE_NAME);
 		_createTable(_TABLE_NAME);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		dropTable(_HIBERNATE_MAPPING_TABLE_NAME);
-		dropTable(_TABLE_NAME);
+		db.runSQL(
+			connection,
+			"DROP_TABLE_IF_EXISTS(" + _HIBERNATE_MAPPING_TABLE_NAME + ")");
+		db.runSQL(connection, "DROP_TABLE_IF_EXISTS(" + _TABLE_NAME + ")");
 
 		DataAccess.cleanUp(connection);
 	}
@@ -61,7 +66,8 @@ public class MVCCVersionUpgradeProcessTest extends MVCCVersionUpgradeProcess {
 	}
 
 	private void _createTable(String tableName) throws Exception {
-		runSQL(
+		db.runSQL(
+			connection,
 			StringBundler.concat(
 				"create table ", tableName, "(id LONG not null primary key, ",
 				"userId LONG)"));

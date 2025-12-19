@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.layout.page.template.test.util.DisplayPageTemplateTestUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
@@ -28,6 +29,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.data.cleanup.GroupDataCleanupPreupgradeProcess;
+
+import java.sql.Connection;
 
 import java.util.List;
 
@@ -53,6 +56,7 @@ public class GroupDataCleanupPreupgradeProcessTest
 
 	@Before
 	public void setUp() throws Exception {
+		_connection = DataAccess.getConnection();
 		_classNames = _classNameLocalService.getClassNames(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		_resourcePermissions =
@@ -80,6 +84,8 @@ public class GroupDataCleanupPreupgradeProcessTest
 			_resourcePermissionLocalService.deleteResourcePermission(
 				resourcePermission);
 		}
+
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Test
@@ -100,7 +106,9 @@ public class GroupDataCleanupPreupgradeProcessTest
 			_portal.getClassNameId(BlogsEntry.class.getName()), 0, true,
 			WorkflowConstants.STATUS_APPROVED);
 
-		runSQL("delete from Group_ where groupId = " + group.getGroupId());
+		db.runSQL(
+			_connection,
+			"delete from Group_ where groupId = " + group.getGroupId());
 
 		upgrade();
 	}
@@ -110,6 +118,8 @@ public class GroupDataCleanupPreupgradeProcessTest
 
 	@Inject
 	private ClassNameLocalService _classNameLocalService;
+
+	private Connection _connection;
 
 	@Inject
 	private GroupLocalService _groupLocalService;

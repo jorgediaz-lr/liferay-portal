@@ -120,23 +120,26 @@ public class BaseUpgradePortletIdTest extends BasePortletIdUpgradeProcess {
 					oldRootPortletId, newRootPortletId, false);
 				updateLayouts(oldRootPortletId, newRootPortletId, false);
 			}
+
+			for (String portletId : _PORTLET_IDS) {
+				db.runSQL(
+					connection,
+					"delete from Portlet where portletId = '" + portletId +
+						"_test'");
+
+				db.runSQL(
+					connection,
+					"delete from ResourceAction where name = '" + portletId +
+						"_test'");
+
+				db.runSQL(
+					connection,
+					"delete from ResourcePermission where name = '" +
+						portletId + "_test'");
+			}
 		}
 		finally {
 			this.connection = null;
-		}
-
-		for (String portletId : _PORTLET_IDS) {
-			runSQL(
-				"delete from Portlet where portletId = '" + portletId +
-					"_test'");
-
-			runSQL(
-				"delete from ResourceAction where name = '" + portletId +
-					"_test'");
-
-			runSQL(
-				"delete from ResourcePermission where name = '" + portletId +
-					"_test'");
 		}
 	}
 

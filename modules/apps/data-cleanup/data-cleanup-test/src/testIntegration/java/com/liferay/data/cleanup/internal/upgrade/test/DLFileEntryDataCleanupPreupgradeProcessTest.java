@@ -10,6 +10,7 @@ import com.liferay.data.cleanup.DataCleanup;
 import com.liferay.data.cleanup.util.DataCleanupUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -52,6 +53,8 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 	public static void setUpClass() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 	}
 
@@ -64,7 +67,8 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 	public void testRemoveDLFileEntryOrphanData() throws Exception {
 		long fileEntryId1 = RandomTestUtil.nextLong();
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into DLFileEntry (",
 				"mvccVersion, ctCollectionId, fileEntryId, groupId) values ",
@@ -72,7 +76,8 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 
 		long fileEntryId2 = RandomTestUtil.nextLong();
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			StringBundler.concat(
 				"insert into DLFileEntry (",
 				"mvccVersion, ctCollectionId, fileEntryId, groupId, name) ",
@@ -121,9 +126,11 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 							"empty")));
 		}
 		finally {
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId1);
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"delete from DLFileEntry where fileEntryId = " + fileEntryId2);
 		}
 	}
@@ -145,6 +152,7 @@ public class DLFileEntryDataCleanupPreupgradeProcessTest
 	}
 
 	private static Connection _connection;
+	private static DB _db;
 	private static DBInspector _dbInspector;
 
 }

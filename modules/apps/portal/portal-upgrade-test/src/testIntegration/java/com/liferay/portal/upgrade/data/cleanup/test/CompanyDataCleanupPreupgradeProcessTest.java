@@ -9,7 +9,9 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
@@ -65,6 +67,8 @@ public class CompanyDataCleanupPreupgradeProcessTest
 
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 
 		_resourceActions = _resourceActionLocalService.getResourceActions(
@@ -112,7 +116,8 @@ public class CompanyDataCleanupPreupgradeProcessTest
 			"test_x_" + companyId);
 
 		for (String objectTableName : objectTableNames) {
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"create table " + objectTableName +
 					" (id_ LONG not null primary key)");
 		}
@@ -121,7 +126,9 @@ public class CompanyDataCleanupPreupgradeProcessTest
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 					PortalInstancePool.getDefaultCompanyId())) {
 
-			runSQL("delete from Company where companyId = " + companyId);
+			_db.runSQL(
+				_connection,
+				"delete from Company where companyId = " + companyId);
 		}
 		finally {
 			PortalInstancePool.remove(companyId);
@@ -151,10 +158,15 @@ public class CompanyDataCleanupPreupgradeProcessTest
 		}
 		finally {
 			for (String objectTableName : objectTableNames) {
-				dropTable(_dbInspector.normalizeName(objectTableName));
+				_db.runSQL(
+					_connection,
+					"DROP_TABLE_IF_EXISTS(" +
+						_dbInspector.normalizeName(objectTableName) + ")");
 			}
 
-			runSQL("delete from SystemEvent where companyId = " + companyId);
+			_db.runSQL(
+				_connection,
+				"delete from SystemEvent where companyId = " + companyId);
 		}
 	}
 
@@ -168,6 +180,7 @@ public class CompanyDataCleanupPreupgradeProcessTest
 	private CompanyLocalService _companyLocalService;
 
 	private Connection _connection;
+	private DB _db;
 	private DBInspector _dbInspector;
 
 	@Inject

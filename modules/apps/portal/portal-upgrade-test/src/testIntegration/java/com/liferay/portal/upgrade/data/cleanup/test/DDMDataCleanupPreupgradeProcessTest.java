@@ -21,7 +21,9 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.ClassName;
@@ -76,6 +78,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 	public static void setUpClass() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 	}
 
@@ -125,7 +129,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			"delete from DDMStructure where structureId = " +
 				ddmStructure.getStructureId());
 
@@ -162,7 +167,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 
 			_test(
 				() -> {
-					runSQL(
+					_db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"insert into JournalArticle (",
 							"mvccVersion, ctCollectionId, id_, groupId, ",
@@ -170,7 +176,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 							RandomTestUtil.nextLong(), ", ",
 							RandomTestUtil.nextLong(), ", '", structureId,
 							"')"));
-					runSQL(
+					_db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"insert into JournalFeed (",
 							"mvccVersion, ctCollectionId, id_, groupId, ",
@@ -212,7 +219,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 
 			_test(
 				() -> {
-					runSQL(
+					_db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"insert into JournalArticle (",
 							"mvccVersion, ctCollectionId, id_, groupId, ",
@@ -220,7 +228,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 							RandomTestUtil.nextLong(), ", ",
 							RandomTestUtil.nextLong(), ", '", structureId,
 							"')"));
-					runSQL(
+					_db.runSQL(
+						_connection,
 						StringBundler.concat(
 							"insert into JournalFeed (",
 							"mvccVersion, ctCollectionId, id_, groupId, ",
@@ -254,14 +263,16 @@ public class DDMDataCleanupPreupgradeProcessTest
 
 		_test(
 			() -> {
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into JournalArticle (",
 						"mvccVersion, ctCollectionId, id_, groupId, ",
 						"DDMStructureId) values (0, 0, ",
 						RandomTestUtil.nextLong(), ", ",
 						RandomTestUtil.nextLong(), ", ", structureId, ")"));
-				runSQL(
+				_db.runSQL(
+					_connection,
 					StringBundler.concat(
 						"insert into JournalFeed (",
 						"mvccVersion, ctCollectionId, id_, groupId, ",
@@ -294,7 +305,8 @@ public class DDMDataCleanupPreupgradeProcessTest
 			ddmStructure.getStructureId(),
 			PortalUtil.getClassNameId(JournalArticle.class));
 
-		runSQL(
+		_db.runSQL(
+			_connection,
 			"delete from DDMTemplate where templateId = " +
 				ddmTemplate.getTemplateId());
 
@@ -336,6 +348,7 @@ public class DDMDataCleanupPreupgradeProcessTest
 
 	private static List<ClassName> _classNames;
 	private static Connection _connection;
+	private static DB _db;
 	private static DBInspector _dbInspector;
 	private static List<ResourcePermission> _resourcePermissions;
 

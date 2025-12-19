@@ -10,7 +10,9 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -59,6 +61,8 @@ public class ConfigurationDataCleanupPreupgradeProcessTest
 	public void setUp() throws Exception {
 		_connection = DataAccess.getConnection();
 
+		_db = DBManagerUtil.getDB();
+
 		_dbInspector = new DBInspector(_connection);
 
 		_originalCacheEnabled = ReflectionTestUtil.getAndSetFieldValue(
@@ -91,7 +95,8 @@ public class ConfigurationDataCleanupPreupgradeProcessTest
 				PropsValuesTestUtil.swapWithSafeCloseable(
 					"DATABASE_PARTITION_ENABLED", true)) {
 
-			runSQL(
+			_db.runSQL(
+				_connection,
 				"insert into Company (mvccVersion, companyId) values (0 ," +
 					companyId + ")");
 
@@ -100,7 +105,9 @@ public class ConfigurationDataCleanupPreupgradeProcessTest
 				"Company");
 		}
 		finally {
-			runSQL("delete from Company where companyId = " + companyId);
+			_db.runSQL(
+				_connection,
+				"delete from Company where companyId = " + companyId);
 		}
 	}
 
@@ -205,6 +212,7 @@ public class ConfigurationDataCleanupPreupgradeProcessTest
 	}
 
 	private Connection _connection;
+	private DB _db;
 	private DBInspector _dbInspector;
 	private boolean _originalCacheEnabled;
 

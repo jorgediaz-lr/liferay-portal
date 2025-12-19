@@ -540,6 +540,7 @@ public abstract class BaseDBProcess implements DBProcess {
 	}
 
 	protected Connection connection;
+	protected DB db;
 
 	private void _closeConnections(Map<Thread, Connection> connectionsMap) {
 		if (MapUtil.isEmpty(connectionsMap)) {

@@ -16,6 +16,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
@@ -35,6 +36,8 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.data.cleanup.JournalDataCleanupPreupgradeProcess;
+
+import java.sql.Connection;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +64,7 @@ public class JournalDataCleanupPreupgradeProcessTest
 
 	@Before
 	public void setUp() throws Exception {
+		_connection = DataAccess.getConnection();
 		_classNames = _classNameLocalService.getClassNames(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		_resourcePermissions =
@@ -88,6 +92,8 @@ public class JournalDataCleanupPreupgradeProcessTest
 			_resourcePermissionLocalService.deleteResourcePermission(
 				resourcePermission);
 		}
+
+		DataAccess.cleanUp(_connection);
 	}
 
 	@Test
@@ -106,10 +112,12 @@ public class JournalDataCleanupPreupgradeProcessTest
 			journalArticle.getDDMTemplateKey(),
 			journalArticle.getDDMTemplateKey());
 
-		runSQL(
+		db.runSQL(
+			_connection,
 			"delete from JournalArticle where articleId = '" +
 				journalArticle.getArticleId() + "'");
-		runSQL(
+		db.runSQL(
+			_connection,
 			"delete from JournalFeed where feedId = '" +
 				journalFeed.getFeedId() + "'");
 
@@ -148,6 +156,8 @@ public class JournalDataCleanupPreupgradeProcessTest
 
 	@Inject
 	private ClassNameLocalService _classNameLocalService;
+
+	private Connection _connection;
 
 	@Inject
 	private DDMFieldLocalService _ddmFieldLocalService;
