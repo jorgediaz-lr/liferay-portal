@@ -16,6 +16,7 @@ import com.liferay.object.relationship.util.ObjectRelationshipUtil;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.db.DBResourceProvider;
 import com.liferay.portal.kernel.dao.db.DBInspector;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -242,9 +244,12 @@ public class ObjectDBResourceProvider implements DBResourceProvider {
 
 				if (dynamicObjectDefinitionLocalizationTable != null) {
 					return Collections.singletonMap(
-						objectDefinition.getLocalizationDBTableName(),
-						dynamicObjectDefinitionLocalizationTable.
-							getPrimaryKeyColumnNames());
+						dbInspector.normalizeName(
+							objectDefinition.getLocalizationDBTableName()),
+						TransformUtil.transform(
+							dynamicObjectDefinitionLocalizationTable.
+								getPrimaryKeyColumnNames(),
+							dbInspector::normalizeName, String.class));
 				}
 
 				return Collections.emptyMap();
@@ -260,10 +265,12 @@ public class ObjectDBResourceProvider implements DBResourceProvider {
 				objectDefinition.getLocalizationDBTableName())) {
 
 			return Collections.singletonMap(
-				objectDefinition.getLocalizationDBTableName(),
+				dbInspector.normalizeName(
+					objectDefinition.getLocalizationDBTableName()),
 				new String[] {
-					objectDefinition.getPKObjectFieldDBColumnName(),
-					"languageId"
+					dbInspector.normalizeName(
+						objectDefinition.getPKObjectFieldDBColumnName()),
+					dbInspector.normalizeName("languageId")
 				});
 		}
 
@@ -272,9 +279,10 @@ public class ObjectDBResourceProvider implements DBResourceProvider {
 
 	private Map<String, String[]>
 			_getObjectRelationshipTablesPrimaryKeyColumnNames(
-				Connection connection, ObjectDefinition objectDefinition,
+				Connection connection, DBInspector dbInspector,
+				ObjectDefinition objectDefinition,
 				Map<Long, ObjectDefinition> objectDefinitions)
-		throws PortalException {
+		throws PortalException, SQLException {
 
 		Map<String, String[]> objectRelationshipTablesPrimaryKeyColumnNames =
 			new HashMap<>();
@@ -304,9 +312,10 @@ public class ObjectDBResourceProvider implements DBResourceProvider {
 				"pkObjectFieldDBColumnName2");
 
 			objectRelationshipTablesPrimaryKeyColumnNames.put(
-				objectRelationship.getDBTableName(),
+				dbInspector.normalizeName(objectRelationship.getDBTableName()),
 				new String[] {
-					pkObjectFieldDBColumnName1, pkObjectFieldDBColumnName2
+					dbInspector.normalizeName(pkObjectFieldDBColumnName1),
+					dbInspector.normalizeName(pkObjectFieldDBColumnName2)
 				});
 		}
 
@@ -334,23 +343,28 @@ public class ObjectDBResourceProvider implements DBResourceProvider {
 
 				if (!objectDefinition.isUnmodifiableSystemObject()) {
 					tablesPrimaryKeyColumnNames.put(
-						objectDefinition.getDBTableName(),
+						dbInspector.normalizeName(
+							objectDefinition.getDBTableName()),
 						new String[] {
-							objectDefinition.getPKObjectFieldDBColumnName()
+							dbInspector.normalizeName(
+								objectDefinition.getPKObjectFieldDBColumnName())
 						});
 				}
 
 				tablesPrimaryKeyColumnNames.put(
-					objectDefinition.getExtensionDBTableName(),
+					dbInspector.normalizeName(
+						objectDefinition.getExtensionDBTableName()),
 					new String[] {
-						objectDefinition.getPKObjectFieldDBColumnName()
+						dbInspector.normalizeName(
+							objectDefinition.getPKObjectFieldDBColumnName())
 					});
 				tablesPrimaryKeyColumnNames.putAll(
 					_getObjectLocalizationTablePrimaryKeyColumnNames(
 						dbInspector, objectDefinition));
 				tablesPrimaryKeyColumnNames.putAll(
 					_getObjectRelationshipTablesPrimaryKeyColumnNames(
-						connection, objectDefinition, objectDefinitions));
+						connection, dbInspector, objectDefinition,
+						objectDefinitions));
 			}
 		}
 
