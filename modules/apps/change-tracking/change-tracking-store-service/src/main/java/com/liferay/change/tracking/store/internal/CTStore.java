@@ -17,6 +17,8 @@ import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 
@@ -70,7 +72,10 @@ public class CTStore implements Store {
 	public void deleteDirectory(long companyId) throws PortalException {
 		_store.deleteDirectory(companyId);
 
-		if (PropsValues.DATABASE_PARTITION_ENABLED) {
+		if (PropsValues.DATABASE_PARTITION_ENABLED &&
+			!ArrayUtil.contains(
+				PortalInstancePool.getCompanyIds(), companyId)) {
+
 			return;
 		}
 
