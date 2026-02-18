@@ -45,28 +45,36 @@ public class VerifyGroupedModel extends VerifyProcess {
 
 		int count = unverifiedTableNames.size();
 
-		processConcurrently(
-			verifiableGroupedModels,
-			verifiableGroupedModel -> {
-				if (unverifiedTableNames.contains(
-						verifiableGroupedModel.getRelatedTableName()) ||
-					!unverifiedTableNames.contains(
-						verifiableGroupedModel.getTableName())) {
+		try (Connection connection = getConnection()) {
+			this.connection = connection;
 
-					return;
-				}
+			processConcurrently(
+				verifiableGroupedModels,
+				verifiableGroupedModel -> {
+					if (unverifiedTableNames.contains(
+							verifiableGroupedModel.getRelatedTableName()) ||
+						!unverifiedTableNames.contains(
+							verifiableGroupedModel.getTableName())) {
 
-				unverifiedTableNames.remove(
-					verifiableGroupedModel.getTableName());
+						return;
+					}
 
-				if (unverifiedTableNames.size() == count) {
-					throw new VerifyException(
-						"Circular dependency detected " + unverifiedTableNames);
-				}
+					unverifiedTableNames.remove(
+						verifiableGroupedModel.getTableName());
 
-				verifyGroupedModel(verifiableGroupedModel);
-			},
-			null);
+					if (unverifiedTableNames.size() == count) {
+						throw new VerifyException(
+							"Circular dependency detected " +
+								unverifiedTableNames);
+					}
+
+					verifyGroupedModel(verifiableGroupedModel);
+				},
+				null);
+		}
+		finally {
+			this.connection = null;
+		}
 	}
 
 	@Override
