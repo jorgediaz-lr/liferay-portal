@@ -193,6 +193,9 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcess
 			String tempColumnName = _getTempName(
 				maxColumnNameLength, expectedColumnName);
 
+			String expectedColumnDefinition =
+				expectedColumnName + StringPool.SPACE + columnDataType;
+
 			String tempColumnDefinition =
 				tempColumnName + StringPool.SPACE + columnDataType;
 
@@ -200,7 +203,8 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcess
 				connection, tableName, columnName, tempColumnDefinition);
 
 			db.alterColumnName(
-				connection, tableName, tempColumnName, columnDefinition);
+				connection, tableName, tempColumnName,
+				expectedColumnDefinition);
 		}
 	}
 
