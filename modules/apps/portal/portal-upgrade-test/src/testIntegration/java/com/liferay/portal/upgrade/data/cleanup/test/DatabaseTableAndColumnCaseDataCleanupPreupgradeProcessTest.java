@@ -10,7 +10,6 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.DBResourceUtil;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -340,9 +339,8 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcessTest
 				messages.toString(),
 				messages.contains(
 					StringBundler.concat(
-						"Table ", testTableName, StringPool.PERIOD,
-						invalidColumnName, " was renamed to ", testTableName,
-						StringPool.PERIOD, testColumnName,
+						"Table ", testTableName, ", column ", invalidColumnName,
+						" was renamed to ", testColumnName,
 						" because it was incorrectly cased")));
 
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
