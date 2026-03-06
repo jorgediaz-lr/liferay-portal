@@ -11,6 +11,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.db.DBResourceUtil;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -32,8 +34,10 @@ import com.liferay.portal.upgrade.data.cleanup.DatabaseTableAndColumnCaseDataCle
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -173,6 +177,86 @@ public class DatabaseTableAndColumnCaseDataCleanupPreupgradeProcessTest
 	public void testUpgradeWithServiceComponentTable() throws Exception {
 		_testUpgradeWithServiceComponentTable(
 			"testCOLUMN", "testTABLE", "testColumn", "TestTable");
+	}
+
+	@Test
+	public void testValidateColumnNamesCasingMysqlLowerCaseTableNamesTable()
+		throws Exception {
+
+		Assume.assumeTrue(
+			(_db.getDBType() == DBType.MARIADB) ||
+			(_db.getDBType() == DBType.MYSQL));
+
+		String columnName = "testColumn";
+		String tableName = "TestTable";
+
+		ServiceComponent serviceComponent = _createServiceComponent(
+			columnName, tableName);
+
+		try (Connection connection = DataAccess.getConnection();
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				DatabaseTableAndColumnCaseDataCleanupPreupgradeProcess.class.
+					getName(),
+				LoggerTestUtil.INFO)) {
+
+			_createTestTable(columnName, tableName);
+
+			Map<String, List<String>> columnDefinitionsMap =
+				DBResourceUtil.getServiceComponentPortalColumnDefinitionsMap(
+					connection);
+
+			columnDefinitionsMap.putAll(
+				DBResourceUtil.getServiceComponentModuleColumnDefinitionsMap(
+					connection));
+
+			List<String> columnDefinitions = columnDefinitionsMap.get(
+				tableName);
+
+			Map<String, String> columnNames =
+				TreeMapBuilder.<String, String>create(
+					String.CASE_INSENSITIVE_ORDER
+				).put(
+					columnName, columnName
+				).build();
+
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+			DBInspector dbInspector = new DBInspector(connection) {
+
+				public String normalizeName(
+						String name, DatabaseMetaData databaseMetaData)
+					throws SQLException {
+
+					return StringUtil.toLowerCase(name);
+				}
+
+			};
+
+			this.connection = connection;
+
+			ReflectionTestUtil.invoke(
+				this, "_validateColumnNamesCasing",
+				new Class<?>[] {
+					DBInspector.class, List.class, Map.class, int.class,
+					String.class
+				},
+				dbInspector, columnDefinitions, columnNames,
+				databaseMetaData.getMaxColumnNameLength(), tableName);
+
+			this.connection = null;
+
+			List<String> messages = logCapture.getMessages();
+
+			Assert.assertEquals(messages.toString(), 0, messages.size());
+		}
+		finally {
+			_serviceComponentLocalService.deleteServiceComponent(
+				serviceComponent);
+
+			DBPartitionUtil.forEachCompanyId(
+				companyId -> _db.runSQL(
+					"DROP_TABLE_IF_EXISTS(" + tableName + ")"));
+		}
 	}
 
 	private ServiceComponent _createServiceComponent(
