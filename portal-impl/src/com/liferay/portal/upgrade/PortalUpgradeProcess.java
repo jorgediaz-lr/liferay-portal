@@ -374,6 +374,10 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 			this.connection = connection;
 
 			if (_log.isInfoEnabled()) {
+				_log.info("Wait 6 minutes");
+
+				Thread.sleep(6 * 60 * 1000);
+
 				String info = "Upgrading " + ClassUtil.getClassName(this);
 
 				_log.info(info);
