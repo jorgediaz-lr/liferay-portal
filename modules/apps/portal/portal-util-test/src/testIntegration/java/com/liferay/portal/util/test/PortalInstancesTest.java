@@ -141,20 +141,11 @@ public class PortalInstancesTest {
 
 			_assertGetCompanyId(true, mockHttpServletRequest);
 		}
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					RandomTestUtil.randomLong())) {
-
-			_assertGetCompanyId(false, mockHttpServletRequest);
-		}
 	}
 
 	@Test
 	public void testGetCompanyIdThrowsUnsupportedOperationException()
 		throws Exception {
-
-		Company company = CompanyTestUtil.addCompany();
 
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
@@ -164,7 +155,7 @@ public class PortalInstancesTest {
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					company.getCompanyId())) {
+					RandomTestUtil.randomLong())) {
 
 			_assertGetCompanyId(false, mockHttpServletRequest);
 
@@ -174,9 +165,6 @@ public class PortalInstancesTest {
 			Assert.assertEquals(
 				"CompanyThreadLocal modification is not allowed",
 				unsupportedOperationException.getMessage());
-		}
-		finally {
-			_companyLocalService.deleteCompany(company);
 		}
 	}
 
@@ -245,7 +233,12 @@ public class PortalInstancesTest {
 		mockHttpServletRequest.addHeader("Host", hostname);
 		mockHttpServletRequest.setServerName(hostname);
 
-		_assertGetCompanyId(true, mockHttpServletRequest);
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					CompanyConstants.SYSTEM)) {
+
+			_assertGetCompanyId(true, mockHttpServletRequest);
+		}
 
 		Assert.assertEquals(
 			_company.getCompanyId(),
@@ -265,13 +258,18 @@ public class PortalInstancesTest {
 		mockHttpServletRequest.addHeader("Host", hostname);
 		mockHttpServletRequest.setServerName(hostname);
 
-		Assert.assertEquals(
-			_company.getCompanyId(),
-			PortalInstances.getCompanyId(mockHttpServletRequest));
-		Assert.assertEquals(
-			expectedLanguageId,
-			mockHttpServletRequest.getAttribute(
-				WebKeys.VIRTUAL_HOST_LANGUAGE_ID));
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					CompanyConstants.SYSTEM)) {
+
+			Assert.assertEquals(
+				_company.getCompanyId(),
+				PortalInstances.getCompanyId(mockHttpServletRequest));
+			Assert.assertEquals(
+				expectedLanguageId,
+				mockHttpServletRequest.getAttribute(
+					WebKeys.VIRTUAL_HOST_LANGUAGE_ID));
+		}
 	}
 
 	private void _updateLayoutSetVirtualHostname(
