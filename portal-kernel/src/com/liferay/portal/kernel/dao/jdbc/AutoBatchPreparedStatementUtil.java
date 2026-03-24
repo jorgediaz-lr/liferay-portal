@@ -127,7 +127,9 @@ public class AutoBatchPreparedStatementUtil {
 			return new int[0];
 		}
 
-		private BatchInvocationHandler(Connection connection, String sql) {
+		private BatchInvocationHandler(Connection connection, String sql)
+			throws SQLException {
+
 			super(connection, sql);
 		}
 
@@ -163,7 +165,8 @@ public class AutoBatchPreparedStatementUtil {
 		}
 
 		private ConcurrentBatchInvocationHandler(
-			Connection connection, String sql) {
+				Connection connection, String sql)
+			throws SQLException {
 
 			super(connection, sql);
 		}
@@ -253,7 +256,8 @@ public class AutoBatchPreparedStatementUtil {
 		}
 
 		private ConcurrentNoBatchInvocationHandler(
-			Connection connection, String sql) {
+				Connection connection, String sql)
+			throws SQLException {
 
 			super(connection, sql);
 		}
@@ -287,7 +291,9 @@ public class AutoBatchPreparedStatementUtil {
 			return new int[0];
 		}
 
-		private NoBatchInvocationHandler(Connection connection, String sql) {
+		private NoBatchInvocationHandler(Connection connection, String sql)
+			throws SQLException {
+
 			super(connection, sql);
 		}
 
@@ -305,7 +311,20 @@ public class AutoBatchPreparedStatementUtil {
 			}
 
 			if (method.equals(_closeMethod)) {
-				doClose();
+				try {
+					doClose();
+
+					if (!_connection.getAutoCommit() &&
+						(_connection.getAutoCommit() != _autoCommit)) {
+
+						_connection.commit();
+					}
+				}
+				finally {
+					if (_connection.getAutoCommit() != _autoCommit) {
+						_connection.setAutoCommit(_autoCommit);
+					}
+				}
 
 				return null;
 			}
@@ -324,10 +343,17 @@ public class AutoBatchPreparedStatementUtil {
 		}
 
 		protected PreparedStatementInvocationHandler(
-			Connection connection, String sql) {
+				Connection connection, String sql)
+			throws SQLException {
 
 			_connection = connection;
 			_sql = sql;
+
+			_autoCommit = connection.getAutoCommit();
+
+			if (_autoCommit) {
+				connection.setAutoCommit(false);
+			}
 		}
 
 		protected abstract void doAddBatch() throws SQLException;
@@ -346,6 +372,7 @@ public class AutoBatchPreparedStatementUtil {
 
 		protected PreparedStatement preparedStatement;
 
+		private final boolean _autoCommit;
 		private final Connection _connection;
 		private final String _sql;
 

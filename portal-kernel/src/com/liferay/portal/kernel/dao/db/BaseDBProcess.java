@@ -548,6 +548,18 @@ public abstract class BaseDBProcess implements DBProcess {
 
 				iterator.remove();
 
+				if (_autoCommits.containsKey(connection)) {
+					boolean autoCommit = _autoCommits.remove(connection);
+
+					if ((autoCommit != connection.getAutoCommit()) &&
+						!connection.getAutoCommit()) {
+
+						connection.commit();
+
+						connection.setAutoCommit(autoCommit);
+					}
+				}
+
 				connection.close();
 			}
 		}
@@ -571,6 +583,18 @@ public abstract class BaseDBProcess implements DBProcess {
 					Connection connection = entry.getValue();
 
 					connectionsMap.remove(entry.getKey());
+
+					if (_autoCommits.containsKey(connection)) {
+						boolean autoCommit = _autoCommits.remove(connection);
+
+						if ((autoCommit != connection.getAutoCommit()) &&
+							!connection.getAutoCommit()) {
+
+							connection.commit();
+
+							connection.setAutoCommit(autoCommit);
+						}
+					}
 
 					connection.close();
 
@@ -635,7 +659,15 @@ public abstract class BaseDBProcess implements DBProcess {
 				}
 			}
 
-			return DataAccess.getConnection();
+			Connection connection = DataAccess.getConnection();
+
+			_autoCommits.put(connection, connection.getAutoCommit());
+
+			if (connection.getAutoCommit()) {
+				connection.setAutoCommit(false);
+			}
+
+			return connection;
 		}
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
@@ -821,6 +853,8 @@ public abstract class BaseDBProcess implements DBProcess {
 	private static final AtomicInteger _fixedThreadPoolSize = new AtomicInteger(
 		0);
 
+	private final Map<Connection, Boolean> _autoCommits =
+		new ConcurrentHashMap<>();
 	private final Map<Long, Map<Thread, Connection>> _connectionsMaps =
 		new ConcurrentHashMap<>();
 
