@@ -11,19 +11,18 @@ import com.liferay.portal.kernel.license.LicenseInfo;
 import com.liferay.portal.kernel.license.util.LicenseManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.util.LicenseUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Amos Fong
@@ -93,9 +92,7 @@ public class DefaultLicenseManagerImpl implements LicenseManager {
 
 			jsonObject.put("productVersion", productVersion);
 
-			String randomUuid = String.valueOf(
-				new UUID(
-					SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong()));
+			String randomUuid = PortalUUIDUtil.generate();
 
 			jsonObject.put(
 				"randomUuid", randomUuid

@@ -10,16 +10,14 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import java.util.UUID;
 
 /**
  * @author Jonathan McCann
@@ -90,7 +88,8 @@ public class LayoutUpgradeProcess extends UpgradeProcess {
 							long duplicationPlid = resultSet1.getLong("plid");
 							String newFriendlyUrl = _generateFriendlyURLUUID();
 
-							preparedStatement3.setString(1, _generateUUID());
+							preparedStatement3.setString(
+								1, PortalUUIDUtil.generate());
 							preparedStatement3.setString(2, newFriendlyUrl);
 							preparedStatement3.setLong(3, duplicationPlid);
 
@@ -128,14 +127,7 @@ public class LayoutUpgradeProcess extends UpgradeProcess {
 	}
 
 	private String _generateFriendlyURLUUID() {
-		return StringPool.SLASH + _generateUUID();
-	}
-
-	private String _generateUUID() {
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-		return uuid.toString();
+		return StringPool.SLASH + PortalUUIDUtil.generate();
 	}
 
 	private final LayoutLocalService _layoutLocalService;

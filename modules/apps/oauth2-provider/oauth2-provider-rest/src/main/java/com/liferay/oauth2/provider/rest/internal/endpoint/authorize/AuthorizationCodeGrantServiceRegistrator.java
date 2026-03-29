@@ -14,10 +14,10 @@ import com.liferay.portal.kernel.cookies.CookiesManagerUtil;
 import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +30,6 @@ import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.cxf.rs.security.oauth2.common.Client;
@@ -277,10 +276,7 @@ public class AuthorizationCodeGrantServiceRegistrator {
 		}
 
 		private Cookie _getCookie(String cookieName) {
-			UUID uuid = new UUID(
-				SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-			return new Cookie(cookieName, uuid.toString());
+			return new Cookie(cookieName, PortalUUIDUtil.generate());
 		}
 
 		private LiferayOAuthDataProvider _getLiferayOAuthDataProvider() {
