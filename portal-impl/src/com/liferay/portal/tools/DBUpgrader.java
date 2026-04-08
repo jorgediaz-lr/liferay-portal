@@ -211,10 +211,12 @@ public class DBUpgrader {
 			stopUpgradeLogAppender();
 		}
 		finally {
-			System.out.println(
-				StringBundler.concat(
-					"\n", result, " Liferay upgrade process in ",
-					_stopWatch.getTime() / Time.SECOND, " seconds"));
+			if (_stopWatch != null) {
+				System.out.println(
+					StringBundler.concat(
+						"\n", result, " Liferay upgrade process in ",
+						_stopWatch.getTime() / Time.SECOND, " seconds"));
+			}
 		}
 
 		System.out.println("Exiting DBUpgrader#main(String[]).");
@@ -247,7 +249,7 @@ public class DBUpgrader {
 			});
 	}
 
-	public static void stopUpgradeLogAppender() {
+	public static synchronized void stopUpgradeLogAppender() {
 		if ((_appender != null) && _appender.isStarted()) {
 			_stopWatch.stop();
 
@@ -362,7 +364,7 @@ public class DBUpgrader {
 
 			serviceTracker.open();
 
-			VerifyProcess verifyProcess = serviceTracker.waitForService(5000L);
+			VerifyProcess verifyProcess = serviceTracker.waitForService(30000L);
 
 			if (verifyProcess == null) {
 				stopUpgradeLogAppender();
