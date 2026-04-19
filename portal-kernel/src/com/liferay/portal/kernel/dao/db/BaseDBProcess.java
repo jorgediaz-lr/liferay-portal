@@ -545,19 +545,14 @@ public abstract class BaseDBProcess implements DBProcess {
 
 		Collection<Connection> connections = connectionsMap.values();
 
-		try {
-			Iterator<Connection> iterator = connections.iterator();
+		Iterator<Connection> iterator = connections.iterator();
 
-			while (iterator.hasNext()) {
-				Connection connection = iterator.next();
+		while (iterator.hasNext()) {
+			Connection connection = iterator.next();
 
-				iterator.remove();
+			iterator.remove();
 
-				connection.close();
-			}
-		}
-		catch (SQLException sqlException) {
-			_log.error(sqlException);
+			_finishAndCloseConnection(connection);
 		}
 	}
 
@@ -568,20 +563,112 @@ public abstract class BaseDBProcess implements DBProcess {
 			return;
 		}
 
-		try {
-			for (Map.Entry<Thread, Connection> entry :
-					connectionsMap.entrySet()) {
+		for (Map.Entry<Thread, Connection> entry : connectionsMap.entrySet()) {
+			if (entry.getKey() == thread) {
+				Connection connection = entry.getValue();
 
-				if (entry.getKey() == thread) {
-					Connection connection = entry.getValue();
+				connectionsMap.remove(entry.getKey());
 
-					connectionsMap.remove(entry.getKey());
+				_finishAndCloseConnection(connection);
 
-					connection.close();
-
-					return;
-				}
+				return;
 			}
+		}
+	}
+
+	private Connection _enableTransactionForCurrentThread()
+		throws SQLException {
+
+		Map<Thread, Connection> connectionsMap = _connectionsMaps.get(
+			PropsValues.DATABASE_PARTITION_ENABLED ?
+				CompanyThreadLocal.getCompanyId() : CompanyConstants.SYSTEM);
+
+		if (connectionsMap == null) {
+			return null;
+		}
+
+		Connection workerConnection = connectionsMap.get(
+			Thread.currentThread());
+
+		if (workerConnection == null) {
+			return null;
+		}
+
+		boolean previousAutoCommit = workerConnection.getAutoCommit();
+
+		if (!previousAutoCommit) {
+			return null;
+		}
+
+		if (_autoCommits.putIfAbsent(workerConnection, previousAutoCommit) !=
+				null) {
+
+			return null;
+		}
+
+		try {
+			workerConnection.setAutoCommit(false);
+		}
+		catch (SQLException sqlException) {
+			_autoCommits.remove(workerConnection);
+
+			throw sqlException;
+		}
+
+		return workerConnection;
+	}
+
+	private void _finishAndCloseConnection(Connection connection) {
+		Boolean leaked = _autoCommits.remove(connection);
+
+		if (leaked != null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Closing a connection with an uncommitted autocommit " +
+						"override; rolling back defensively");
+			}
+
+			try {
+				connection.rollback();
+			}
+			catch (SQLException sqlException) {
+				_log.error(sqlException);
+			}
+
+			try {
+				connection.setAutoCommit(leaked);
+			}
+			catch (SQLException sqlException) {
+				_log.error(sqlException);
+			}
+		}
+
+		DataAccess.cleanUp(connection);
+	}
+
+	private void _finishOwnedConnection(
+		Connection ownedConnection, boolean commit) {
+
+		Boolean previousAutoCommit = _autoCommits.remove(ownedConnection);
+
+		if (previousAutoCommit == null) {
+			return;
+		}
+
+		try {
+			if (commit) {
+				ownedConnection.commit();
+			}
+			else {
+				ownedConnection.rollback();
+			}
+		}
+		catch (SQLException sqlException) {
+			_log.error(sqlException);
+		}
+
+		try {
+			ownedConnection.setAutoCommit(previousAutoCommit);
 		}
 		catch (SQLException sqlException) {
 			_log.error(sqlException);
@@ -753,6 +840,9 @@ public abstract class BaseDBProcess implements DBProcess {
 								notificationEnabled);
 							WorkflowThreadLocal.setEnabled(workflowEnabled);
 
+							Connection ownedConnection = null;
+							boolean success = false;
+
 							try {
 								threads.add(Thread.currentThread());
 
@@ -760,15 +850,26 @@ public abstract class BaseDBProcess implements DBProcess {
 									unsafeConsumer.accept(current);
 								}
 								else {
+									ownedConnection =
+										_enableTransactionForCurrentThread();
+
 									unsafeBiConsumer.accept(
 										current,
 										_getConcurrentPreparedStatement(
 											updateSQL,
 											preparedStatementHashMap));
 								}
+
+								success = true;
 							}
 							catch (Exception exception) {
 								throwableCollector.collect(exception);
+							}
+							finally {
+								if (ownedConnection != null) {
+									_finishOwnedConnection(
+										ownedConnection, success);
+								}
 							}
 
 							return null;
@@ -834,6 +935,8 @@ public abstract class BaseDBProcess implements DBProcess {
 	private static final AtomicInteger _fixedThreadPoolSize = new AtomicInteger(
 		0);
 
+	private final Map<Connection, Boolean> _autoCommits =
+		new ConcurrentHashMap<>();
 	private final Map<Long, Map<Thread, Connection>> _connectionsMaps =
 		new ConcurrentHashMap<>();
 
