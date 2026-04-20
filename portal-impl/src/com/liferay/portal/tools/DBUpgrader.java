@@ -328,10 +328,6 @@ public class DBUpgrader {
 		_registerModuleServiceLifecycle(
 			moduleServiceLifecyclePortalInitialized);
 
-		if (_upgradeClient) {
-			DependencyManagerSyncUtil.sync();
-		}
-
 		PortalCacheHelperUtil.clearPortalCaches(
 			PortalCacheManagerNames.MULTI_VM);
 
@@ -343,6 +339,10 @@ public class DBUpgrader {
 
 		_registerModuleServiceLifecycle(
 			moduleServiceLifecyclePortletsInitialized);
+
+		if (_upgradeClient) {
+			DependencyManagerSyncUtil.sync();
+		}
 
 		if (!StartupHelperUtil.isRunOnPortalUpgradeVerifiers()) {
 			stopUpgradeLogAppender();
