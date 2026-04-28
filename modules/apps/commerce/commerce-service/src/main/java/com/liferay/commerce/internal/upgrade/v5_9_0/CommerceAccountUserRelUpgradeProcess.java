@@ -7,6 +7,8 @@ package com.liferay.commerce.internal.upgrade.v5_9_0;
 
 import com.liferay.account.service.AccountEntryUserRelLocalService;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
@@ -45,12 +47,21 @@ public class CommerceAccountUserRelUpgradeProcess extends UpgradeProcess {
 						long accountUserId = resultSet.getLong(
 							"commerceAccountUserId");
 
-						_accountEntryUserRelLocalService.addAccountEntryUserRel(
-							accountEntryId, accountUserId);
+						try {
+							_accountEntryUserRelLocalService.
+								addAccountEntryUserRel(
+									accountEntryId, accountUserId);
+						}
+						catch (Exception exception) {
+							_log.error(exception);
+						}
 					}
 				}
 			});
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CommerceAccountUserRelUpgradeProcess.class);
 
 	private final AccountEntryUserRelLocalService
 		_accountEntryUserRelLocalService;
