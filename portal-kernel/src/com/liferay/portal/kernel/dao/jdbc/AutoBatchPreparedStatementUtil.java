@@ -305,7 +305,32 @@ public class AutoBatchPreparedStatementUtil {
 			}
 
 			if (method.equals(_closeMethod)) {
-				doClose();
+				Throwable closeThrowable = null;
+
+				try {
+					doClose();
+				}
+				catch (Throwable throwable) {
+					closeThrowable = throwable;
+				}
+
+				if (_autoCommitDisabled) {
+					try {
+						_finishTransaction(closeThrowable != null);
+					}
+					catch (SQLException sqlException) {
+						if (closeThrowable == null) {
+							closeThrowable = sqlException;
+						}
+						else {
+							closeThrowable.addSuppressed(sqlException);
+						}
+					}
+				}
+
+				if (closeThrowable != null) {
+					throw closeThrowable;
+				}
 
 				return null;
 			}
@@ -338,6 +363,16 @@ public class AutoBatchPreparedStatementUtil {
 
 		protected PreparedStatement getPreparedStatement() throws SQLException {
 			if (preparedStatement == null) {
+				if (!_autoCommitChecked) {
+					_autoCommitChecked = true;
+
+					if (_connection.getAutoCommit()) {
+						_connection.setAutoCommit(false);
+
+						_autoCommitDisabled = true;
+					}
+				}
+
 				preparedStatement = _connection.prepareStatement(_sql);
 			}
 
@@ -346,6 +381,24 @@ public class AutoBatchPreparedStatementUtil {
 
 		protected PreparedStatement preparedStatement;
 
+		private void _finishTransaction(boolean rollback) throws SQLException {
+			_autoCommitDisabled = false;
+
+			try {
+				if (rollback) {
+					_connection.rollback();
+				}
+				else {
+					_connection.commit();
+				}
+			}
+			finally {
+				_connection.setAutoCommit(true);
+			}
+		}
+
+		private boolean _autoCommitChecked;
+		private boolean _autoCommitDisabled;
 		private final Connection _connection;
 		private final String _sql;
 
