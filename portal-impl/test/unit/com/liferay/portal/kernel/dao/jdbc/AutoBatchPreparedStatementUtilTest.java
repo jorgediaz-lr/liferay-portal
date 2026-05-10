@@ -683,6 +683,25 @@ public class AutoBatchPreparedStatementUtilTest {
 					_preparedStatementInvocationHandler);
 			}
 
+			if (method.equals(Connection.class.getMethod("getAutoCommit"))) {
+				return _autoCommit;
+			}
+
+			if (method.equals(
+					Connection.class.getMethod(
+						"setAutoCommit", boolean.class))) {
+
+				_autoCommit = (Boolean)args[0];
+
+				return null;
+			}
+
+			if (method.equals(Connection.class.getMethod("commit")) ||
+				method.equals(Connection.class.getMethod("rollback"))) {
+
+				return null;
+			}
+
 			throw new UnsupportedOperationException();
 		}
 
@@ -694,6 +713,7 @@ public class AutoBatchPreparedStatementUtilTest {
 				preparedStatementInvocationHandler;
 		}
 
+		private boolean _autoCommit = true;
 		private final PreparedStatementInvocationHandler
 			_preparedStatementInvocationHandler;
 
