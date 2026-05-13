@@ -54,7 +54,7 @@ public class CacheReplicatorEntryModelArgumentsResolver
 
 		if (!checkColumn || (columnBitmask == 0)) {
 			return _getValue(
-				cacheReplicatorEntryModelImpl, finderPath, original);
+				cacheReplicatorEntryModelImpl, columnNames, original);
 		}
 
 		Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
@@ -74,7 +74,7 @@ public class CacheReplicatorEntryModelArgumentsResolver
 
 		if ((columnBitmask & finderPathColumnBitmask) != 0) {
 			return _getValue(
-				cacheReplicatorEntryModelImpl, finderPath, original);
+				cacheReplicatorEntryModelImpl, columnNames, original);
 		}
 
 		return null;
@@ -92,27 +92,22 @@ public class CacheReplicatorEntryModelArgumentsResolver
 
 	private static Object[] _getValue(
 		CacheReplicatorEntryModelImpl cacheReplicatorEntryModelImpl,
-		FinderPath finderPath, boolean original) {
-
-		String[] columnNames = finderPath.getColumnNames();
+		String[] columnNames, boolean original) {
 
 		Object[] arguments = new Object[columnNames.length];
 
 		for (int i = 0; i < arguments.length; i++) {
 			String columnName = columnNames[i];
 
-			Object value;
-
 			if (original) {
-				value = cacheReplicatorEntryModelImpl.getColumnOriginalValue(
-					columnName);
+				arguments[i] =
+					cacheReplicatorEntryModelImpl.getColumnOriginalValue(
+						columnName);
 			}
 			else {
-				value = cacheReplicatorEntryModelImpl.getColumnValue(
+				arguments[i] = cacheReplicatorEntryModelImpl.getColumnValue(
 					columnName);
 			}
-
-			arguments[i] = finderPath.normalizeArgument(i, value);
 		}
 
 		return arguments;
@@ -122,4 +117,4 @@ public class CacheReplicatorEntryModelArgumentsResolver
 		new ConcurrentHashMap<>();
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:418616355
+// LIFERAY-SERVICE-BUILDER-HASH:-1047560842

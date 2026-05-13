@@ -215,8 +215,10 @@ public class CacheReplicatorEntryLocalServiceUtil {
 		return getService().fetchCacheReplicatorEntry(cacheReplicatorEntryId);
 	}
 
-	public static CacheReplicatorEntry fetchCacheReplicatorEntry(String name) {
-		return getService().fetchCacheReplicatorEntry(name);
+	public static CacheReplicatorEntry fetchCacheReplicatorEntryByName(
+		String name) {
+
+		return getService().fetchCacheReplicatorEntryByName(name);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -242,16 +244,18 @@ public class CacheReplicatorEntryLocalServiceUtil {
 		return getService().getCacheReplicatorEntries(start, end);
 	}
 
-	public static List<CacheReplicatorEntry> getCacheReplicatorEntries(
-		long companyId) {
+	public static List<CacheReplicatorEntry>
+		getCacheReplicatorEntriesByCompanyId(long companyId) {
 
-		return getService().getCacheReplicatorEntries(companyId);
+		return getService().getCacheReplicatorEntriesByCompanyId(companyId);
 	}
 
-	public static List<CacheReplicatorEntry> getCacheReplicatorEntries(
-		long companyId, int start, int end) {
+	public static List<CacheReplicatorEntry>
+		getCacheReplicatorEntriesByCompanyId(
+			long companyId, int start, int end) {
 
-		return getService().getCacheReplicatorEntries(companyId, start, end);
+		return getService().getCacheReplicatorEntriesByCompanyId(
+			companyId, start, end);
 	}
 
 	/**
@@ -266,8 +270,7 @@ public class CacheReplicatorEntryLocalServiceUtil {
 	public static int getCacheReplicatorEntriesCountByCompanyId(
 		long companyId) {
 
-		return getService().getCacheReplicatorEntriesCountByCompanyId(
-			companyId);
+		return getService().getCacheReplicatorEntriesCountByCompanyId(companyId);
 	}
 
 	/**
@@ -336,4 +339,4 @@ public class CacheReplicatorEntryLocalServiceUtil {
 	private static volatile CacheReplicatorEntryLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1887424096
+// LIFERAY-SERVICE-BUILDER-HASH:-1862749269

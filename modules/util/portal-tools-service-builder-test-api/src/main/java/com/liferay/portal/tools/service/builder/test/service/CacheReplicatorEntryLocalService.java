@@ -206,7 +206,7 @@ public interface CacheReplicatorEntryLocalService
 		long cacheReplicatorEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CacheReplicatorEntry fetchCacheReplicatorEntry(String name);
+	public CacheReplicatorEntry fetchCacheReplicatorEntryByName(String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -227,10 +227,11 @@ public interface CacheReplicatorEntryLocalService
 		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CacheReplicatorEntry> getCacheReplicatorEntries(long companyId);
+	public List<CacheReplicatorEntry> getCacheReplicatorEntriesByCompanyId(
+		long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CacheReplicatorEntry> getCacheReplicatorEntries(
+	public List<CacheReplicatorEntry> getCacheReplicatorEntriesByCompanyId(
 		long companyId, int start, int end);
 
 	/**
@@ -289,4 +290,4 @@ public interface CacheReplicatorEntryLocalService
 		CacheReplicatorEntry cacheReplicatorEntry);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:408950220
+// LIFERAY-SERVICE-BUILDER-HASH:-730570211

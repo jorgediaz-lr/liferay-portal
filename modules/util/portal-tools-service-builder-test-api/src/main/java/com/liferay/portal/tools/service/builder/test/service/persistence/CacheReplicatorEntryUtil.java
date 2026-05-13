@@ -36,22 +36,6 @@ public class CacheReplicatorEntryUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#cacheResult(List)
-	 */
-	public static void cacheResult(
-		List<CacheReplicatorEntry> cacheReplicatorEntries) {
-
-		getPersistence().cacheResult(cacheReplicatorEntries);
-	}
-
-	/**
-	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#cacheResult(com.liferay.portal.kernel.model.BaseModel)
-	 */
-	public static void cacheResult(CacheReplicatorEntry cacheReplicatorEntry) {
-		getPersistence().cacheResult(cacheReplicatorEntry);
-	}
-
-	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
@@ -314,6 +298,26 @@ public class CacheReplicatorEntryUtil {
 	}
 
 	/**
+	 * Caches the cache replicator entry in the entity cache if it is enabled.
+	 *
+	 * @param cacheReplicatorEntry the cache replicator entry
+	 */
+	public static void cacheResult(CacheReplicatorEntry cacheReplicatorEntry) {
+		getPersistence().cacheResult(cacheReplicatorEntry);
+	}
+
+	/**
+	 * Caches the cache replicator entries in the entity cache if it is enabled.
+	 *
+	 * @param cacheReplicatorEntries the cache replicator entries
+	 */
+	public static void cacheResult(
+		List<CacheReplicatorEntry> cacheReplicatorEntries) {
+
+		getPersistence().cacheResult(cacheReplicatorEntries);
+	}
+
+	/**
 	 * Creates a new cache replicator entry with the primary key. Does not add the cache replicator entry to the database.
 	 *
 	 * @param cacheReplicatorEntryId the primary key for the new cache replicator entry
@@ -383,4 +387,4 @@ public class CacheReplicatorEntryUtil {
 	private static volatile CacheReplicatorEntryPersistence _persistence;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:643370913
+// LIFERAY-SERVICE-BUILDER-HASH:1072273976
