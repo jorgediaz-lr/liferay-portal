@@ -408,6 +408,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 							company.setName(name);
 
+							_companyInfoPersistence.update(
+								company.getCompanyInfo());
+
 							company = companyPersistence.update(company);
 						}
 
@@ -646,6 +649,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 						company.setName(name);
 						company.setNew(true);
 
+						_companyInfoPersistence.update(company.getCompanyInfo());
+
 						company = companyPersistence.update(company);
 
 						company = updateVirtualHostname(
@@ -717,6 +722,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		Company company = companyPersistence.findByPrimaryKey(companyId);
 
 		PortalUtil.updateImageId(company, false, null, "logoId", 0, 0, 0);
+
+		_companyInfoPersistence.update(company.getCompanyInfo());
 
 		return company;
 	}
@@ -1252,6 +1259,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setType(type);
 		company.setSize(size);
 
+		_companyInfoPersistence.update(company.getCompanyInfo());
+
 		companyPersistence.update(company);
 
 		// Virtual host
@@ -1349,6 +1358,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		company.setIndexNameNext(indexNameNext);
 
+		_companyInfoPersistence.update(company.getCompanyInfo());
+
 		return companyPersistence.update(company);
 	}
 
@@ -1361,6 +1372,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		company.setIndexNameCurrent(indexNameCurrent);
 		company.setIndexNameNext(indexNameNext);
+
+		_companyInfoPersistence.update(company.getCompanyInfo());
 
 		return companyPersistence.update(company);
 	}
@@ -1581,6 +1594,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			logoId = counterLocalService.increment();
 
 			company.setLogoId(logoId);
+
+			_companyInfoPersistence.update(company.getCompanyInfo());
 
 			company = companyPersistence.update(company);
 		}
