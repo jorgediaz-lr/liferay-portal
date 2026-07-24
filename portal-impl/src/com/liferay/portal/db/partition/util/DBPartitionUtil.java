@@ -681,7 +681,8 @@ public class DBPartitionUtil {
 		String targetPartitionName = getPartitionName(toCompanyId);
 
 		try {
-			_copySchema(connection, sourcePartitionName, targetPartitionName);
+			_copySchema(
+				connection, false, sourcePartitionName, targetPartitionName);
 
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
@@ -870,8 +871,8 @@ public class DBPartitionUtil {
 	}
 
 	private static void _copySchema(
-			Connection connection, String sourcePartitionName,
-			String targetPartitionName)
+			Connection connection, boolean copyCompanyData,
+			String sourcePartitionName, String targetPartitionName)
 		throws SQLException {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -907,7 +908,10 @@ public class DBPartitionUtil {
 							connection, sourcePartitionName,
 							targetPartitionName, fromTableName, fromTableName));
 
-					if (StringUtil.equalsIgnoreCase(
+					if ((!copyCompanyData &&
+						 StringUtil.equalsIgnoreCase(
+							 fromTableName, "Company")) ||
+						StringUtil.equalsIgnoreCase(
 							fromTableName, "Configuration_")) {
 
 						continue;
@@ -1000,6 +1004,9 @@ public class DBPartitionUtil {
 							_getQuartzWhereClauseSQL(companyId, tableName));
 					}
 				}
+
+				_deleteCompanyData(
+					companyId, "Company", _defaultPartitionName, statement);
 
 				statement.executeUpdate(
 					_dbPartitionDB.getDropPartitionSQL(
@@ -1124,7 +1131,8 @@ public class DBPartitionUtil {
 
 		try {
 			_copySchema(
-				connection, getPartitionName(companyId), exportedPartitionName);
+				connection, true, getPartitionName(companyId),
+				exportedPartitionName);
 
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
