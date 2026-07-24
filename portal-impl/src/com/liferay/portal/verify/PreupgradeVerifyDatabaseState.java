@@ -134,6 +134,12 @@ public class PreupgradeVerifyDatabaseState extends PreupgradeVerifyProcess {
 				viewNames.addAll(
 					dbInspector.getControlTableNames(missingTableNames));
 
+				if (missingTableNames.contains("Company") &&
+					dbInspector.hasView("Company")) {
+
+					viewNames.add(dbInspector.normalizeName("Company"));
+				}
+
 				missingTableNames.removeAll(viewNames);
 			}
 
