@@ -2556,7 +2556,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				_transactionConfig,
 				() -> {
 					if (export) {
-						exportCompany(companyId);
+						DBPartitionUtil.exportDBPartition(companyId);
 					}
 
 					DBPartitionUtil.removeDBPartition(companyId);
