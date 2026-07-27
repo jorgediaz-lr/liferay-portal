@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceAction;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.upgrade.data.cleanup.util.DataCleanupLoggingUtil;
@@ -44,7 +43,7 @@ public class ResourceActionPostUpgradeDataCleanupProcess
 	@Override
 	public void cleanUp() throws Exception {
 		if (!PostUpgradeDataCleanupProcessUtil.isEveryLiferayBundleResolved()) {
-			if (_log.isWarnEnabled() && CompanyThreadLocal.isDefaultCompany()) {
+			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
 						ResourceActionPostUpgradeDataCleanupProcess.class.

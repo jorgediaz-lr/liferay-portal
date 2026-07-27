@@ -6,6 +6,7 @@
 package com.liferay.data.cleanup.internal.verify;
 
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 
 /**
@@ -19,7 +20,9 @@ public class StorePostUpgradeDataCleanupProcess
 	}
 
 	public void cleanUp() throws Exception {
-		if (!CompanyThreadLocal.isDefaultCompany()) {
+		if (PortalInstancePool.getDefaultCompanyId() !=
+				CompanyThreadLocal.getCompanyId()) {
+
 			return;
 		}
 

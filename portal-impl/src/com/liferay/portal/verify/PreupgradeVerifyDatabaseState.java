@@ -13,6 +13,7 @@ import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.db.DBResourceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ReleaseConstants;
@@ -212,7 +213,9 @@ public class PreupgradeVerifyDatabaseState extends PreupgradeVerifyProcess {
 
 		Set<String> viewNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
-		if (CompanyThreadLocal.isDefaultCompany()) {
+		if (CompanyThreadLocal.getNonsystemCompanyId() ==
+				PortalInstancePool.getDefaultCompanyId()) {
+
 			return viewNames;
 		}
 

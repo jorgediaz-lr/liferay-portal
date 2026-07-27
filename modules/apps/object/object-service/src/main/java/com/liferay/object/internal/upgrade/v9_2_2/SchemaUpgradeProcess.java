@@ -22,15 +22,17 @@ public class SchemaUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		long companyId = CompanyThreadLocal.getCompanyId();
+		long defaultCompanyId = PortalInstancePool.getDefaultCompanyId();
+
 		if (!PropsValues.DATABASE_PARTITION_ENABLED ||
-			CompanyThreadLocal.isDefaultCompany()) {
+			(companyId == defaultCompanyId)) {
 
 			return;
 		}
 
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		DBInspector dbInspector = new DBInspector(connection);
-		long defaultCompanyId = PortalInstancePool.getDefaultCompanyId();
 
 		try (ResultSet resultSet = databaseMetaData.getTables(
 				dbInspector.getCatalog(), dbInspector.getSchema(), null,

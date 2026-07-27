@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -50,7 +49,7 @@ public class PortletPreferencesPostUpgradeDataCleanupProcess
 	@Override
 	public void cleanUp() throws Exception {
 		if (!PostUpgradeDataCleanupProcessUtil.isEveryLiferayBundleResolved()) {
-			if (_log.isWarnEnabled() && CompanyThreadLocal.isDefaultCompany()) {
+			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
 						PortletPreferencesPostUpgradeDataCleanupProcess.class.
