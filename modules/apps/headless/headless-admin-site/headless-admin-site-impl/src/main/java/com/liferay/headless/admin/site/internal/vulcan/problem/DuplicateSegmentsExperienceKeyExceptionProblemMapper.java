@@ -5,6 +5,7 @@
 
 package com.liferay.headless.admin.site.internal.vulcan.problem;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.problem.Problem;
 import com.liferay.portal.vulcan.problem.ProblemMapper;
@@ -30,9 +31,9 @@ public class DuplicateSegmentsExperienceKeyExceptionProblemMapper
 		String message = "A page experience with the same key already exists";
 
 		if (Validator.isNotNull(segmentsExperienceKey)) {
-			message =
-				"A page experience with key " + segmentsExperienceKey +
-					" already exists";
+			message = StringBundler.concat(
+				"A page experience with key ", segmentsExperienceKey,
+				" already exists");
 		}
 
 		return ProblemUtil.getProblem(
