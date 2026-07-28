@@ -216,7 +216,7 @@ public class SegmentsExperienceLocalServiceTest {
 			segmentsExperiences.toString(), 3, segmentsExperiences.size());
 	}
 
-	@Test(expected = SegmentsExperienceLayoutException.class)
+	@Test
 	public void testAddSegmentsExperienceToContentPageTemplate()
 		throws Exception {
 
@@ -225,15 +225,17 @@ public class SegmentsExperienceLocalServiceTest {
 				_group.getGroupId(), LayoutPageTemplateEntryTypeConstants.BASIC,
 				WorkflowConstants.STATUS_DRAFT);
 
-		_segmentsExperienceLocalService.addSegmentsExperience(
-			null, TestPropsValues.getUserId(), _group.getGroupId(), null, null,
-			layoutPageTemplateEntry.getPlid(),
-			RandomTestUtil.randomLocaleStringMap(), true,
-			new UnicodeProperties(true),
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+		Assert.assertThrows(
+			SegmentsExperienceLayoutException.class,
+			() -> _segmentsExperienceLocalService.addSegmentsExperience(
+				null, TestPropsValues.getUserId(), _group.getGroupId(), null,
+				null, layoutPageTemplateEntry.getPlid(),
+				RandomTestUtil.randomLocaleStringMap(), true,
+				new UnicodeProperties(true),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId())));
 	}
 
-	@Test(expected = SegmentsExperienceLayoutException.class)
+	@Test
 	public void testAddSegmentsExperienceToDisplayPageTemplate()
 		throws Exception {
 
@@ -241,12 +243,14 @@ public class SegmentsExperienceLocalServiceTest {
 			DisplayPageTemplateTestUtil.addDisplayPageTemplate(
 				_group.getGroupId());
 
-		_segmentsExperienceLocalService.addSegmentsExperience(
-			null, TestPropsValues.getUserId(), _group.getGroupId(), null, null,
-			layoutPageTemplateEntry.getPlid(),
-			RandomTestUtil.randomLocaleStringMap(), true,
-			new UnicodeProperties(true),
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+		Assert.assertThrows(
+			SegmentsExperienceLayoutException.class,
+			() -> _segmentsExperienceLocalService.addSegmentsExperience(
+				null, TestPropsValues.getUserId(), _group.getGroupId(), null,
+				null, layoutPageTemplateEntry.getPlid(),
+				RandomTestUtil.randomLocaleStringMap(), true,
+				new UnicodeProperties(true),
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId())));
 	}
 
 	@Test(
