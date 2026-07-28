@@ -34,6 +34,7 @@ import com.liferay.segments.exception.DefaultSegmentsExperienceException;
 import com.liferay.segments.exception.DuplicateSegmentsExperienceKeyException;
 import com.liferay.segments.exception.LockedSegmentsExperimentException;
 import com.liferay.segments.exception.RequiredSegmentsExperienceException;
+import com.liferay.segments.exception.SegmentsExperienceLayoutException;
 import com.liferay.segments.exception.SegmentsExperienceNameException;
 import com.liferay.segments.exception.SegmentsExperiencePriorityException;
 import com.liferay.segments.model.SegmentsExperience;
@@ -775,7 +776,9 @@ public class SegmentsExperienceLocalServiceImpl
 		}
 	}
 
-	private void _validateLayout(long plid, String segmentsExperienceKey) {
+	private void _validateLayout(long plid, String segmentsExperienceKey)
+		throws PortalException {
+
 		if (SegmentsExperienceConstants.KEY_DEFAULT.equals(
 				segmentsExperienceKey)) {
 
@@ -789,7 +792,7 @@ public class SegmentsExperienceLocalServiceImpl
 		}
 
 		if (!LayoutConstants.TYPE_CONTENT.equals(layout.getType())) {
-			throw new IllegalArgumentException(
+			throw new SegmentsExperienceLayoutException(
 				"Segments experiences cannot be added to layout " + plid +
 					" because it is not a content page");
 		}
@@ -805,7 +808,7 @@ public class SegmentsExperienceLocalServiceImpl
 				fetchLayoutPageTemplateEntryByPlid(layoutPageTemplateEntryPlid);
 
 		if (layoutPageTemplateEntry != null) {
-			throw new IllegalArgumentException(
+			throw new SegmentsExperienceLayoutException(
 				"Segments experiences cannot be added to layout " + plid +
 					" because it belongs to a page template");
 		}

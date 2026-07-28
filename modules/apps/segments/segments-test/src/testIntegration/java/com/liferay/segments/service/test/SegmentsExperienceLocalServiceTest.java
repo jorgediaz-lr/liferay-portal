@@ -40,6 +40,7 @@ import com.liferay.segments.exception.DuplicateSegmentsExperienceExternalReferen
 import com.liferay.segments.exception.DuplicateSegmentsExperienceKeyException;
 import com.liferay.segments.exception.LockedSegmentsExperimentException;
 import com.liferay.segments.exception.RequiredSegmentsExperienceException;
+import com.liferay.segments.exception.SegmentsExperienceLayoutException;
 import com.liferay.segments.exception.SegmentsExperienceNameException;
 import com.liferay.segments.exception.SegmentsExperiencePriorityException;
 import com.liferay.segments.model.SegmentsEntry;
@@ -215,7 +216,7 @@ public class SegmentsExperienceLocalServiceTest {
 			segmentsExperiences.toString(), 3, segmentsExperiences.size());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = SegmentsExperienceLayoutException.class)
 	public void testAddSegmentsExperienceToContentPageTemplate()
 		throws Exception {
 
@@ -232,7 +233,7 @@ public class SegmentsExperienceLocalServiceTest {
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = SegmentsExperienceLayoutException.class)
 	public void testAddSegmentsExperienceToDisplayPageTemplate()
 		throws Exception {
 
