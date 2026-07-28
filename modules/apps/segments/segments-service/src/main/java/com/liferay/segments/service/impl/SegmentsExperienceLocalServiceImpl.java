@@ -791,9 +791,7 @@ public class SegmentsExperienceLocalServiceImpl
 		}
 
 		if (!LayoutConstants.TYPE_CONTENT.equals(layout.getType())) {
-			throw new SegmentsExperienceLayoutException(
-				"Segments experiences cannot be added to layout " + plid +
-					" because it is not a content page");
+			throw new SegmentsExperienceLayoutException(plid);
 		}
 
 		long layoutPageTemplateEntryPlid = layout.getPlid();
@@ -807,9 +805,7 @@ public class SegmentsExperienceLocalServiceImpl
 				fetchLayoutPageTemplateEntryByPlid(layoutPageTemplateEntryPlid);
 
 		if (layoutPageTemplateEntry != null) {
-			throw new SegmentsExperienceLayoutException(
-				"Segments experiences cannot be added to layout " + plid +
-					" because it belongs to a page template");
+			throw new SegmentsExperienceLayoutException(plid);
 		}
 	}
 
