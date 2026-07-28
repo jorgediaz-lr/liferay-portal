@@ -47,7 +47,8 @@ public class SegmentsExperienceUtil {
 		throws Exception {
 
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-			throw new SegmentsExperienceLayoutException();
+			throw new SegmentsExperienceLayoutException(
+				"Only site pages can define additional page experiences");
 		}
 
 		SegmentsEntryReference segmentsEntryReference =
@@ -148,7 +149,8 @@ public class SegmentsExperienceUtil {
 		throws Exception {
 
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-			throw new SegmentsExperienceLayoutException();
+			throw new SegmentsExperienceLayoutException(
+				"Only site pages can define additional page experiences");
 		}
 
 		long plid = layout.getPlid();
@@ -162,7 +164,8 @@ public class SegmentsExperienceUtil {
 				fetchLayoutPageTemplateEntryByPlid(plid);
 
 		if (layoutPageTemplateEntry != null) {
-			throw new SegmentsExperienceLayoutException();
+			throw new SegmentsExperienceLayoutException(
+				"Only site pages can define additional page experiences");
 		}
 	}
 
