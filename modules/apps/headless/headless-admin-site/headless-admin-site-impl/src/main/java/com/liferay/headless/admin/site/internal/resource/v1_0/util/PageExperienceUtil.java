@@ -6,13 +6,9 @@
 package com.liferay.headless.admin.site.internal.resource.v1_0.util;
 
 import com.liferay.headless.admin.site.dto.v1_0.PageExperience;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
-import com.liferay.segments.exception.DefaultSegmentsExperienceSegmentException;
-import com.liferay.segments.exception.DuplicateSegmentsExperienceKeyException;
 import com.liferay.segments.model.SegmentsExperience;
 
 import java.util.HashSet;
@@ -28,7 +24,7 @@ public class PageExperienceUtil {
 		PageExperience[] pageExperiences) {
 
 		if (ArrayUtil.isEmpty(pageExperiences)) {
-			throw new IllegalArgumentException("A page experience is required");
+			throw new UnsupportedOperationException();
 		}
 
 		for (PageExperience pageExperience : pageExperiences) {
@@ -40,22 +36,17 @@ public class PageExperienceUtil {
 			}
 		}
 
-		throw new IllegalArgumentException(
-			"A default page experience is required");
+		throw new UnsupportedOperationException();
 	}
 
 	public static void validatePageExperiences(
-			SegmentsExperience defaultSegmentsExperience,
-			PageExperience[] pageExperiences)
-		throws PortalException {
+		SegmentsExperience defaultSegmentsExperience,
+		PageExperience[] pageExperiences) {
 
-		if (defaultSegmentsExperience == null) {
-			throw new IllegalArgumentException(
-				"The default page experience does not exist");
-		}
+		if ((defaultSegmentsExperience == null) ||
+			ArrayUtil.isEmpty(pageExperiences)) {
 
-		if (ArrayUtil.isEmpty(pageExperiences)) {
-			throw new IllegalArgumentException("A page experience is required");
+			throw new UnsupportedOperationException();
 		}
 
 		Set<String> pageExperienceKeys = new HashSet<>(pageExperiences.length);
@@ -63,14 +54,8 @@ public class PageExperienceUtil {
 		PageExperience defaultPageExperience = null;
 
 		for (PageExperience pageExperience : pageExperiences) {
-			if (Validator.isNull(pageExperience.getKey())) {
-				throw new IllegalArgumentException(
-					"A page experience key is required");
-			}
-
 			if (!pageExperienceKeys.add(pageExperience.getKey())) {
-				throw new DuplicateSegmentsExperienceKeyException(
-					pageExperience.getKey());
+				throw new UnsupportedOperationException();
 			}
 
 			if (Objects.equals(
@@ -81,29 +66,15 @@ public class PageExperienceUtil {
 			}
 		}
 
-		if (defaultPageExperience == null) {
-			throw new IllegalArgumentException(
-				"A default page experience is required");
-		}
-
-		if ((defaultPageExperience.getPriority() != null) &&
-			(defaultPageExperience.getPriority() != 0)) {
-
-			throw new IllegalArgumentException(
-				"The default page experience must have a priority of 0");
-		}
-
-		if (!StringUtil.equals(
+		if ((defaultPageExperience == null) ||
+			!StringUtil.equals(
 				defaultSegmentsExperience.getExternalReferenceCode(),
-				defaultPageExperience.getExternalReferenceCode())) {
+				defaultPageExperience.getExternalReferenceCode()) ||
+			((defaultPageExperience.getPriority() != null) &&
+			 (defaultPageExperience.getPriority() != 0)) ||
+			(defaultPageExperience.getSegmentItemExternalReference() != null)) {
 
-			throw new IllegalArgumentException(
-				"The external reference code does not match the target " +
-					"page's experience external reference code");
-		}
-
-		if (defaultPageExperience.getSegmentItemExternalReference() != null) {
-			throw new DefaultSegmentsExperienceSegmentException();
+			throw new UnsupportedOperationException();
 		}
 	}
 

@@ -46,8 +46,7 @@ public class SegmentsExperienceUtil {
 		throws Exception {
 
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-			throw new IllegalArgumentException(
-				"Only site pages can define additional page experiences");
+			throw new UnsupportedOperationException();
 		}
 
 		SegmentsEntryReference segmentsEntryReference =
@@ -146,8 +145,7 @@ public class SegmentsExperienceUtil {
 
 	public static void validateSegmentsExperienceLayout(Layout layout) {
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-			throw new IllegalArgumentException(
-				"Only site pages can define additional page experiences");
+			throw new UnsupportedOperationException();
 		}
 
 		long plid = layout.getPlid();
@@ -161,8 +159,7 @@ public class SegmentsExperienceUtil {
 				fetchLayoutPageTemplateEntryByPlid(plid);
 
 		if (layoutPageTemplateEntry != null) {
-			throw new IllegalArgumentException(
-				"Only site pages can define additional page experiences");
+			throw new UnsupportedOperationException();
 		}
 	}
 

@@ -41,8 +41,7 @@ public class PageSpecificationUtil {
 		}
 
 		if (pageSpecifications.length != 1) {
-			throw new IllegalArgumentException(
-				"Exactly one page specification is required");
+			throw new UnsupportedOperationException();
 		}
 
 		PageSpecification pageSpecification = pageSpecifications[0];
@@ -56,8 +55,7 @@ public class PageSpecificationUtil {
 				pageSpecification.getStatus(),
 				PageSpecification.Status.APPROVED)) {
 
-			throw new IllegalArgumentException(
-				"The page specification is invalid or has not been approved");
+			throw new UnsupportedOperationException();
 		}
 
 		return pageSpecification;
@@ -71,8 +69,7 @@ public class PageSpecificationUtil {
 		}
 
 		if (pageSpecifications.length != 2) {
-			throw new IllegalArgumentException(
-				"Exactly two page specifications are required");
+			throw new UnsupportedOperationException();
 		}
 
 		PageSpecification[] sortedContentPageSpecifications =
@@ -99,8 +96,7 @@ public class PageSpecificationUtil {
 		}
 
 		if (pageSpecifications.length != 2) {
-			throw new IllegalArgumentException(
-				"Exactly two page specifications are required");
+			throw new UnsupportedOperationException();
 		}
 
 		ContentPageSpecification draftContentPageSpecification;
@@ -128,9 +124,7 @@ public class PageSpecificationUtil {
 				publishedContentPageSpecification.
 					getDraftContentPageSpecificationExternalReferenceCode())) {
 
-			throw new IllegalArgumentException(
-				"The draft and published page specifications have mismatched " +
-					"external reference codes");
+			throw new UnsupportedOperationException();
 		}
 
 		return new PageSpecification[] {
