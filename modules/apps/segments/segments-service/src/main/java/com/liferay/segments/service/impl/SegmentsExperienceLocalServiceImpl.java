@@ -819,8 +819,7 @@ public class SegmentsExperienceLocalServiceImpl
 		Locale locale = LocaleUtil.getSiteDefault();
 
 		if (nameMap.isEmpty() || Validator.isNull(nameMap.get(locale))) {
-			throw new SegmentsExperienceNameException(
-				"A name in the site's default language is required");
+			throw new SegmentsExperienceNameException();
 		}
 	}
 
