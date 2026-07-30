@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.site.dsr.site.initializer.internal.constants.DSRConstants;
 import com.liferay.site.dsr.site.initializer.internal.util.SiteInitializerUtil;
 import com.liferay.site.initializer.SiteInitializer;
@@ -46,7 +47,9 @@ public class DSRInitialRequestPortalInstanceLifecycleListener
 
 	@Override
 	protected void doPortalInstanceRegistered(long companyId) throws Exception {
-		if (!LicenseManagerUtil.isAppEnabled(App.DSR)) {
+		if (PropsValues.DATABASE_PARTITION_ENABLED ||
+			!LicenseManagerUtil.isAppEnabled(App.DSR)) {
+
 			return;
 		}
 
