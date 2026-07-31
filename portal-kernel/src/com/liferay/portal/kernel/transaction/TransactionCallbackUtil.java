@@ -272,6 +272,22 @@ public class TransactionCallbackUtil {
 
 		return () -> {
 			if (companyId == CompanyThreadLocal.getCompanyId()) {
+
+				// The scope needs no switch, but an enclosing raw scope
+				// restores without syncing, so state the callback creates
+				// must still flush before it returns or it would execute
+				// against the wrong company's partition
+
+				if (PropsValues.DATABASE_PARTITION_ENABLED) {
+					try {
+						return callable.call();
+					}
+					finally {
+						LastSessionRecorderHelperUtil.syncLastSessionState(
+							false);
+					}
+				}
+
 				return callable.call();
 			}
 
