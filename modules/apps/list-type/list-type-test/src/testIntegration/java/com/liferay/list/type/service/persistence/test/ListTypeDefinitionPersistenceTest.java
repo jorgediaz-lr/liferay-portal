@@ -605,4 +605,4 @@ public class ListTypeDefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1610808419
+// LIFERAY-SERVICE-BUILDER-HASH:488090131
