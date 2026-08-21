@@ -77,15 +77,11 @@ public abstract class BaseDBPartitionTestCase {
 
 	protected static void addDBPartitions() throws Exception {
 		for (long companyId : COMPANY_IDS) {
-			DBPartitionUtil.addDBPartition(companyId);
+			Company company = _createCompany(companyId);
 
-			PortalInstancePool.add(
-				new CompanyImpl() {
-					{
-						setCompanyId(companyId);
-						setWebId("Test" + companyId);
-					}
-				});
+			DBPartitionUtil.addDBPartition(company);
+
+			PortalInstancePool.add(company);
 		}
 
 		_clearCaches(COMPANY_IDS);
@@ -222,7 +218,7 @@ public abstract class BaseDBPartitionTestCase {
 
 	protected static void importDBPartitions() throws Exception {
 		for (long companyId : COMPANY_IDS) {
-			DBPartitionUtil.importDBPartition(companyId);
+			DBPartitionUtil.importDBPartition(companyId, null);
 		}
 	}
 
@@ -298,8 +294,7 @@ public abstract class BaseDBPartitionTestCase {
 
 	protected static void insertPartitionRequiredData() throws Exception {
 		for (long companyId : COMPANY_IDS) {
-			_insertCompany(companyId, companyId);
-			_insertCompany(companyId, PortalInstancePool.getDefaultCompanyId());
+			_insertCompany(companyId);
 
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId);
@@ -320,12 +315,7 @@ public abstract class BaseDBPartitionTestCase {
 				preparedStatement.executeUpdate();
 			}
 
-			Company company = new CompanyImpl();
-
-			company.setCompanyId(companyId);
-			company.setWebId("Test" + companyId);
-
-			PortalInstancePool.add(company);
+			PortalInstancePool.add(_createCompany(companyId));
 		}
 	}
 
@@ -443,6 +433,16 @@ public abstract class BaseDBPartitionTestCase {
 		}
 	}
 
+	private static Company _createCompany(long companyId) {
+		Company company = new CompanyImpl();
+
+		company.setCompanyId(companyId);
+		company.setWebId("Test" + companyId);
+		company.setMx("liferay.com");
+
+		return company;
+	}
+
 	private static void _executeOnDBPartitions(
 			long[] companyIds,
 			UnsafeFunction<Long, Boolean, PortalException> unsafeFunction)
@@ -469,12 +469,9 @@ public abstract class BaseDBPartitionTestCase {
 		}
 	}
 
-	private static void _insertCompany(long companyId, long contextCompanyId)
-		throws Exception {
-
+	private static void _insertCompany(long companyId) throws Exception {
 		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					contextCompanyId);
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId);
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"insert into Company (companyId, mx, webId) values (?, ?, " +
 					"?)")) {
