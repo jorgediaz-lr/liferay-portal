@@ -174,7 +174,8 @@ public class DBPartitionPostgreSQLDB implements DBPartitionDB {
 
 				sb.append(
 					StringUtil.replace(
-						indexMetadata.getCreateSQL(null), "on " + fromTableName,
+						indexMetadata.getCreateSQL(null),
+						"on " + indexMetadata.getTableName(),
 						StringBundler.concat(
 							"on ", toPartitionName, StringPool.PERIOD,
 							toTableName)));
