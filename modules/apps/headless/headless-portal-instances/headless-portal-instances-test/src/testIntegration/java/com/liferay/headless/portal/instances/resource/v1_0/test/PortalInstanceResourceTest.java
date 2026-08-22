@@ -226,22 +226,24 @@ public class PortalInstanceResourceTest
 	@Override
 	@Test
 	public void testPutPortalInstanceActivate() throws Exception {
-		_companyLocalService.updateCompany(
-			_company.getCompanyId(), _company.getVirtualHostname(),
-			_company.getMx(), _company.getMaxUsers(), false);
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			_companyLocalService.updateCompany(
+				_company.getCompanyId(), _company.getVirtualHostname(),
+				_company.getMx(), _company.getMaxUsers(), false);
 
-		Company company = _companyLocalService.fetchCompany(
-			_portalInstance.getCompanyId());
+			Company company = _companyLocalService.fetchCompany(
+				_portalInstance.getCompanyId());
 
-		Assert.assertFalse(company.isActive());
+			Assert.assertFalse(company.isActive());
 
-		portalInstanceResource.putPortalInstanceActivate(
-			_portalInstance.getPortalInstanceId());
+			portalInstanceResource.putPortalInstanceActivate(
+				_portalInstance.getPortalInstanceId());
 
-		company = _companyLocalService.fetchCompany(
-			_portalInstance.getCompanyId());
+			company = _companyLocalService.fetchCompany(
+				_portalInstance.getCompanyId());
 
-		Assert.assertTrue(company.isActive());
+			Assert.assertTrue(company.isActive());
+		}
 
 		_testPutPortalInstanceActivateWithoutOmniadminPermission();
 	}
@@ -249,22 +251,24 @@ public class PortalInstanceResourceTest
 	@Override
 	@Test
 	public void testPutPortalInstanceDeactivate() throws Exception {
-		_companyLocalService.updateCompany(
-			_company.getCompanyId(), _company.getVirtualHostname(),
-			_company.getMx(), _company.getMaxUsers(), true);
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			_companyLocalService.updateCompany(
+				_company.getCompanyId(), _company.getVirtualHostname(),
+				_company.getMx(), _company.getMaxUsers(), true);
 
-		Company company = _companyLocalService.fetchCompany(
-			_portalInstance.getCompanyId());
+			Company company = _companyLocalService.fetchCompany(
+				_portalInstance.getCompanyId());
 
-		Assert.assertTrue(company.isActive());
+			Assert.assertTrue(company.isActive());
 
-		portalInstanceResource.putPortalInstanceDeactivate(
-			_portalInstance.getPortalInstanceId());
+			portalInstanceResource.putPortalInstanceDeactivate(
+				_portalInstance.getPortalInstanceId());
 
-		company = _companyLocalService.fetchCompany(
-			_portalInstance.getCompanyId());
+			company = _companyLocalService.fetchCompany(
+				_portalInstance.getCompanyId());
 
-		Assert.assertFalse(company.isActive());
+			Assert.assertFalse(company.isActive());
+		}
 
 		_testPutPortalInstanceDeactivateWithoutOmniadminPermission();
 	}
@@ -335,7 +339,10 @@ public class PortalInstanceResourceTest
 
 		PrincipalThreadLocal.setName(TestPropsValues.getUserId());
 
-		try {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
 			_companyLocalService.deleteCompany(portalInstance.getCompanyId());
 		}
 		finally {
@@ -532,6 +539,11 @@ public class PortalInstanceResourceTest
 		return configurationIds;
 	}
 
+	private SafeCloseable _setDefaultCompanyId() {
+		return CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+			PortalInstancePool.getDefaultCompanyId());
+	}
+
 	private void _testDeletePortalInstanceExisting() throws Exception {
 		PortalInstance randomPortalInstance = randomPortalInstance();
 
@@ -540,14 +552,20 @@ public class PortalInstanceResourceTest
 
 		assertValid(portalInstance);
 
-		Assert.assertNotNull(
-			_companyLocalService.fetchCompany(portalInstance.getCompanyId()));
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			Assert.assertNotNull(
+				_companyLocalService.fetchCompany(
+					portalInstance.getCompanyId()));
+		}
 
 		portalInstanceResource.deletePortalInstance(
 			portalInstance.getPortalInstanceId());
 
-		Assert.assertNull(
-			_companyLocalService.fetchCompany(portalInstance.getCompanyId()));
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			Assert.assertNull(
+				_companyLocalService.fetchCompany(
+					portalInstance.getCompanyId()));
+		}
 	}
 
 	private void _testDeletePortalInstanceNonexistent() throws Exception {
@@ -705,8 +723,12 @@ public class PortalInstanceResourceTest
 	}
 
 	private void _testPostPortalInstanceCopyDefaultCompany() throws Exception {
-		Company defaultCompany = _companyLocalService.getCompany(
-			PortalInstancePool.getDefaultCompanyId());
+		Company defaultCompany = null;
+
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			defaultCompany = _companyLocalService.getCompany(
+				PortalInstancePool.getDefaultCompanyId());
+		}
 
 		PortalInstanceCopy portalInstanceCopy = new PortalInstanceCopy();
 
@@ -1040,7 +1062,9 @@ public class PortalInstanceResourceTest
 
 		long companyId = company.getCompanyId();
 
-		_companyLocalService.exportCompany(companyId);
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			_companyLocalService.exportCompany(companyId);
+		}
 
 		String randomId = StringUtil.toLowerCase(RandomTestUtil.randomString());
 
@@ -1073,7 +1097,9 @@ public class PortalInstanceResourceTest
 				problem.getTitle());
 		}
 		finally {
-			_companyLocalService.deleteCompany(company);
+			try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+				_companyLocalService.deleteCompany(company);
+			}
 
 			_dropExportedSchema(companyId);
 		}
@@ -1137,11 +1163,13 @@ public class PortalInstanceResourceTest
 
 		long companyId = company.getCompanyId();
 
-		try {
-			_companyLocalService.exportCompany(company.getCompanyId());
-		}
-		finally {
-			_companyLocalService.deleteCompany(company);
+		try (SafeCloseable safeCloseable = _setDefaultCompanyId()) {
+			try {
+				_companyLocalService.exportCompany(company.getCompanyId());
+			}
+			finally {
+				_companyLocalService.deleteCompany(company);
+			}
 		}
 
 		String randomId = StringUtil.toLowerCase(RandomTestUtil.randomString());
