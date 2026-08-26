@@ -108,12 +108,6 @@ public abstract class VerifyProcess extends BaseDBProcess {
 		}
 	}
 
-	protected boolean isForceConcurrent(
-		Collection<? extends Callable<Void>> callables) {
-
-		return false;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(VerifyProcess.class);
 
 }
