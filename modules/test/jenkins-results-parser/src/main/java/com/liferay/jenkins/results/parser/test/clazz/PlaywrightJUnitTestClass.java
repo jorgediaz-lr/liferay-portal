@@ -124,6 +124,10 @@ public class PlaywrightJUnitTestClass extends JUnitTestClass {
 		return getSpecFilePath();
 	}
 
+	public String getProjectName() {
+		return _projectName;
+	}
+
 	public String getSlaveLabel() {
 		return _slaveLabel;
 	}
@@ -141,6 +145,10 @@ public class PlaywrightJUnitTestClass extends JUnitTestClass {
 
 	public boolean isAnalyticsCloudEnabled() {
 		return _analyticsCloudEnabled;
+	}
+
+	public void setProjectName(String projectName) {
+		_projectName = projectName;
 	}
 
 	protected PlaywrightJUnitTestClass(
@@ -249,6 +257,7 @@ public class PlaywrightJUnitTestClass extends JUnitTestClass {
 	private Long _averageDuration;
 	private Long _averageOverheadDuration;
 	private final Integer _minimumSlaveRAM;
+	private String _projectName;
 	private final String _slaveLabel;
 	private Map<String, TestClassHistory> _testClassHistoriesMap;
 

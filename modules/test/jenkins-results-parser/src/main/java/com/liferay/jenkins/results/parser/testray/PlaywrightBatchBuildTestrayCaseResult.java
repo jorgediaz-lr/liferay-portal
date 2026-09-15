@@ -165,7 +165,15 @@ public class PlaywrightBatchBuildTestrayCaseResult
 		PlaywrightTestClassMethod playwrightTestClassMethod =
 			getTestClassMethod();
 
-		return playwrightTestClassMethod.getName();
+		String name = playwrightTestClassMethod.getName();
+
+		String projectName = playwrightJUnitTestClass.getProjectName();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(projectName)) {
+			return name;
+		}
+
+		return JenkinsResultsParserUtil.combine(projectName, " > ", name);
 	}
 
 	@Override
@@ -233,12 +241,14 @@ public class PlaywrightBatchBuildTestrayCaseResult
 			String fullTestName = JenkinsResultsParserUtil.combine(
 				testReport.getTestClassName(), " > ", testReport.getTestName());
 
-			if (fullTestName.equals(getName())) {
+			if (fullTestName.equals(playwrightTestClassMethod.getName())) {
 				return testReport;
 			}
 		}
 
-		System.out.println("Unable to find test result for: " + getName());
+		System.out.println(
+			"Unable to find test result for: " +
+				playwrightTestClassMethod.getName());
 
 		return null;
 	}

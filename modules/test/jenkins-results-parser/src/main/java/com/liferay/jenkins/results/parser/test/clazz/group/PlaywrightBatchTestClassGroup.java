@@ -369,6 +369,8 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 			rootDir, _playwrightJSONObject.optJSONArray("suites"),
 			testClassesByProjectMap);
 
+		_setProjectNames(testClassesByProjectMap);
+
 		for (String projectName : _projectNames) {
 			List<TestClass> testClasses = _getTestClasses(
 				projectName, rootDir, testClassesByProjectMap);
@@ -1076,6 +1078,47 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		NotificationUtil.sendSlackNotification(
 			sb.toString(), "#ci-notifications", ":playwright:",
 			"Playwright batch creation failure", "Liferay Playwright");
+	}
+
+	private void _setProjectNames(
+		Map<String, Map<File, TestClass>> testClassesByProjectMap) {
+
+		Map<File, Integer> projectCountsMap = new HashMap<>();
+
+		for (String projectName : _projectNames) {
+			Map<File, TestClass> testClassesMap =
+				testClassesByProjectMap.getOrDefault(
+					projectName, Collections.emptyMap());
+
+			for (File specFile : testClassesMap.keySet()) {
+				projectCountsMap.merge(specFile, 1, Integer::sum);
+			}
+		}
+
+		for (String projectName : _projectNames) {
+			Map<File, TestClass> testClassesMap =
+				testClassesByProjectMap.getOrDefault(
+					projectName, Collections.emptyMap());
+
+			for (TestClass testClass : testClassesMap.values()) {
+				if (!(testClass instanceof PlaywrightJUnitTestClass)) {
+					continue;
+				}
+
+				File specFile = testClass.getTestClassFile();
+
+				Integer projectCount = projectCountsMap.get(specFile);
+
+				if (projectCount < 2) {
+					continue;
+				}
+
+				PlaywrightJUnitTestClass playwrightJUnitTestClass =
+					(PlaywrightJUnitTestClass)testClass;
+
+				playwrightJUnitTestClass.setProjectName(projectName);
+			}
+		}
 	}
 
 	private static final Pattern _npmCommandOutputPattern = Pattern.compile(
