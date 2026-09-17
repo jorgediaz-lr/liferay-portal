@@ -59,7 +59,7 @@ public class VirtualHostRegistry {
 	}
 
 	public void register(long companyId, String hostname) {
-		if (Validator.isNull(hostname)) {
+		if (!isEnabled() || Validator.isNull(hostname)) {
 			return;
 		}
 
@@ -87,18 +87,26 @@ public class VirtualHostRegistry {
 	}
 
 	public void reset(Map<String, Long> companyIdsByHostnameMap) {
+		if (!isEnabled()) {
+			return;
+		}
+
 		_companyIdsByHostnameMap = new ConcurrentHashMap<>(
 			companyIdsByHostnameMap);
 	}
 
 	public void unregister(long companyId) {
+		if (!isEnabled()) {
+			return;
+		}
+
 		Collection<Long> companyIds = _companyIdsByHostnameMap.values();
 
 		companyIds.removeIf(curCompanyId -> curCompanyId == companyId);
 	}
 
 	public void unregister(String hostname) {
-		if (Validator.isNull(hostname)) {
+		if (!isEnabled() || Validator.isNull(hostname)) {
 			return;
 		}
 
