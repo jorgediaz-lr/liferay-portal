@@ -296,6 +296,18 @@ public class VirtualHostLocalServiceImpl
 		return filteredVirtualHosts;
 	}
 
+	private void _registerRollbackCallback(List<String> addedHostnames) {
+		TransactionCallbackUtil.registerRollbackCallback(
+			() -> {
+				for (String addedHostname : addedHostnames) {
+					virtualHostLocalService.unregisterVirtualHost(
+						addedHostname);
+				}
+
+				return null;
+			});
+	}
+
 	private List<VirtualHost> _updateVirtualHosts(
 		long companyId, long layoutSetId, TreeMap<String, String> hostnames) {
 
@@ -312,19 +324,7 @@ public class VirtualHostLocalServiceImpl
 		List<VirtualHost> virtualHosts = new ArrayList<>(
 			virtualHostPersistence.findByC_L(companyId, layoutSetId));
 
-		List<String> reservedHostnames = new ArrayList<>();
-
-		if (_virtualHostRegistry.isEnabled()) {
-			TransactionCallbackUtil.registerRollbackCallback(
-				() -> {
-					for (String reservedHostname : reservedHostnames) {
-						virtualHostLocalService.unregisterVirtualHost(
-							reservedHostname);
-					}
-
-					return null;
-				});
-		}
+		List<String> addedHostnames = new ArrayList<>();
 
 		boolean first = true;
 
@@ -340,24 +340,17 @@ public class VirtualHostLocalServiceImpl
 			}
 
 			if (virtualHost == null) {
-				if (_virtualHostRegistry.isEnabled()) {
-					Long virtualHostCompanyId =
-						_virtualHostRegistry.registerIfAbsent(
-							companyId, curHostname);
+				if (_virtualHostRegistry.registerIfAbsent(
+						companyId, curHostname)) {
 
-					if ((virtualHostCompanyId != null) &&
-						(virtualHostCompanyId != companyId)) {
-
-						throw new DuplicateVirtualHostnameException(
-							curHostname);
+					if (addedHostnames.isEmpty()) {
+						_registerRollbackCallback(addedHostnames);
 					}
 
-					if (virtualHostCompanyId == null) {
-						reservedHostnames.add(curHostname);
+					addedHostnames.add(curHostname);
 
-						virtualHostLocalService.registerVirtualHost(
-							companyId, curHostname);
-					}
+					virtualHostLocalService.registerVirtualHost(
+						companyId, curHostname);
 				}
 
 				long virtualHostId = DBPartitionUtil.incrementCounter();
@@ -410,12 +403,15 @@ public class VirtualHostLocalServiceImpl
 
 		virtualHostPersistence.cacheResult(virtualHosts);
 
-		if (_virtualHostRegistry.isEnabled()) {
+		List<String> registeredHostnames =
+			_virtualHostRegistry.getRegisteredHostnames(removedHostnames);
+
+		if (!registeredHostnames.isEmpty()) {
 			TransactionCallbackUtil.registerCommitCallback(
 				() -> {
-					for (String removedHostname : removedHostnames) {
+					for (String registeredHostname : registeredHostnames) {
 						virtualHostLocalService.unregisterVirtualHost(
-							removedHostname);
+							registeredHostname);
 					}
 
 					return null;
