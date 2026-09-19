@@ -16,6 +16,8 @@ import com.liferay.jenkins.results.parser.test.clazz.PlaywrightTestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.PlaywrightSegmentTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
 
 import java.io.IOException;
 
@@ -165,7 +167,17 @@ public class PlaywrightBatchBuildTestrayCaseResult
 		PlaywrightTestClassMethod playwrightTestClassMethod =
 			getTestClassMethod();
 
-		return playwrightTestClassMethod.getName();
+		String name = playwrightTestClassMethod.getName();
+
+		String specFilePath = playwrightJUnitTestClass.getSpecFilePath();
+
+		String projectSpecFilePath = _getProjectSpecFilePath(specFilePath);
+
+		if (projectSpecFilePath.equals(specFilePath)) {
+			return name;
+		}
+
+		return projectSpecFilePath + name.substring(specFilePath.length());
 	}
 
 	@Override
@@ -185,6 +197,39 @@ public class PlaywrightBatchBuildTestrayCaseResult
 		testrayAttachments.removeAll(Collections.singleton(null));
 
 		return testrayAttachments;
+	}
+
+	protected static String getProjectSpecFilePath(
+		String projectName, String specFilePath) {
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(projectName) ||
+			JenkinsResultsParserUtil.isNullOrEmpty(specFilePath)) {
+
+			return specFilePath;
+		}
+
+		Matcher matcher = _specFilePathPattern.matcher(specFilePath);
+
+		if (!matcher.matches()) {
+			return specFilePath;
+		}
+
+		String directoryName = matcher.group("directoryName");
+
+		String projectLeafName = projectName.substring(
+			projectName.lastIndexOf(".") + 1);
+
+		if (directoryName.equals(projectLeafName)) {
+			return specFilePath;
+		}
+
+		String parentPath = matcher.group("parentPath");
+
+		if (parentPath == null) {
+			parentPath = "";
+		}
+
+		return parentPath + projectLeafName + "/" + matcher.group("fileName");
 	}
 
 	@Override
@@ -233,12 +278,14 @@ public class PlaywrightBatchBuildTestrayCaseResult
 			String fullTestName = JenkinsResultsParserUtil.combine(
 				testReport.getTestClassName(), " > ", testReport.getTestName());
 
-			if (fullTestName.equals(getName())) {
+			if (fullTestName.equals(playwrightTestClassMethod.getName())) {
 				return testReport;
 			}
 		}
 
-		System.out.println("Unable to find test result for: " + getName());
+		System.out.println(
+			"Unable to find test result for: " +
+				playwrightTestClassMethod.getName());
 
 		return null;
 	}
@@ -317,6 +364,31 @@ public class PlaywrightBatchBuildTestrayCaseResult
 		super.initBuildReport();
 	}
 
+	private String _getProjectSpecFilePath(String specFilePath) {
+		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
+
+		if (axisTestClassGroup == null) {
+			return specFilePath;
+		}
+
+		SegmentTestClassGroup segmentTestClassGroup =
+			axisTestClassGroup.getSegmentTestClassGroup();
+
+		if (!(segmentTestClassGroup instanceof
+				PlaywrightSegmentTestClassGroup)) {
+
+			return specFilePath;
+		}
+
+		PlaywrightSegmentTestClassGroup playwrightSegmentTestClassGroup =
+			(PlaywrightSegmentTestClassGroup)segmentTestClassGroup;
+
+		return getProjectSpecFilePath(
+			playwrightSegmentTestClassGroup.getProjectName(), specFilePath);
+	}
+
+	private static final Pattern _specFilePathPattern = Pattern.compile(
+		"(?<parentPath>.*/)?(?<directoryName>[^/]+)/(?<fileName>[^/]+)");
 	private static final Pattern _traceZipPattern = Pattern.compile(
 		"npx playwright show-trace " +
 			"(?<traceZipFilePath>test-results/[^/]+/trace.zip)");
