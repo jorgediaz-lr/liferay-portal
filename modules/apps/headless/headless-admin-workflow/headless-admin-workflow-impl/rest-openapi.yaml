@@ -240,6 +240,10 @@ components:
                         $ref: "#/components/schemas/Node"
                     readOnly: true
                     type: array
+                permissions:
+                    items:
+                        type: permission
+                    type: array
                 scope:
                     type: string
                 system:
@@ -772,6 +776,65 @@ paths:
             tags: ["WorkflowDefinition"]
         post:
             operationId: postWorkflowDefinition
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/WorkflowDefinition"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/WorkflowDefinition"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkflowDefinition"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/WorkflowDefinition"
+            tags: ["WorkflowDefinition"]
+    "/workflow-definitions/by-external-reference-code/{externalReferenceCode}":
+        delete:
+            operationId: deleteWorkflowDefinitionByExternalReferenceCode
+            parameters:
+                -   in: path
+                    name: externalReferenceCode
+                    required: true
+                    schema:
+                        type: string
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+            tags: ["WorkflowDefinition"]
+        get:
+            operationId: getWorkflowDefinitionByExternalReferenceCode
+            parameters:
+                -   in: path
+                    name: externalReferenceCode
+                    required: true
+                    schema:
+                        type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkflowDefinition"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/WorkflowDefinition"
+            tags: ["WorkflowDefinition"]
+        put:
+            operationId: putWorkflowDefinitionByExternalReferenceCode
+            parameters:
+                -   in: path
+                    name: externalReferenceCode
+                    required: true
+                    schema:
+                        type: string
             requestBody:
                 content:
                     application/json:
