@@ -8,6 +8,7 @@ package com.liferay.headless.portal.instances.internal.resource.v1_0;
 import com.liferay.headless.portal.instances.dto.v1_0.Admin;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.internal.notifications.PortalInstanceNotificationUtil;
+import com.liferay.headless.portal.instances.internal.security.permission.PortalInstancePermissionUtil;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
 import com.liferay.portal.instances.constants.PortalInstancesNotificationConstants;
 import com.liferay.portal.kernel.exception.ContactNameException;
@@ -16,9 +17,6 @@ import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -44,7 +42,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 
 	@Override
 	public void deletePortalInstance(String portalInstanceId) throws Exception {
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		Company company = _companyService.getCompanyByWebId(portalInstanceId);
 
@@ -59,7 +57,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public PortalInstance getPortalInstance(String portalInstanceId)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		return _toPortalInstance(
 			_companyService.getCompanyByWebId(portalInstanceId));
@@ -69,7 +67,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public Page<PortalInstance> getPortalInstancesPage(Boolean skipDefault)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		boolean finalSkipDefault = GetterUtil.getBoolean(skipDefault);
 
@@ -93,7 +91,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 			String portalInstanceId, PortalInstance portalInstance)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		Company company = _companyService.getCompanyByWebId(portalInstanceId);
 
@@ -112,7 +110,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public PortalInstance postPortalInstance(PortalInstance portalInstance)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		PortalInstance addedPortalInstance = _addPortalInstance(portalInstance);
 
@@ -127,7 +125,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public void putPortalInstanceActivate(String portalInstanceId)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		Company company = _companyService.getCompanyByWebId(portalInstanceId);
 
@@ -140,7 +138,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	public void putPortalInstanceDeactivate(String portalInstanceId)
 		throws Exception {
 
-		_checkPermission();
+		PortalInstancePermissionUtil.check();
 
 		Company company = _companyService.getCompanyByWebId(portalInstanceId);
 
@@ -188,15 +186,6 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 					finalCompanyId, portalInstance.getPortalInstanceId(),
 					portalInstance.getVirtualHost(), portalInstance.getDomain(),
 					maxUsers, active)));
-	}
-
-	private void _checkPermission() throws Exception {
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		if (!permissionChecker.isOmniadmin()) {
-			throw new PrincipalException.MustBeOmniadmin(permissionChecker);
-		}
 	}
 
 	private void _sendUserNotificationEvent(
