@@ -176,6 +176,10 @@ public class PortalInstanceCopyResourceTest
 				expectedCompanyId, copiedPortalInstance.getCompanyId());
 		}
 
+		Assert.assertEquals(
+			Integer.valueOf(_company.getMaxUsers()),
+			copiedPortalInstance.getMaxUsers());
+
 		_deleteCompany(copiedPortalInstance.getCompanyId());
 	}
 

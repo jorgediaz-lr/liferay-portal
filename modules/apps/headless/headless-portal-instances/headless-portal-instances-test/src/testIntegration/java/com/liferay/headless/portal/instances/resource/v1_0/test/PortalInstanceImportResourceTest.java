@@ -458,6 +458,9 @@ public class PortalInstanceImportResourceTest
 		try {
 			Assert.assertEquals(
 				Long.valueOf(companyId), portalInstance.getCompanyId());
+			Assert.assertEquals(
+				Integer.valueOf(company.getMaxUsers()),
+				portalInstance.getMaxUsers());
 			Assert.assertEquals(randomId, portalInstance.getPortalInstanceId());
 			Assert.assertEquals(virtualHost, portalInstance.getVirtualHost());
 		}
