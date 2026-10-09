@@ -55,6 +55,11 @@ test(
 
 			await virtualInstancesPage.deleteVirtualInstance(exportedWebId);
 
+			const finishedImportTask =
+				await headlessBatchEngine.waitForImportTask(importTask.id);
+
+			expect(finishedImportTask.executeStatus).toBe('COMPLETED');
+
 			exportedCreated = false;
 
 			await virtualInstancesPage.openImportVirtualInstanceModal();
