@@ -9,7 +9,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * @author Shinn Lok
@@ -47,28 +45,36 @@ public class VerifyGroupedModel extends VerifyProcess {
 
 		int count = unverifiedTableNames.size();
 
-		processConcurrently(
-			verifiableGroupedModels,
-			verifiableGroupedModel -> {
-				if (unverifiedTableNames.contains(
-						verifiableGroupedModel.getRelatedTableName()) ||
-					!unverifiedTableNames.contains(
-						verifiableGroupedModel.getTableName())) {
+		try (Connection connection = getConnection()) {
+			this.connection = connection;
 
-					return;
-				}
+			processConcurrently(
+				verifiableGroupedModels,
+				verifiableGroupedModel -> {
+					if (unverifiedTableNames.contains(
+							verifiableGroupedModel.getRelatedTableName()) ||
+						!unverifiedTableNames.contains(
+							verifiableGroupedModel.getTableName())) {
 
-				unverifiedTableNames.remove(
-					verifiableGroupedModel.getTableName());
+						return;
+					}
 
-				if (unverifiedTableNames.size() == count) {
-					throw new VerifyException(
-						"Circular dependency detected " + unverifiedTableNames);
-				}
+					unverifiedTableNames.remove(
+						verifiableGroupedModel.getTableName());
 
-				verifyGroupedModel(verifiableGroupedModel);
-			},
-			null);
+					if (unverifiedTableNames.size() == count) {
+						throw new VerifyException(
+							"Circular dependency detected " +
+								unverifiedTableNames);
+					}
+
+					verifyGroupedModel(verifiableGroupedModel);
+				},
+				null);
+		}
+		finally {
+			this.connection = null;
+		}
 	}
 
 	@Override
@@ -110,13 +116,6 @@ public class VerifyGroupedModel extends VerifyProcess {
 		}
 	}
 
-	@Override
-	protected boolean isForceConcurrent(
-		Collection<? extends Callable<Void>> callables) {
-
-		return true;
-	}
-
 	protected void verifyGroupedModel(
 			VerifiableGroupedModel verifiableGroupedModel)
 		throws Exception {
@@ -124,7 +123,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableGroupedModel.getTableName())) {
 
-			try (Connection connection = DataAccess.getConnection();
+			try (Connection connection = getConnection();
 
 				PreparedStatement preparedStatement1 =
 					connection.prepareStatement(
